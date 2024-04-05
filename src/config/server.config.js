@@ -1,7 +1,5 @@
-import dotenv from "dotenv";
+const Env = import.meta.env;
 
-dotenv.config();
-
-const API_ENDPOINT = process.env.API_ENDPOINT;
+const API_ENDPOINT = Env.VITE_BASE_API_ENDPOINT;
 
 export { API_ENDPOINT };
