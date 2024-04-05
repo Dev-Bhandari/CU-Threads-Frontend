@@ -1,9 +1,9 @@
 import "./App.css";
+import "flowbite";
 import {
     BrowserRouter as Router,
     Routes,
     Route,
-    Link,
     Navigate,
 } from "react-router-dom";
 import Register from "./components/Register";
@@ -11,18 +11,33 @@ import LoginPage from "./components/LoginPage";
 import Verify from "./components/VerifyPage";
 import Home from "./pages/Home";
 import { useAuth } from "./utils/authContext";
+import Header from "./components/common/header";
+import { useEffect } from "react";
 
 function App() {
-    const { user } = useAuth();
+    const { user, login } = useAuth();
+
+    useEffect(() => {
+        // Set initial user data from local storage
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            login(user);
+        }
+    }, []); // Empty dependency array ensures the effect runs only once
+
     return (
         <Router>
-            <nav>
-                <Link to="/">Home</Link>
-                <Link to="/login">Login</Link>
-            </nav>
-            <div>
+            <Header />
+            <main className="p-8 relative">
                 <Routes>
-                    <Route exact path="/" element={<Home />} />
+                    <Route exact path="/home" element={<Home />} />
+                    <Route
+                        exact
+                        path="/"
+                        element={<Navigate replace to={"/home"} />}
+                    />
+
                     <Route
                         exact
                         path="/login"
@@ -30,7 +45,7 @@ function App() {
                             !user ? (
                                 <LoginPage />
                             ) : (
-                                <Navigate replace to={"/"} />
+                                <Navigate replace to={"/home"} />
                             )
                         }
                     />
@@ -42,8 +57,14 @@ function App() {
                         }
                     />
                     <Route exact path="/verify" element={<Verify />} />
+                    {/* <Route
+                        exact
+                        path="/logout"
+                        action={logout}
+                        element={<Navigate replace to={"/"} />}
+                    /> */}
                 </Routes>
-            </div>
+            </main>
         </Router>
     );
 }

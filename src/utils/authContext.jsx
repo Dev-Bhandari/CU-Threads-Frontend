@@ -8,9 +8,9 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isVerified, setIsVerified] = useState(false);
 
-    const login = (userData) => {
+    const login = (user) => {
         // Perform login logic
-        setUser(userData);
+        setUser(user);
     };
 
     const logout = () => {

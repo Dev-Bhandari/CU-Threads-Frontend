@@ -1,23 +1,12 @@
 import axios from "axios";
-import { getToken } from "./auth"; // Import the getToken function
-import { useAuth } from "./authContext"; // Import the useAuth hook
 
+// const baseURL = "http://localhost:3000/api/v1";
 const baseURL = "https://cu-threads-api.vercel.app/api/v1"; // Update with your backend URL
 
 const api = axios.create({
     baseURL,
     withCredentials: true,
 });
-
-// Add interceptor to attach authorization token to each request
-// api.interceptors.request.use((config) => {
-//     const { user } = useAuth(); // Get user information from AuthContext
-//     const token = getToken();
-//     if (token) {
-//         config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-// });
 
 // Define API functions for calling backend routes
 const userAPI = {
@@ -31,7 +20,15 @@ const userAPI = {
             throw error;
         }
     },
-
+    logoutUser: async () => {
+        try {
+            const response = await api.post("/users/logout");
+            console.log(response);
+        } catch (error) {
+            console.error("Error while user login:", error.response);
+            throw error;
+        }
+    },
     // Add more API functions for other routes as needed
 };
 
