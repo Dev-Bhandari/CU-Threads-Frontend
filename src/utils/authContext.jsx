@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         // Perform logout logic
+        localStorage.removeItem("user");
         setUser(null);
         setIsVerified(false); // Reset isVerified state on logout
     };
