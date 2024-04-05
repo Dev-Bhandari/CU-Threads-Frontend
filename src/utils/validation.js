@@ -1,6 +1,11 @@
 import { object, string } from "zod";
 
 export const loginSchema = object({
+    email: string().email(),
+    password: string().min(6),
+});
+
+export const registerSchema = object({
     username: string().min(1),
     email: string().email(),
     password: string().min(6),
@@ -33,7 +38,7 @@ function getPasswordError(error) {
     }
 }
 
-export function validateLoginForm(formData) {
+const validateRegisterForm = (formData) => {
     let errors = {};
     try {
         loginSchema.parse(formData);
@@ -60,4 +65,33 @@ export function validateLoginForm(formData) {
         }
     }
     return errors;
-}
+};
+
+const validateLoginForm = (formData) => {
+    let errors = {};
+    try {
+        loginSchema.parse(formData);
+    } catch (error) {
+        console.log(error);
+        if (error.errors) {
+            error.errors.forEach((err) => {
+                switch (err.path[0]) {
+                    case "email":
+                        errors.email = getEmailError(err);
+                        break;
+                    case "password":
+                        errors.password = getPasswordError(err);
+                        break;
+                    default:
+                        errors._generic =
+                            "An error occurred. Please try again.";
+                }
+            });
+        } else {
+            errors._generic = "An error occurred. Please try again.";
+        }
+    }
+    return errors;
+};
+
+export { validateLoginForm, validateRegisterForm };

@@ -6,7 +6,7 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
-import Register from "./components/Register";
+import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
 import Verify from "./components/VerifyPage";
 import Home from "./pages/Home";
@@ -53,7 +53,11 @@ function App() {
                         exact
                         path="/register"
                         element={
-                            !user ? <Register /> : <Navigate replace to={"/"} />
+                            !user ? (
+                                <RegisterPage />
+                            ) : (
+                                <Navigate replace to={"/"} />
+                            )
                         }
                     />
                     <Route exact path="/verify" element={<Verify />} />
