@@ -40,6 +40,17 @@ const userAPI = {
             throw error;
         }
     },
+    getUser: async () => {
+        try {
+            const response = await api.get("users/get-current-user");
+            console.log(response);
+            return response;
+        } catch (error) {
+            console.error("Error while user login:", error.response);
+            throw error;
+        }
+    },
+
     // Add more API functions for other routes as needed
 };
 
