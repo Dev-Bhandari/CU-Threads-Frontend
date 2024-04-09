@@ -19,6 +19,8 @@ function VerifyEmail() {
             } catch (error) {
                 // Handle verification error
                 console.log("Something went wrong");
+                console.log(error);
+
                 console.log(error.response);
                 if (!error.response.data.success) {
                     const errorMessage = error.response.data;
