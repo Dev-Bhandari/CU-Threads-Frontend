@@ -1,10 +1,13 @@
 import { useAuth } from "../../utils/authContext"; // Import the useAuth hook if needed
-import { Button, Navbar, Dropdown, Avatar } from "flowbite-react";
-import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from "react-icons/hi";
+import { Navbar, Dropdown, Avatar } from "flowbite-react";
+import { HiCog, HiCurrencyDollar, HiLogout, HiMail } from "react-icons/hi";
 import userAPI from "../../utils/api";
+import { useModalContext } from "../../utils/modalContext";
 
 const Header = () => {
-    const { user, logout } = useAuth(); // If you need user information or logout functionality
+    const { user, removeUserData } = useAuth();
+    const { toggleLoginModal, toggleVerifyUserModal, setResendResponse } =
+        useModalContext();
 
     return (
         <Navbar fluid rounded className="sticky top-0 z-50">
@@ -14,7 +17,7 @@ const Header = () => {
                 </span>
             </Navbar.Brand>
             <div className="flex md:order-2">
-                {user ? (
+                {user?.isVerified ? (
                     <Dropdown
                         arrowIcon={false}
                         inline
@@ -26,21 +29,20 @@ const Header = () => {
                             <span className="block text-sm text-center">
                                 {user?.username}
                             </span>
-                            {/* <span className="block truncate text-sm font-medium">
-                                {user?.email}
-                            </span> */}
                         </Dropdown.Header>
                         <Dropdown.Item icon={HiCog}>Settings</Dropdown.Item>
                         <Dropdown.Item icon={HiCurrencyDollar}>
                             Earnings
                         </Dropdown.Item>
                         <Dropdown.Divider />
+
                         <Dropdown.Item
                             icon={HiLogout}
                             onClick={async () => {
                                 try {
-                                    await userAPI.logoutUser();
-                                    logout();
+                                    if (user.isVerified)
+                                        await userAPI.logoutUser();
+                                    removeUserData();
                                 } catch (error) {
                                     console.log(error.response);
                                     throw error;
@@ -52,7 +54,12 @@ const Header = () => {
                     </Dropdown>
                 ) : (
                     <div>
-                        <Button href="/login">Login</Button>
+                        <button
+                            className=" text-white bg-blue-700 hover:bg-blue-800  focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
+                            onClick={toggleLoginModal}
+                        >
+                            Login
+                        </button>
                         <Navbar.Toggle />
                     </div>
                 )}

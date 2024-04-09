@@ -6,29 +6,26 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
-import RegisterPage from "./components/RegisterPage";
-import LoginPage from "./components/LoginPage";
-import Verify from "./components/VerifyPage";
+import RegisterModal from "./components/RegisterModal";
+import LoginModal from "./components/LoginModal";
+import VerifyUserModal from "./components/VerifyUserModal";
+import VerifyEmail from "./components/VerifyEmail";
 import Home from "./pages/Home";
 import { useAuth } from "./utils/authContext";
 import Header from "./components/common/header";
 import { useEffect } from "react";
 
 function App() {
-    const { user, login } = useAuth();
+    const { getUserData } = useAuth();
 
-    useEffect(() => {
-        // Set initial user data from local storage
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            const user = JSON.parse(storedUser);
-            login(user);
-        }
-    }, []); // Empty dependency array ensures the effect runs only once
+    useEffect(() => getUserData, []); // Empty dependency array ensures the effect runs only once
 
     return (
         <Router>
             <Header />
+            <LoginModal />
+            <RegisterModal />
+            <VerifyUserModal />
             <main className="p-8 relative">
                 <Routes>
                     <Route exact path="/home" element={<Home />} />
@@ -37,36 +34,11 @@ function App() {
                         path="/"
                         element={<Navigate replace to={"/home"} />}
                     />
-
                     <Route
                         exact
-                        path="/login"
-                        element={
-                            !user ? (
-                                <LoginPage />
-                            ) : (
-                                <Navigate replace to={"/home"} />
-                            )
-                        }
+                        path="/verify-email"
+                        element={<VerifyEmail />}
                     />
-                    <Route
-                        exact
-                        path="/register"
-                        element={
-                            !user ? (
-                                <RegisterPage />
-                            ) : (
-                                <Navigate replace to={"/"} />
-                            )
-                        }
-                    />
-                    <Route exact path="/verify" element={<Verify />} />
-                    {/* <Route
-                        exact
-                        path="/logout"
-                        action={logout}
-                        element={<Navigate replace to={"/"} />}
-                    /> */}
                 </Routes>
             </main>
         </Router>

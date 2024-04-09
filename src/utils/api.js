@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_ENDPOINT } from "../config/server.config";
 
 // const baseURL = "http://localhost:3000/api/v1";
-const baseURL = `${API_ENDPOINT}/api/v1`; // Update with your backend URL
+const baseURL = `${API_ENDPOINT}/api/v1`;
 
 const api = axios.create({
     baseURL,
@@ -11,7 +11,7 @@ const api = axios.create({
 
 // Define API functions for calling backend routes
 const userAPI = {
-    registerUSer: async (body) => {
+    registerUser: async (body) => {
         try {
             const response = await api.post("/users/register", body);
             console.log(response);
@@ -51,7 +51,51 @@ const userAPI = {
         }
     },
 
+    verifyEmail: async (emailToken) => {
+        try {
+            const response = await api.post("users/verify-email", null, {
+                params: { emailToken },
+            });
+            console.log(response);
+            return response.data;
+        } catch (error) {
+            console.error("Error while user login:", error.response);
+            console.log(error);
+            throw error;
+        }
+    },
+
+    getNewLink: async (body) => {
+        try {
+            const response = await api.post("users/get-new-link", body);
+            console.log(response);
+            return response.data;
+        } catch (error) {
+            console.error("Error while user login:", error.response);
+            throw error;
+        }
+    },
     // Add more API functions for other routes as needed
 };
 
+const threadAPI = {
+    getOneThread: async (body) => {
+        try {
+            const response = await api.get("threads/get-onethread", body);
+            console.log(response);
+        } catch (error) {
+            console.error("Error while user login:", error.response);
+            throw error;
+        }
+    },
+    getAllThreads: async () => {
+        try {
+            const response = await api.get("threads/get-allthreads");
+            console.log(response);
+        } catch (error) {
+            console.error("Error while user login:", error.response);
+            throw error;
+        }
+    },
+};
 export default userAPI;
