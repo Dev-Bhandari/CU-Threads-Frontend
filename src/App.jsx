@@ -13,12 +13,9 @@ import VerifyEmail from "./components/VerifyEmail";
 import Home from "./pages/Home";
 import { useAuth } from "./utils/authContext";
 import Header from "./components/common/header";
-import { useEffect } from "react";
 
 function App() {
     const { getUserData } = useAuth();
-
-    useEffect(() => getUserData, []); // Empty dependency array ensures the effect runs only once
 
     return (
         <Router>

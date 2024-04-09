@@ -7,7 +7,7 @@ import { useModalContext } from "../../utils/modalContext";
 const Header = () => {
     const { user, removeUserData } = useAuth();
     const { toggleLoginModal } = useModalContext();
-    console.log("Called user from header ",user);
+
     return (
         <Navbar fluid rounded className="sticky top-0 z-50">
             <Navbar.Brand href="/home">
@@ -39,8 +39,8 @@ const Header = () => {
                             icon={HiLogout}
                             onClick={async () => {
                                 try {
-                                    await userAPI.logoutUser();
                                     removeUserData();
+                                    await userAPI.logoutUser();
                                 } catch (error) {
                                     console.log(error.response);
                                     throw error;

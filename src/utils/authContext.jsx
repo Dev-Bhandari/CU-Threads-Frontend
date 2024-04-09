@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
@@ -7,6 +7,11 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
+    useEffect(() => {
+        // Call getUserData when AuthProvider mounts
+        getUserData();
+    }, []);
+    
     const getUserData = () => {
         console.log(user);
         console.log("Get user Data called");
