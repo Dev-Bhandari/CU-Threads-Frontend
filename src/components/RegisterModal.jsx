@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { validateRegisterForm } from "../utils/validation";
 import { useAuth } from "../utils/authContext";
 import userAPI from "../utils/api";
-import { Modal } from "flowbite-react";
+import { Modal, Spinner } from "flowbite-react";
 import { useModalContext } from "../utils/modalContext";
 
 const RegisterModal = () => {
@@ -15,8 +15,10 @@ const RegisterModal = () => {
         toggleVerifyUserModal,
         registerError,
         setRegisterError,
+        setAlertResponse,
     } = useModalContext();
 
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -37,6 +39,7 @@ const RegisterModal = () => {
         e.preventDefault();
         const validationErrors = validateRegisterForm(formData);
         if (Object.keys(validationErrors).length === 0) {
+            setLoading(true);
             // Send form data to server for authentication
             console.log("Submitted:", formData);
 
@@ -56,12 +59,16 @@ const RegisterModal = () => {
                 toggleRegisterModal();
             } catch (error) {
                 console.log("Something went wrong");
-                console.log(error.response);
+                console.log(error);
+                if (error && !error.response.data.message)
+                    setAlertResponse({ message: "Something went wrong" });
                 if (!error.response.data.success) {
                     const errorMessage = error.response.data;
                     console.log(errorMessage);
                     setRegisterError(errorMessage);
                 }
+            } finally {
+                setLoading(false);
             }
         } else {
             // Handle validation errors
@@ -169,12 +176,22 @@ const RegisterModal = () => {
                                 Forgot Password?
                             </a>
                         </div>
-                        <button
-                            type="submit"
-                            className=" text-white bg-blue-700 hover:bg-blue-800  focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
-                        >
-                            Sign Up
-                        </button>
+                        {loading ? (
+                            <span className=" text-white bg-blue-700 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600  ">
+                                <Spinner
+                                    aria-label="Alternate spinner button example"
+                                    size="sm"
+                                />
+                                <span className="pl-3">Loading...</span>
+                            </span>
+                        ) : (
+                            <button
+                                type="submit"
+                                className=" text-white bg-blue-700 hover:bg-blue-800  focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
+                            >
+                                Sign Up
+                            </button>
+                        )}
                     </form>
                     <p className="max-w-max mx-auto p-4">
                         Already a member?{" "}

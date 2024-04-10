@@ -12,8 +12,12 @@ export const ModalProvider = ({ children }) => {
     const [loginError, setLoginError] = useState({});
     const [registerError, setRegisterError] = useState({});
     const [resendResponse, setResendResponse] = useState({});
+    const [alertResponse, setAlertResponse] = useState({
+        message: null,
+    });
 
     const toggleLoginModal = () => {
+        if (!openLoginModal) setAlertResponse({ message: null });
         setOpenLoginModal((prevState) => !prevState);
         setLoginError({});
     };
@@ -43,6 +47,8 @@ export const ModalProvider = ({ children }) => {
                 setRegisterError,
                 resendResponse,
                 setResendResponse,
+                alertResponse,
+                setAlertResponse,
             }}
         >
             {children}

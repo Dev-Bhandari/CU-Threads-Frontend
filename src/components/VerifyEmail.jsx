@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import userAPI from "../utils/api";
+import { useModalContext } from "../utils/modalContext";
 
 function VerifyEmail() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const token = searchParams.get("emailToken");
-
+    const { setAlertResponse } = useModalContext();
     useEffect(() => {
         const verifyUser = async () => {
             try {
@@ -15,17 +16,15 @@ function VerifyEmail() {
                 // Verification successful, handle accordingly
                 console.log(response);
                 console.log("User verified successfully!");
-                navigate("/home");
             } catch (error) {
                 // Handle verification error
                 console.log("Something went wrong");
                 console.log(error);
-
-                console.log(error.response);
-                if (!error.response.data.success) {
-                    const errorMessage = error.response.data;
-                    console.log(errorMessage);
-                }
+                if (error && !error.response.data.message)
+                    setAlertResponse({ message: "Something went wrong" });
+                else setAlertResponse({ message: error.response.data.message });
+            } finally {
+                navigate("/home");
             }
         };
         verifyUser();
