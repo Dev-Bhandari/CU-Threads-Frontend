@@ -6,37 +6,53 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
+import Header from "./components/Header";
 import RegisterModal from "./components/RegisterModal";
 import LoginModal from "./components/LoginModal";
 import VerifyUserModal from "./components/VerifyUserModal";
 import VerifyEmail from "./components/VerifyEmail";
-import Home from "./pages/Home";
+import HomePage from "./pages/HomePage";
 import { useAuth } from "./utils/authContext";
-import Header from "./components/common/header";
+import SideBar from "./components/SideBar";
+import ThreadPage from "./pages/ThreadPage";
+import AllThreadsPage from "./pages/AllThreadsPage";
+import CreatePostModal from "./components/CreatePostModal";
 
 function App() {
-    const { getUserData } = useAuth();
-
     return (
         <Router>
             <Header />
             <LoginModal />
             <RegisterModal />
             <VerifyUserModal />
-            <main className="p-8 relative">
-                <Routes>
-                    <Route exact path="/home" element={<Home />} />
-                    <Route
-                        exact
-                        path="/"
-                        element={<Navigate replace to={"/home"} />}
-                    />
-                    <Route
-                        exact
-                        path="/verify-email"
-                        element={<VerifyEmail />}
-                    />
-                </Routes>
+            <CreatePostModal />
+            <main className="flex flex-row">
+                <SideBar />
+                <div className="flex-grow my-4">
+                    <Routes>
+                        <Route exact path="/home" element={<HomePage />} />
+                        <Route
+                            exact
+                            path="/"
+                            element={<Navigate replace to={"/home"} />}
+                        />
+                        <Route
+                            exact
+                            path="/cu/all"
+                            element={<AllThreadsPage />}
+                        />
+                        <Route
+                            exact
+                            path="/verify-email"
+                            element={<VerifyEmail />}
+                        />
+                        <Route
+                            exact
+                            path="/cu/:threadName"
+                            element={<ThreadPage />}
+                        />
+                    </Routes>
+                </div>
             </main>
         </Router>
     );

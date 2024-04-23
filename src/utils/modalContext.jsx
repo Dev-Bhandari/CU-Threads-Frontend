@@ -8,6 +8,7 @@ export const ModalProvider = ({ children }) => {
     const [openLoginModal, setOpenLoginModal] = useState(false);
     const [openRegisterModal, setOpenRegisterModal] = useState(false);
     const [openVerifyUserModal, setOpenVerifyUserModal] = useState(false);
+    const [openCreatePostModal, setOpenCreatePostModal] = useState(false);
 
     const [loginError, setLoginError] = useState({});
     const [registerError, setRegisterError] = useState({});
@@ -31,7 +32,9 @@ export const ModalProvider = ({ children }) => {
         setOpenVerifyUserModal((prevState) => !prevState);
         setResendResponse({});
     };
-
+    const toggleCreatePostModal = () => {
+        setOpenCreatePostModal((prevState) => !prevState);
+    };
     return (
         <ModalContext.Provider
             value={{
@@ -49,6 +52,8 @@ export const ModalProvider = ({ children }) => {
                 setResendResponse,
                 alertResponse,
                 setAlertResponse,
+                openCreatePostModal,
+                toggleCreatePostModal,
             }}
         >
             {children}

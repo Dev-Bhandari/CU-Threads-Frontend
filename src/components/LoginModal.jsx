@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateLoginForm } from "../utils/validation";
 import { useAuth } from "../utils/authContext";
-import userAPI from "../utils/api";
+import { loginUser } from "../utils/api/user.api";
 import { useModalContext } from "../utils/modalContext";
-import { Modal, Spinner, Alert } from "flowbite-react";
+import { Modal, Spinner } from "flowbite-react";
 
 const LoginModal = () => {
     const navigate = useNavigate();
@@ -44,14 +44,14 @@ const LoginModal = () => {
             console.log("Submitted:", formData);
 
             try {
-                const response = await userAPI.loginUser(formData);
+                const response = await loginUser(formData);
                 console.log(response);
 
                 setUserData(response.data);
                 if (response.data.isVerified) {
                     toggleLoginModal();
-                    // Redirect to home page on successful login
-                    navigate("/home");
+                    // Reload page on successful login
+                    navigate(0);
                 } else {
                     toggleLoginModal();
                     toggleVerifyUserModal();
@@ -160,7 +160,7 @@ const LoginModal = () => {
                                     aria-label="Alternate spinner button example"
                                     size="sm"
                                 />
-                                <span className="pl-3">Loading...</span>
+                                <span className="pl-3">Logging In...</span>
                             </span>
                         ) : (
                             <button

@@ -1,14 +1,20 @@
 import { object, string } from "zod";
 
-export const loginSchema = object({
+const loginSchema = object({
     email: string().email(),
     password: string().min(6),
 });
 
-export const registerSchema = object({
+const registerSchema = object({
     username: string().min(1),
     email: string().email(),
     password: string().min(6),
+});
+
+const createPostSchema = object({
+    title: string().min(1),
+    content: string().max(150),
+    media: string(),
 });
 
 function getUsernameError(error) {
@@ -38,10 +44,37 @@ function getPasswordError(error) {
     }
 }
 
+function getTitleError(error) {
+    switch (error.code) {
+        case "too_small":
+            return "Title must contain at least 1 character";
+        default:
+            return "Invalid title";
+    }
+}
+
+function getContentError(error) {
+    switch (error.code) {
+        case "too_large":
+            return "Content must be at most 150 characters";
+        default:
+            return "Invalid content";
+    }
+}
+
+function getMediaError(error) {
+    switch (error.code) {
+        case "invalid_url":
+            return "Invalid URL format";
+        default:
+            return "Invalid media URL";
+    }
+}
+
 const validateRegisterForm = (formData) => {
     let errors = {};
     try {
-        loginSchema.parse(formData);
+        registerSchema.parse(formData);
     } catch (error) {
         if (error.errors) {
             error.errors.forEach((err) => {
@@ -94,4 +127,33 @@ const validateLoginForm = (formData) => {
     return errors;
 };
 
-export { validateLoginForm, validateRegisterForm };
+const validateCreatePostForm = (formData) => {
+    let errors = {};
+    try {
+        createPostSchema.parse(formData);
+    } catch (error) {
+        if (error.errors) {
+            error.errors.forEach((err) => {
+                switch (err.path[0]) {
+                    case "title":
+                        errors.title = getTitleError(err);
+                        break;
+                    case "content":
+                        errors.content = getContentError(err);
+                        break;
+                    case "media":
+                        errors.media = getMediaError(err);
+                        break;
+                    default:
+                        errors._generic =
+                            "An error occurred. Please try again.";
+                }
+            });
+        } else {
+            errors._generic = "An error occurred. Please try again.";
+        }
+    }
+    return errors;
+};
+
+export { validateLoginForm, validateRegisterForm, validateCreatePostForm };

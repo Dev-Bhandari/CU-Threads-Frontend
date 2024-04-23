@@ -1,6 +1,6 @@
 import { Modal } from "flowbite-react";
 import { useModalContext } from "../utils/modalContext";
-import userAPI from "../utils/api";
+import { getNewLink } from "../utils/api/user.api";
 import { useAuth } from "../utils/authContext";
 
 const VerifyUserModal = () => {
@@ -14,7 +14,7 @@ const VerifyUserModal = () => {
 
     const handleResendVerficationEmail = async () => {
         try {
-            const apiResponse = await userAPI.getNewLink({ userId: user?._id });
+            const apiResponse = await getNewLink({ userId: user?._id });
             setResendResponse(apiResponse);
         } catch (error) {
             console.log("Something went wrong");

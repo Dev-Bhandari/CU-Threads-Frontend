@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
         // Call getUserData when AuthProvider mounts
         getUserData();
     }, []);
-    
+
     const getUserData = () => {
         console.log(user);
         console.log("Get user Data called");

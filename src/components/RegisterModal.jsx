@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateRegisterForm } from "../utils/validation";
 import { useAuth } from "../utils/authContext";
-import userAPI from "../utils/api";
+import { registerUser } from "../utils/api/user.api";
 import { Modal, Spinner } from "flowbite-react";
 import { useModalContext } from "../utils/modalContext";
 
@@ -44,7 +44,7 @@ const RegisterModal = () => {
             console.log("Submitted:", formData);
 
             try {
-                const response = await userAPI.registerUser(formData);
+                const response = await registerUser(formData);
                 console.log(response);
                 // Redirect to home page on successful register
                 setUserData(response.data);
@@ -182,7 +182,7 @@ const RegisterModal = () => {
                                     aria-label="Alternate spinner button example"
                                     size="sm"
                                 />
-                                <span className="pl-3">Loading...</span>
+                                <span className="pl-3">Signing Up...</span>
                             </span>
                         ) : (
                             <button
