@@ -20,19 +20,19 @@ const PostPage = () => {
             console.log(`Calling post data for postId ${postId}`);
             const res = await getPost(postId);
             const post = res.data;
-            console.log(comments);
-            setComments(comments);
+            console.log(post);
+            setPost(post);
         } catch (error) {
             console.log("Error fetching posts:", error);
         }
     };
     const fetchComments = async () => {
         try {
-            console.log(`Calling post data for postId ${postId}`);
-            const res = await getAllComments();
+            console.log(`Calling comments for postId ${postId}`);
+            const res = await getAllComments(postId);
             const comments = res.data;
-            console.log(post);
-            setPost(post);
+            console.log(comments);
+            setComments(comments);
         } catch (error) {
             console.log("Error fetching posts:", error);
         }

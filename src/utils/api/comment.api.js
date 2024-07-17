@@ -14,7 +14,7 @@ const createComment = async (postId, parentCommentId, content) => {
 
 const getAllComments = async (postId) => {
     try {
-        const response = await api.get(`/comments/create-comment/${postId}`);
+        const response = await api.get(`/comments/get-allcomments/${postId}`);
         const comments = response.data;
         console.log(comments);
         return comments;

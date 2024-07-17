@@ -68,7 +68,7 @@ const ThreadPage = () => {
                 scrollThreshold={0.9}
             >
                 {posts.map((post) => (
-                    <PostCard key={post._id} postData={post} title={user} />
+                    <PostCard key={post._id} postData={post} title={"user"} />
                 ))}
             </InfiniteScroll>
         </div>
