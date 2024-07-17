@@ -46,7 +46,7 @@ const HomePage = () => {
                 scrollThreshold={0.7}
             >
                 {posts.map((post) => (
-                    <PostCard key={post._id} postData={post} />
+                    <PostCard key={post._id} postData={post} title={"thread"} />
                 ))}
             </InfiniteScroll>
         </div>

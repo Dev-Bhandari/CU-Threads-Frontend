@@ -17,6 +17,7 @@ import SideBar from "./components/SideBar";
 import ThreadPage from "./pages/ThreadPage";
 import AllThreadsPage from "./pages/AllThreadsPage";
 import CreatePostModal from "./components/CreatePostModal";
+import PostPage from "./pages/PostPage";
 
 function App() {
     return (
@@ -50,6 +51,11 @@ function App() {
                             exact
                             path="/cu/:threadName"
                             element={<ThreadPage />}
+                        />
+                        <Route
+                            exact
+                            path="/posts/:postId"
+                            element={<PostPage />}
                         />
                     </Routes>
                 </div>

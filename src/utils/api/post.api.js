@@ -54,6 +54,16 @@ const deleteDownVote = async (body) => {
         throw error;
     }
 };
+const getPost = async (postId) => {
+    try {
+        const response = await api.get(`/posts/get-post/${postId}`);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while user login:", error.response);
+        throw error;
+    }
+};
 
 const getAllPostsOfThread = async (threadName, lastId, sortBy) => {
     try {
@@ -86,6 +96,7 @@ export {
     deleteUpVote,
     createDownVote,
     deleteDownVote,
+    getPost,
     getAllPostsOfThread,
     getAllPosts,
 };

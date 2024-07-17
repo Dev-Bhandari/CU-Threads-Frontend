@@ -18,10 +18,13 @@ import { useAuth } from "../utils/authContext";
 import { useNavigate } from "react-router-dom";
 
 const PostCard = (props) => {
-    const post = props.postData;
+    const title = props.title;
+    const post =
+        props.postData.length == 1 ? props.postData[0] : props.postData;
     let name, avatar;
     console.log("Props: ", props);
-    if (!post.threadInfo) {
+    console.log(post);
+    if (title == "user") {
         name = post.creatorInfo[0].username;
         avatar = post.creatorInfo[0].avatar;
     } else {
@@ -85,27 +88,31 @@ const PostCard = (props) => {
     };
 
     const handleThread = () => {
-        navigate(post.threadInfo ? `/cu/${name}` : `/u/${name}`);
+        navigate(title == "user" ? `/u/${name}` : `/cu/${name}`);
     };
 
+    const handlePost = () => {
+        navigate(`/posts/${post._id}`);
+    };
     return (
         <div key={post._id}>
-            <Card className="mb-4 min-w-128 w-[900px] hover:bg-slate-100 text-left">
+            <Card className="mb-4 min-w-128 w-[850px] hover:bg-slate-100 text-left">
                 <div className="flex">
                     <button
-                        className=" text-gray-500 dark:text-white hover:text-gray-400"
+                        className=" text-gray-500 dark:text-white hover:text-gray-400 z-10 "
                         onClick={handleThread}
                     >
                         <div className="flex items-center px-2">
                             <Avatar img={avatar} rounded size="sm"></Avatar>
                             <h2 className=" text-sm px-2 font-bold tracking-tight">
-                                {post.threadInfo ? `cu/${name}` : `u/${name}`}
+                                {title == "user" ? `/u/${name}` : `/cu/${name}`}
                             </h2>
                         </div>
                     </button>
                 </div>
-                <h5 className=" text-2xl px-2 font-bold tracking-tight text-gray-700 dark:text-white">
-                    {post.title}
+
+                <h5 className=" text-2xl px-2 font-bold tracking-tight text-gray-700 dark:text-white hover:text-gray-500">
+                    <button onClick={handlePost}>{post.title}</button>
                 </h5>
                 {post.mediaType === "image" && (
                     <div className="h-128 px-2">
@@ -166,8 +173,8 @@ const PostCard = (props) => {
                                 <BiDownvote className="mx-1 size-5 hover:fill-slate-700" />
                             )}
                         </button>
-                    </div>
-                    <button>
+                    </div>{" "}
+                    <button onClick={handlePost}>
                         <div className=" flex items-center bg-slate-500 m-2 px-4 py-1 rounded-full text-white hover:bg-slate-600">
                             <FaRegCommentAlt className="me-1.5" />
                             <p>{post.totalComments}</p>

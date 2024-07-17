@@ -9,7 +9,6 @@ import { useParams } from "react-router-dom";
 import ThreadCard from "../components/ThreadCard";
 
 const ThreadPage = () => {
-    const { user } = useAuth();
     const [thread, setThread] = useState(null);
     const [posts, setPosts] = useState([]);
     const [lastFieldId, setLastFieldId] = useState("");
@@ -53,7 +52,9 @@ const ThreadPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center mr-56 ">
-            {thread && <ThreadCard threadData={thread} isAllThreadsPage={false} />}
+            {thread && (
+                <ThreadCard threadData={thread} isAllThreadsPage={false} />
+            )}
             <InfiniteScroll
                 dataLength={posts.length}
                 next={fetchPosts}
@@ -67,7 +68,7 @@ const ThreadPage = () => {
                 scrollThreshold={0.9}
             >
                 {posts.map((post) => (
-                    <PostCard key={post._id} postData={post} />
+                    <PostCard key={post._id} postData={post} title={user} />
                 ))}
             </InfiniteScroll>
         </div>
