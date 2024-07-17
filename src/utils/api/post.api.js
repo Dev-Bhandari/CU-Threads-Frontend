@@ -1,8 +1,11 @@
 import api from "./index.api";
 
-const createPost = async (body) => {
+const createPost = async (threadName, body) => {
     try {
-        const response = await api.post("/posts/create-post", body);
+        const response = await api.post(
+            `/posts/create-post/${threadName}`,
+            body
+        );
         console.log(response);
         return response.data;
     } catch (error) {

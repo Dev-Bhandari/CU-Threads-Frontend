@@ -13,8 +13,7 @@ const registerSchema = object({
 
 const createPostSchema = object({
     title: string().min(1),
-    content: string().max(150),
-    media: string(),
+    textContent: string().max(1000),
 });
 
 function getUsernameError(error) {
@@ -53,12 +52,12 @@ function getTitleError(error) {
     }
 }
 
-function getContentError(error) {
+function getTextContentError(error) {
     switch (error.code) {
         case "too_large":
-            return "Content must be at most 150 characters";
+            return "textContent must be at most 150 characters";
         default:
-            return "Invalid content";
+            return "Invalid textContent";
     }
 }
 
@@ -138,12 +137,12 @@ const validateCreatePostForm = (formData) => {
                     case "title":
                         errors.title = getTitleError(err);
                         break;
-                    case "content":
-                        errors.content = getContentError(err);
+                    case "textContent":
+                        errors.textContent = getTextContentError(err);
                         break;
-                    case "media":
-                        errors.media = getMediaError(err);
-                        break;
+                    // case "media":
+                    //     errors.media = getMediaError(err);
+                    //     break;
                     default:
                         errors._generic =
                             "An error occurred. Please try again.";

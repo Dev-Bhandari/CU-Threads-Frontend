@@ -8,7 +8,9 @@ export const ModalProvider = ({ children }) => {
     const [openLoginModal, setOpenLoginModal] = useState(false);
     const [openRegisterModal, setOpenRegisterModal] = useState(false);
     const [openVerifyUserModal, setOpenVerifyUserModal] = useState(false);
-    const [openCreatePostModal, setOpenCreatePostModal] = useState(false);
+    const [openCreatePostModal, setOpenCreatePostModal] = useState({
+        threadName: null,
+    });
 
     const [loginError, setLoginError] = useState({});
     const [registerError, setRegisterError] = useState({});
@@ -32,8 +34,22 @@ export const ModalProvider = ({ children }) => {
         setOpenVerifyUserModal((prevState) => !prevState);
         setResendResponse({});
     };
-    const toggleCreatePostModal = () => {
-        setOpenCreatePostModal((prevState) => !prevState);
+
+    const toggleCreatePostModal = (threadName) => {
+        if (!openCreatePostModal.threadName) {
+            setOpenCreatePostModal({ threadName: threadName });
+        } else {
+            setOpenCreatePostModal({ threadName: null });
+        }
+    };
+
+    const resetOnLogout = async () => {
+        setOpenLoginModal(false);
+        setOpenRegisterModal(false);
+        setOpenVerifyUserModal(false);
+        setOpenCreatePostModal({ threadName: null });
+        setLoginError({});
+        setRegisterError({});
     };
     return (
         <ModalContext.Provider
@@ -54,6 +70,7 @@ export const ModalProvider = ({ children }) => {
                 setAlertResponse,
                 openCreatePostModal,
                 toggleCreatePostModal,
+                resetOnLogout,
             }}
         >
             {children}

@@ -22,21 +22,18 @@ const CreatePostModal = () => {
 
     const [formData, setFormData] = useState({
         title: "",
-        content: "",
-        media: "",
+        textContent: "",
+        media: null,
     });
 
-    const [charCount, setCharCount] = useState(0); // State for character count
-
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name === "content") {
-            // Update character count for content textarea
-            setCharCount(value.length);
+        const { name, value, files } = e.target;
+        if (name === "textContent") {
+            // Update character count for textContent textarea
         }
         setFormData((prevState) => ({
             ...prevState,
-            [name]: value,
+            [name]: name === "media" ? files : value,
         }));
     };
 
@@ -50,18 +47,14 @@ const CreatePostModal = () => {
             console.log("Submitted:", formData);
 
             try {
-                const response = await createPost(formData);
+
+                const response = await createPost(
+                    openCreatePostModal.threadName,
+                    formData
+                );
                 console.log(response);
 
-                setUserData(response.data);
-                if (response.data.isVerified) {
-                    toggleCreatePostModal();
-                    // Reload page on successful login
-                    navigate(0);
-                } else {
-                    toggleCreatePostModal();
-                    toggleVerifyUserModal();
-                }
+                navigate(0);
             } catch (error) {
                 // Handle Api error
                 console.log("Something went wrong");
@@ -87,7 +80,7 @@ const CreatePostModal = () => {
     return (
         <Modal
             dismissible
-            show={openCreatePostModal}
+            show={openCreatePostModal.threadName}
             size="2xl"
             popup
             onClose={toggleCreatePostModal}
@@ -118,23 +111,20 @@ const CreatePostModal = () => {
                     </div>
                     <div className="mb-5">
                         <label
-                            htmlFor="content"
+                            htmlFor="textContent"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
                             Content:
                         </label>
                         <textarea
-                            id="content"
-                            name="content"
-                            maxLength={150}
+                            id="textContent"
+                            name="textContent"
+                            maxLength={1000}
                             className=" h-40 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Text (optional)"
-                            value={formData.content}
+                            value={formData.textContent}
                             onChange={handleChange}
                         />
-                        <div className="pt-1 text-sm text-gray-500">
-                            Characters left: {150 - charCount}
-                        </div>
                     </div>
                     <div className="mb-5">
                         <label
@@ -150,7 +140,6 @@ const CreatePostModal = () => {
                             name="media"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             accept="image/*, video/*"
-                            value={formData.media}
                             onChange={handleChange}
                         />
                     </div>
@@ -172,10 +161,14 @@ const CreatePostModal = () => {
                             </button>
                         )}
                         <div className=" mb-5 text-red-700 text-sm">
-                            {loginError.email ? (
-                                <p className="error">{loginError.email}</p>
-                            ) : loginError.password ? (
-                                <p className="error">{loginError.password}</p>
+                            {loginError.title ? (
+                                <p className="error">{loginError.title}</p>
+                            ) : loginError.textContent ? (
+                                <p className="error">
+                                    {loginError.textContent}
+                                </p>
+                            ) : loginError.media ? (
+                                <p className="error">{loginError.media}</p>
                             ) : loginError._generic ? (
                                 <p className="error">{loginError._generic}</p>
                             ) : loginError ? (

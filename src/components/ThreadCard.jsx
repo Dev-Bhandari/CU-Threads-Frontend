@@ -36,7 +36,7 @@ const ThreadCard = (props) => {
         }
     };
     const handleCreatePost = () => {
-        toggleCreatePostModal(); // Call the toggleCreatePostModal function to open the modal
+        toggleCreatePostModal(thread.name); // Call the toggleCreatePostModal function to open the modal
     };
     return (
         <div className="bg-slate-300 relative w-[900px] mb-8 rounded-lg overflow-hidden">

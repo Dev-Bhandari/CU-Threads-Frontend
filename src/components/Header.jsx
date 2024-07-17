@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const Header = () => {
     const { user, removeUserData } = useAuth();
-    const { toggleLoginModal, alertResponse, setAlertResponse } =
+    const { toggleLoginModal, alertResponse, setAlertResponse, resetOnLogout } =
         useModalContext();
     const navigate = useNavigate();
 
@@ -55,6 +55,7 @@ const Header = () => {
                                     icon={HiLogout}
                                     onClick={async () => {
                                         try {
+                                            resetOnLogout();
                                             removeUserData();
                                             await logoutUser();
                                             navigate(0);
