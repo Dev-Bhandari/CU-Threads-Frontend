@@ -5,7 +5,7 @@ import { useModalContext } from "../utils/modalContext";
 import { useNavigate } from "react-router-dom";
 
 const ThreadCard = (props) => {
-    const thread = props.threadData;
+    const thread = props.thread;
     const isAllThreadsPage = props.isAllThreadsPage;
     const { user } = useAuth();
     const [joined, setJoined] = useState(thread.joined);

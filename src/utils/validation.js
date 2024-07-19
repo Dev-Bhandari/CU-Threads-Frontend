@@ -16,6 +16,10 @@ const createPostSchema = object({
     textContent: string().max(1000),
 });
 
+const createCommentSchema = object({
+    content: string().max(500),
+});
+
 function getUsernameError(error) {
     switch (error.code) {
         case "too_small":
@@ -55,9 +59,11 @@ function getTitleError(error) {
 function getTextContentError(error) {
     switch (error.code) {
         case "too_large":
-            return "textContent must be at most 150 characters";
+            return "Character length exceeded";
+        case "too_small":
+            return "Comment cannot be empty";
         default:
-            return "Invalid textContent";
+            return "Invalid password";
     }
 }
 
@@ -126,7 +132,7 @@ const validateLoginForm = (formData) => {
     return errors;
 };
 
-const validateCreatePostForm = (formData) => {
+const validatePostForm = (formData) => {
     let errors = {};
     try {
         createPostSchema.parse(formData);
@@ -155,4 +161,33 @@ const validateCreatePostForm = (formData) => {
     return errors;
 };
 
-export { validateLoginForm, validateRegisterForm, validateCreatePostForm };
+const validateCommentForm = (formData) => {
+    let errors = {};
+    try {
+        createCommentSchema.parse(formData);
+    } catch (error) {
+        console.log(error);
+        if (error.errors) {
+            error.errors.forEach((err) => {
+                switch (err.path[0]) {
+                    case "textContent":
+                        errors.textContent = getTextContentError(err);
+                        break;
+                    default:
+                        errors._generic =
+                            "An error occurred. Please try again.";
+                }
+            });
+        } else {
+            errors._generic = "An error occurred. Please try again.";
+        }
+    }
+    return errors;
+};
+
+export {
+    validateLoginForm,
+    validateRegisterForm,
+    validatePostForm,
+    validateCommentForm,
+};

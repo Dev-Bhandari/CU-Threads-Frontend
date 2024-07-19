@@ -16,7 +16,7 @@ const createPost = async (threadName, body) => {
 
 const createUpVote = async (body) => {
     try {
-        const response = await api.post("/posts/create-upvote", body);
+        const response = await api.patch("/posts/create-upvote", body);
         console.log(response);
         return response.data;
     } catch (error) {
@@ -26,7 +26,7 @@ const createUpVote = async (body) => {
 };
 const deleteUpVote = async (body) => {
     try {
-        const response = await api.post("/posts/delete-upvote", body);
+        const response = await api.patch("/posts/delete-upvote", body);
         console.log(response);
         return response.data;
     } catch (error) {
@@ -36,7 +36,7 @@ const deleteUpVote = async (body) => {
 };
 const createDownVote = async (body) => {
     try {
-        const response = await api.post("/posts/create-downvote", body);
+        const response = await api.patch("/posts/create-downvote", body);
         console.log(response);
         return response.data;
     } catch (error) {
@@ -46,7 +46,7 @@ const createDownVote = async (body) => {
 };
 const deleteDownVote = async (body) => {
     try {
-        const response = await api.post("/posts/delete-downvote", body);
+        const response = await api.patch("/posts/delete-downvote", body);
         console.log(response);
         return response.data;
     } catch (error) {

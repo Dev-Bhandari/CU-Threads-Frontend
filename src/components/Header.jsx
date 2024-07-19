@@ -9,6 +9,7 @@ import {
 import { logoutUser } from "../utils/api/user.api";
 import { useModalContext } from "../utils/modalContext";
 import { useNavigate } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
 
 const Header = () => {
     const { user, removeUserData } = useAuth();
@@ -23,6 +24,7 @@ const Header = () => {
                     <span className="self-center text-2xl font-semibold whitespace-nowrap text-blue-700 dark:text-white">
                         CU Threads
                     </span>
+                    
                 </Navbar.Brand>
                 <div className="flex md:order-2">
                     {user?.isVerified ? (
@@ -40,16 +42,21 @@ const Header = () => {
                             >
                                 <Dropdown.Header>
                                     <span className="block text-sm text-center">
-                                        {user?.username}
+                                        <div className="flex items-center ">
+                                            <FaUser />
+                                            <div className="px-3">
+                                                u/{user?.username}
+                                            </div>
+                                        </div>
                                     </span>
                                 </Dropdown.Header>
-                                <Dropdown.Item icon={HiCog}>
+                                {/* <Dropdown.Item icon={HiCog}>
                                     Settings
                                 </Dropdown.Item>
                                 <Dropdown.Item icon={HiCurrencyDollar}>
                                     Earnings
                                 </Dropdown.Item>
-                                <Dropdown.Divider />
+                                <Dropdown.Divider /> */}
 
                                 <Dropdown.Item
                                     icon={HiLogout}
@@ -82,7 +89,7 @@ const Header = () => {
                         </div>
                     )}
                 </div>
-                <Navbar.Collapse>
+                {/* <Navbar.Collapse>
                     <Navbar.Link href="/home" active>
                         Home
                     </Navbar.Link>
@@ -90,7 +97,7 @@ const Header = () => {
                     <Navbar.Link href="#">Services</Navbar.Link>
                     <Navbar.Link href="#">Pricing</Navbar.Link>
                     <Navbar.Link href="#">Contact</Navbar.Link>
-                </Navbar.Collapse>
+                </Navbar.Collapse> */}
             </Navbar>
             {alertResponse.message && (
                 <div className="px-10 py-1 z-50">

@@ -53,7 +53,7 @@ const ThreadPage = () => {
     return (
         <div className="flex flex-col items-center justify-center mr-56 ">
             {thread && (
-                <ThreadCard threadData={thread} isAllThreadsPage={false} />
+                <ThreadCard thread={thread} isAllThreadsPage={false} />
             )}
             <InfiniteScroll
                 dataLength={posts.length}
@@ -68,7 +68,7 @@ const ThreadPage = () => {
                 scrollThreshold={0.9}
             >
                 {posts.map((post) => (
-                    <PostCard key={post._id} postData={post} title={"user"} />
+                    <PostCard key={post._id} post={post} title={"user"} />
                 ))}
             </InfiniteScroll>
         </div>

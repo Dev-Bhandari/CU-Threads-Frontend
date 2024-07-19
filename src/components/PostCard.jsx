@@ -19,8 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 const PostCard = (props) => {
     const title = props.title;
-    const post =
-        props.postData.length == 1 ? props.postData[0] : props.postData;
+    const post = props.post.length === 1 ? props.post[0] : props.post;
     let name, avatar;
     console.log("Props: ", props);
     console.log(post);
@@ -39,7 +38,6 @@ const PostCard = (props) => {
     const navigate = useNavigate();
     useEffect(() => {
         // Reset upVote and downVote states when component unmounts
-        console.log("Home Page");
         return () => {
             setUpVote(false);
             setDownVote(false);
@@ -105,7 +103,7 @@ const PostCard = (props) => {
                         <div className="flex items-center px-2">
                             <Avatar img={avatar} rounded size="sm"></Avatar>
                             <h2 className=" text-sm px-2 font-bold tracking-tight">
-                                {title == "user" ? `/u/${name}` : `/cu/${name}`}
+                                {title == "user" ? `u/${name}` : `cu/${name}`}
                             </h2>
                         </div>
                     </button>

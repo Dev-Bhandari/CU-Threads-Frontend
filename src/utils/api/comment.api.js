@@ -1,8 +1,8 @@
 import api from "./index.api";
 
-const createComment = async (postId, parentCommentId, content) => {
+const createComment = async ( body) => {
     try {
-        const response = await api.post("/comments/create-comment");
+        const response = await api.post("/comments/create-comment", body);
         const comment = response.data;
         console.log(comment);
         return comment;

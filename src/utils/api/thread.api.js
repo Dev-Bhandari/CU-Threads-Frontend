@@ -24,7 +24,7 @@ const createMember = async (threadName) => {
 
 const deleteMember = async (threadName) => {
     try {
-        const response = await api.post(`/threads/delete-member/${threadName}`);
+        const response = await api.delete(`/threads/delete-member/${threadName}`);
         console.log(response);
         return response.data;
     } catch (error) {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { validateCreatePostForm } from "../utils/validation";
+import { validatePostForm } from "../utils/validation";
 import { useAuth } from "../utils/authContext";
 import { createPost } from "../utils/api/post.api";
 import { useModalContext } from "../utils/modalContext";
@@ -39,7 +39,7 @@ const CreatePostModal = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const validationErrors = validateCreatePostForm(formData);
+        const validationErrors = validatePostForm(formData);
         console.log(validationErrors);
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);

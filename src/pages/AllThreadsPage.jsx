@@ -46,7 +46,7 @@ const AllThreadsPage = () => {
                 {threads.map((thread) => (
                     <ThreadCard
                         key={thread._id}
-                        threadData={thread}
+                        thread={thread}
                         isAllThreadsPage={true}
                     />
                 ))}
