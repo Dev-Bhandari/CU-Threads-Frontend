@@ -1,78 +1,148 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validatePostForm } from "../utils/validation";
-import { useAuth } from "../utils/authContext";
 import { createPost } from "../utils/api/post.api";
 import { useModalContext } from "../utils/modalContext";
 import { Modal, Spinner } from "flowbite-react";
 
 const CreatePostModal = () => {
     const navigate = useNavigate();
-    const { setUserData } = useAuth();
     const [loading, setLoading] = useState(false);
     const {
         openCreatePostModal,
         toggleCreatePostModal,
-        toggleVerifyUserModal,
         loginError,
         setLoginError,
         alertResponse,
         setAlertResponse,
     } = useModalContext();
 
+    // Store the form data in state
     const [formData, setFormData] = useState({
         title: "",
         textContent: "",
         media: null,
     });
 
+    // Handle input changes
     const handleChange = (e) => {
         const { name, value, files } = e.target;
-        if (name === "textContent") {
-            // Update character count for textContent textarea
+
+        if (name === "media") {
+            const images = [];
+            const videos = [];
+            let tooManyImages = false;
+            let multipleVideos = false;
+            let mixedMedia = false;
+
+            Array.from(files).forEach((file) => {
+                if (file.type.startsWith("image/")) {
+                    images.push(file);
+                } else if (file.type.startsWith("video/")) {
+                    videos.push(file);
+                }
+            });
+
+            if (images.length > 10) {
+                tooManyImages = true;
+            }
+
+            if (videos.length > 1) {
+                multipleVideos = true;
+            }
+
+            if (images.length > 0 && videos.length > 0) {
+                mixedMedia = true;
+            }
+
+            if (tooManyImages || multipleVideos || mixedMedia) {
+                let errorMessage;
+
+                if (tooManyImages) {
+                    errorMessage = "Cannot upload more than 10 images.\n";
+                }
+
+                if (multipleVideos) {
+                    errorMessage = "Cannot upload more than 1 video.\n";
+                }
+
+                if (mixedMedia) {
+                    errorMessage =
+                        "You cannot upload images and video together.\n";
+                }
+
+                setLoginError({ media: errorMessage });
+                return;
+            }
+
+            // Update state with valid files
+            setFormData((prevState) => ({
+                ...prevState,
+                media: files,
+            }));
+        } else {
+            // Update the formData with the new input value
+            setFormData((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
         }
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: name === "media" ? files : value,
-        }));
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate the form data
         const validationErrors = validatePostForm(formData);
-        console.log(validationErrors);
+
+        // Check for validation errors
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
-            // Send form data to server for authentication
-            console.log("Submitted:", formData);
+
+            // Create a new FormData object
+            const data = new FormData();
+
+            // Append the title and textContent to the FormData object
+            data.append("title", formData.title);
+            data.append("textContent", formData.textContent);
+
+            // Append each media file to the FormData object
+            if (formData.media) {
+                Array.from(formData.media).forEach((file) => {
+                    data.append("media", file);
+                });
+            }
+
+            // Log the FormData object for debugging
+            console.log(formData);
 
             try {
-
+                // Make an API request to create a post
                 const response = await createPost(
                     openCreatePostModal.threadName,
-                    formData
+                    data
                 );
-                console.log(response);
 
+                // Reload the page after successful post creation
                 navigate(0);
             } catch (error) {
-                // Handle Api error
-                console.log("Something went wrong");
-                console.log(error);
-                if (error && !error.response.data.message)
+                // Handle any errors that occur during the API request
+                console.log("Error:", error);
+
+                if (error && !error.response?.data?.message)
                     setAlertResponse({ message: "Something went wrong" });
-                if (!error.response.data.success) {
+
+                if (!error.response?.data?.success) {
                     const errorMessage = error.response.data;
-                    console.log(errorMessage);
                     setLoginError(errorMessage);
                 }
-                console.log(alertResponse);
             } finally {
+                // Reset the loading state after the API request is complete
                 setLoading(false);
             }
         } else {
-            // Handle validation errors
-            console.log(validationErrors);
+            // Set login error state if there are validation errors
             setLoginError(validationErrors);
         }
     };
@@ -143,9 +213,9 @@ const CreatePostModal = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex justify-between mt-8 mb-4">
+                    <div className="flex items-center justify-between mt-8 mb-4">
                         {loading ? (
-                            <span className=" text-white bg-blue-700 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600  ">
+                            <span className="text-white bg-blue-700 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600">
                                 <Spinner
                                     aria-label="Alternate spinner button example"
                                     size="sm"
@@ -155,12 +225,12 @@ const CreatePostModal = () => {
                         ) : (
                             <button
                                 type="submit"
-                                className=" text-white bg-blue-700 hover:bg-blue-800  focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
+                                className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700"
                             >
                                 Create Post
                             </button>
                         )}
-                        <div className=" mb-5 text-red-700 text-sm">
+                        <div className=" text-red-700 text-sm">
                             {loginError.title ? (
                                 <p className="error">{loginError.title}</p>
                             ) : loginError.textContent ? (
