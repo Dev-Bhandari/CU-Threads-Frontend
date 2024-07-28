@@ -19,6 +19,7 @@ import AllThreadsPage from "./pages/AllThreadsPage";
 import CreatePostModal from "./components/CreatePostModal";
 import PostPage from "./pages/PostPage";
 import CreateThreadModal from "./components/CreateThreadModal";
+import UserPage from "./pages/UserPage";
 
 function App() {
     return (
@@ -58,6 +59,11 @@ function App() {
                             exact
                             path="/posts/:postId"
                             element={<PostPage />}
+                        />
+                        <Route
+                            exact
+                            path="/users/:username"
+                            element={<UserPage />}
                         />
                     </Routes>
                 </div>

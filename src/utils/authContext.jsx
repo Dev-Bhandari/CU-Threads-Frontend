@@ -14,15 +14,12 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const getUserData = () => {
-        console.log(user);
-        console.log("Get user Data called");
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             const storedUserParsed = JSON.parse(storedUser);
             setUser(storedUserParsed);
             console.log(storedUserParsed);
         }
-        console.log(user);
     };
     const setUserData = (user) => {
         // Perform login and Register logic

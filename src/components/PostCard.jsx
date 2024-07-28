@@ -86,8 +86,8 @@ const PostCard = (props) => {
         }
     };
 
-    const handleThread = () => {
-        navigate(title == "user" ? `/u/${name}` : `/cu/${name}`);
+    const handleTitle = () => {
+        navigate(title == "user" ? `/users/${name}` : `/cu/${name}`);
     };
 
     const handlePost = () => {
@@ -117,7 +117,7 @@ const PostCard = (props) => {
             <div className="p-4 flex justify-between items-center">
                 <button
                     className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
-                    onClick={handleThread}
+                    onClick={handleTitle}
                 >
                     <div className="flex items-center">
                         <Avatar img={avatar} rounded size="sm" />

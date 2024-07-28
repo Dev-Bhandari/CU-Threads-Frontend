@@ -1,15 +1,22 @@
-import React from "react";
 import { HiHome, HiUser, HiViewBoards } from "react-icons/hi";
 import { FaPlus, FaLinkedin } from "react-icons/fa";
 import { FaCode } from "react-icons/fa6";
-import { BiBuoy } from "react-icons/bi";
 import { useModalContext } from "../utils/modalContext";
 import { useAuth } from "../utils/authContext";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
-    const { toggleLoginModal, toggleCreateThreadModal } = useModalContext();
+    const {
+        openSideBar,
+        toggleOpenSideBar,
+        toggleLoginModal,
+        toggleCreateThreadModal,
+    } = useModalContext();
     const { user } = useAuth();
-
+    const navigate = useNavigate();
+    const handleProfile = () => {
+        user ? navigate("/users/" + user?.username) : toggleLoginModal();
+    };
     return (
         <div className="px-3 pt-4 max-xl:hidden fixed h-screen w-[248px] top-14 bg-white dark:bg-gray-900 border-r-2">
             <div className="flex flex-col h-full">
@@ -35,7 +42,7 @@ const SideBar = () => {
                         </div>
                         <div>
                             <a
-                                href="#"
+                                onClick={handleProfile}
                                 className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
                             >
                                 <HiUser className="mr-3" size={22} />
@@ -87,15 +94,6 @@ const SideBar = () => {
                                 <span className="font-medium">Contact</span>
                             </a>
                         </div>
-                        {/* <div>
-                            <a
-                                href="#"
-                                className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
-                            >
-                                <BiBuoy className="mr-3" size={22} />
-                                <span className="font-medium">Help</span>
-                            </a>
-                        </div> */}
                     </div>
                 </div>
             </div>

@@ -55,6 +55,17 @@ const getCurrentUser = async () => {
     }
 };
 
+const getOneUser = async (username) => {
+    try {
+        const response = await api.get(`users/get-one-user/${username}`);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while user login:", error.response);
+        throw error;
+    }
+};
+
 const getNewLink = async (body) => {
     try {
         const response = await api.post("users/get-new-link", body);
@@ -72,5 +83,6 @@ export {
     logoutUser,
     verifyEmail,
     getCurrentUser,
+    getOneUser,
     getNewLink,
 };
