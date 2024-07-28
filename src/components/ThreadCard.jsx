@@ -39,13 +39,13 @@ const ThreadCard = (props) => {
         toggleCreatePostModal(thread.name); // Call the toggleCreatePostModal function to open the modal
     };
     return (
-        <div className="m-2 mb-8 bg-slate-300  lg:w-[900px] w-screen rounded-lg overflow-hidden">
+        <div className="m-2 mb-8 bg-slate-300  md:w-[768px] w-[calc(100%-1rem)] rounded-lg overflow-hidden">
             <img
                 src={thread.banner}
                 alt="Thread Banner"
                 className=" w-full h-[125px] object-cover"
             />
-            <div className=" flex sm:flex-row flex-col justify-between items-center md:px-8 md:py-6 p-2">
+            <div className=" flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start md:px-8 md:py-6 p-2">
                 <div className="flex justify-center items-center">
                     <img
                         src={thread.avatar}
@@ -88,7 +88,7 @@ const ThreadCard = (props) => {
                         <button
                             onClick={user ? handleJoin : toggleLoginModal}
                             disabled={loading}
-                            className="m-2 rounded-full px-4 h-14 text-lg bg-slate-400 hover:bg-slate-500"
+                            className="m-2 rounded-full px-4 h-14 text-lg text-nowrap bg-slate-400 hover:bg-slate-500"
                         >
                             {joined ? "Joined" : "+ Join"}
                         </button>

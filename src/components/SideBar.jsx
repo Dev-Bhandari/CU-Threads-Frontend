@@ -11,13 +11,13 @@ const SideBar = () => {
     const { user } = useAuth();
 
     return (
-        <div className="px-4 pt-4 max-2xl:hidden fixed  h-screen w-72 top-14 bg-white dark:bg-gray-900 border-r-2">
+        <div className="px-3 pt-4 max-xl:hidden fixed h-screen w-[248px] top-14 bg-white dark:bg-gray-900 border-r-2">
             <div className="flex flex-col h-full">
                 <div className="flex-grow">
                     <div className="pb-4 border-b-2">
                         <div>
                             <a
-                                href="/home"
+                                href="/"
                                 className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
                             >
                                 <HiHome className="mr-3" size={22} />

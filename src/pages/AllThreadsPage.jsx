@@ -30,14 +30,15 @@ const AllThreadsPage = () => {
     };
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center justify-center">
             <InfiniteScroll
+                className="w-screen flex flex-col items-center justify-center"
                 dataLength={threads.length}
                 next={fetchThreads}
                 hasMore={false}
                 loader={<h4>Loading...</h4>}
                 endMessage={
-                    <Card className="text-center">
+                    <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
                         <p>Refresh to see new Threads</p>
                     </Card>
                 }

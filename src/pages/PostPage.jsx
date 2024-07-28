@@ -128,7 +128,7 @@ const PostPage = () => {
             {post && (
                 <>
                     <PostCard key={post._id} post={post} title={"thread"} />
-                    <Card className="w-[850px] mb-4">
+                    <Card className="md:w-[768px] w-[calc(100%-1rem)] mb-4">
                         {!showCommentBox && (
                             <button
                                 type="button"

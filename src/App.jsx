@@ -33,11 +33,11 @@ function App() {
                 <SideBar />
                 <div className="flex-grow my-4">
                     <Routes>
-                        <Route exact path="/home" element={<HomePage />} />
+                        <Route exact path="/" element={<HomePage />} />
                         <Route
                             exact
-                            path="/"
-                            element={<Navigate replace to={"/home"} />}
+                            path="/home"
+                            element={<Navigate replace to={"/"} />}
                         />
                         <Route
                             exact

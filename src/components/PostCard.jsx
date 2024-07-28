@@ -110,138 +110,133 @@ const PostCard = (props) => {
     };
 
     return (
-        <div key={post._id}>
-            <div className="m-2 mb-4 lg:w-[850px] w-screen hover:bg-slate-100 text-left bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
-                <div className="p-4 flex justify-between items-center">
-                    <button
-                        className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
-                        onClick={handleThread}
-                    >
-                        <div className="flex items-center">
-                            <Avatar img={avatar} rounded size="sm" />
-                            <h2 className="text-sm px-2 font-bold tracking-tight">
-                                {title == "user" ? `u/${name}` : `cu/${name}`}
-                            </h2>
+        <div
+            key={post._id}
+            className="m-2 mb-4 md:w-[768px] w-[calc(100%-1rem)] hover:bg-slate-100 text-left bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md"
+        >
+            <div className="p-4 flex justify-between items-center">
+                <button
+                    className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
+                    onClick={handleThread}
+                >
+                    <div className="flex items-center">
+                        <Avatar img={avatar} rounded size="sm" />
+                        <h2 className="text-sm px-2 font-bold tracking-tight">
+                            {title == "user" ? `u/${name}` : `cu/${name}`}
+                        </h2>
+                    </div>
+                </button>
+            </div>
+
+            <h5 className="text-2xl px-4 font-bold tracking-tight text-gray-700 dark:text-white hover:text-gray-500">
+                <button onClick={handlePost}>{post.title}</button>
+            </h5>
+
+            {post.mediaType === "image" && post.mediaUrl.length > 0 && (
+                <div className="h-3/5 px-4 py-2 relative">
+                    {post.mediaUrl.length === 1 ? (
+                        <div className="w-full h-full bg-slate-300 rounded-3xl">
+                            <img
+                                src={post.mediaUrl[0]}
+                                alt={`Image`}
+                                className="object-contain w-full h-full rounded-3xl"
+                            />
                         </div>
-                    </button>
-                </div>
-
-                <h5 className="text-2xl px-4 font-bold tracking-tight text-gray-700 dark:text-white hover:text-gray-500">
-                    <button onClick={handlePost}>{post.title}</button>
-                </h5>
-
-                {post.mediaType === "image" && post.mediaUrl.length > 0 && (
-                    <div className="h-3/5 px-4 py-2 relative">
-                        {post.mediaUrl.length === 1 ? (
-                            <div className="w-full h-full bg-slate-300 rounded-3xl">
-                                <img
-                                    src={post.mediaUrl[0]}
-                                    alt={`Image`}
-                                    className="object-contain w-full h-full rounded-3xl"
-                                />
+                    ) : (
+                        <div className="carousel w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden">
+                            <div
+                                className="carousel-inner flex transition-transform duration-300"
+                                style={{
+                                    transform: `translateX(-${
+                                        currentSlide * 100
+                                    }%)`,
+                                }}
+                            >
+                                {post.mediaUrl.map((media, index) => (
+                                    <div
+                                        key={index}
+                                        className="carousel-item w-full flex-shrink-0"
+                                    >
+                                        <img
+                                            src={media}
+                                            alt={`Image ${index}`}
+                                            className="w-full h-full object-contain rounded-3xl"
+                                        />
+                                    </div>
+                                ))}
                             </div>
+
+                            {/* Carousel Controls */}
+                            <button
+                                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
+                                onClick={handlePrev}
+                            >
+                                <IoIosArrowBack className="size-5" />
+                            </button>
+                            <button
+                                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
+                                onClick={handleNext}
+                            >
+                                <IoIosArrowForward className="size-5" />
+                            </button>
+
+                            {/* Carousel Indicators */}
+                            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                                {post.mediaUrl.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        className={`w-3 h-3 rounded-full ${
+                                            index === currentSlide
+                                                ? "bg-white"
+                                                : "bg-gray-400"
+                                        }`}
+                                        onClick={() => setCurrentSlide(index)}
+                                    ></button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {post.mediaType === "video" && (
+                <div className="h-128 px-4 py-2">
+                    <video
+                        src={post.mediaUrl}
+                        className="w-full h-full rounded-3xl"
+                        controls
+                    ></video>
+                </div>
+            )}
+
+            <p className="px-4 py-2 font-normal text-gray-700 dark:text-gray-400">
+                {post.textContent}
+            </p>
+
+            <div className="flex px-4 py-2">
+                <div className="flex items-center bg-slate-500 m-2 px-1 rounded-full text-white">
+                    <button onClick={user ? handleUpVote : toggleLoginModal}>
+                        {upVote ? (
+                            <BiSolidUpvote className="mx-1 size-5 hover:fill-slate-700" />
                         ) : (
-                            <div className="carousel w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden">
-                                <div
-                                    className="carousel-inner flex transition-transform duration-300"
-                                    style={{
-                                        transform: `translateX(-${
-                                            currentSlide * 100
-                                        }%)`,
-                                    }}
-                                >
-                                    {post.mediaUrl.map((media, index) => (
-                                        <div
-                                            key={index}
-                                            className="carousel-item w-full flex-shrink-0"
-                                        >
-                                            <img
-                                                src={media}
-                                                alt={`Image ${index}`}
-                                                className="w-full h-full object-contain rounded-3xl"
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Carousel Controls */}
-                                <button
-                                    className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
-                                    onClick={handlePrev}
-                                >
-                                    <IoIosArrowBack className="size-5"/>
-                                </button>
-                                <button
-                                    className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
-                                    onClick={handleNext}
-                                >
-                                    <IoIosArrowForward className="size-5"/>
-                                </button>
-
-                                {/* Carousel Indicators */}
-                                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                                    {post.mediaUrl.map((_, index) => (
-                                        <button
-                                            key={index}
-                                            className={`w-3 h-3 rounded-full ${
-                                                index === currentSlide
-                                                    ? "bg-white"
-                                                    : "bg-gray-400"
-                                            }`}
-                                            onClick={() =>
-                                                setCurrentSlide(index)
-                                            }
-                                        ></button>
-                                    ))}
-                                </div>
-                            </div>
+                            <BiUpvote className="mx-1 size-5 hover:fill-slate-700" />
                         )}
-                    </div>
-                )}
-
-                {post.mediaType === "video" && (
-                    <div className="h-128 px-4 py-2">
-                        <video
-                            src={post.mediaUrl}
-                            className="w-full h-full rounded-3xl"
-                            controls
-                        ></video>
-                    </div>
-                )}
-
-                <p className="px-4 py-2 font-normal text-gray-700 dark:text-gray-400">
-                    {post.textContent}
-                </p>
-
-                <div className="flex px-4 py-2">
-                    <div className="flex items-center bg-slate-500 m-2 px-1 rounded-full text-white">
-                        <button
-                            onClick={user ? handleUpVote : toggleLoginModal}
-                        >
-                            {upVote ? (
-                                <BiSolidUpvote className="mx-1 size-5 hover:fill-slate-700" />
-                            ) : (
-                                <BiUpvote className="mx-1 size-5 hover:fill-slate-700" />
-                            )}
-                        </button>
-                        <p>{totalVotes}</p>
-                        <button
-                            onClick={user ? handleDownVote : toggleLoginModal}
-                        >
-                            {downVote ? (
-                                <BiSolidDownvote className="mx-1 size-5 hover:fill-slate-700" />
-                            ) : (
-                                <BiDownvote className="mx-1 size-5 hover:fill-slate-700" />
-                            )}
-                        </button>
-                    </div>
-                    <button onClick={handlePost}>
-                        <div className="flex items-center bg-slate-500 m-2 px-4 py-1 rounded-full text-white hover:bg-slate-600">
-                            <FaRegCommentAlt className="me-1.5" />
-                            <p>{post.totalComments}</p>
-                        </div>
+                    </button>
+                    <p>{totalVotes}</p>
+                    <button onClick={user ? handleDownVote : toggleLoginModal}>
+                        {downVote ? (
+                            <BiSolidDownvote className="mx-1 size-5 hover:fill-slate-700" />
+                        ) : (
+                            <BiDownvote className="mx-1 size-5 hover:fill-slate-700" />
+                        )}
                     </button>
                 </div>
+                <button onClick={handlePost}>
+                    <div className="flex items-center bg-slate-500 m-2 px-4 py-1 rounded-full text-white hover:bg-slate-600">
+                        <FaRegCommentAlt className="me-1.5" />
+                        <p>{post.totalComments}</p>
+                    </div>
+                </button>
             </div>
         </div>
     );

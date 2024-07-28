@@ -39,7 +39,7 @@ const HomePage = () => {
                 hasMore={hasNext}
                 loader={<h4>Loading...</h4>}
                 endMessage={
-                    <Card className="text-center">
+                    <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
                         <p>Refresh to see new posts</p>
                     </Card>
                 }
