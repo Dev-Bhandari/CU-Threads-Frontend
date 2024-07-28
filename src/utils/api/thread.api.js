@@ -1,12 +1,23 @@
 import api from "./index.api";
 
+const createThread = async (body) => {
+    try {
+        const resposne = await api.post("/threads/create-thread", body);
+        console.log(resposne);
+        return resposne.data;
+    } catch (error) {
+        console.error("Error while user login:", error.response);
+        throw error;
+    }
+};
+
 const verifyMember = async (threadName) => {
     try {
         const response = await api.post(`/threads/verify-member/${threadName}`);
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while user login:", error.response);
+        console.error("Error while verifying member:", error.response);
         throw error;
     }
 };
@@ -17,18 +28,20 @@ const createMember = async (threadName) => {
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while user login:", error.response);
+        console.error("Error while creating member:", error.response);
         throw error;
     }
 };
 
 const deleteMember = async (threadName) => {
     try {
-        const response = await api.delete(`/threads/delete-member/${threadName}`);
+        const response = await api.delete(
+            `/threads/delete-member/${threadName}`
+        );
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while user login:", error.response);
+        console.error("Error while deleting member:", error.response);
         throw error;
     }
 };
@@ -39,7 +52,7 @@ const getOneThread = async (threadName) => {
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while user login:", error.response);
+        console.error("Error while fetching on thread:", error.response);
         throw error;
     }
 };
@@ -50,12 +63,13 @@ const getAllThreads = async () => {
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while user login:", error.response);
+        console.error("Error while fetching all threads:", error.response);
         throw error;
     }
 };
 
 export {
+    createThread,
     verifyMember,
     createMember,
     deleteMember,

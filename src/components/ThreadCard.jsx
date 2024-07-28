@@ -39,13 +39,13 @@ const ThreadCard = (props) => {
         toggleCreatePostModal(thread.name); // Call the toggleCreatePostModal function to open the modal
     };
     return (
-        <div className="bg-slate-300 relative w-[900px] mb-8 rounded-lg overflow-hidden">
+        <div className="m-2 mb-8 bg-slate-300  lg:w-[900px] w-screen rounded-lg overflow-hidden">
             <img
                 src={thread.banner}
                 alt="Thread Banner"
                 className=" w-full h-[125px] object-cover"
             />
-            <div className=" flex flex-row justify-between items-center px-8 py-6">
+            <div className=" flex sm:flex-row flex-col justify-between items-center md:px-8 md:py-6 p-2">
                 <div className="flex justify-center items-center">
                     <img
                         src={thread.avatar}
@@ -75,11 +75,11 @@ const ThreadCard = (props) => {
                         </p>
                     </div>
                 </div>
-                <div>
+                <div className="flex flex-row">
                     {!isAllThreadsPage && (
                         <button
                             onClick={user ? handleCreatePost : toggleLoginModal}
-                            className="rounded-full px-4 h-14 text-lg border-4 border-slate-100 bg-slate-200 hover:border-white"
+                            className=" rounded-full m-2 px-4 h-14 text-lg text-nowrap border-4 border-slate-100 bg-slate-200 hover:border-white"
                         >
                             + Create Post
                         </button>
@@ -88,7 +88,7 @@ const ThreadCard = (props) => {
                         <button
                             onClick={user ? handleJoin : toggleLoginModal}
                             disabled={loading}
-                            className="ml-3 rounded-full px-4 h-14 text-lg bg-slate-400 hover:bg-slate-500"
+                            className="m-2 rounded-full px-4 h-14 text-lg bg-slate-400 hover:bg-slate-500"
                         >
                             {joined ? "Joined" : "+ Join"}
                         </button>

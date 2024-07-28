@@ -2,23 +2,25 @@ import { object, string } from "zod";
 
 const loginSchema = object({
     email: string().email(),
-    password: string().min(6),
+    password: string().trim().min(6),
 });
 
 const registerSchema = object({
-    username: string().min(1),
-    email: string().email(),
-    password: string().min(6),
+    username: string().trim().min(1),
+    email: string().trim().email(),
+    password: string().trim().min(6),
 });
 
 const createPostSchema = object({
-    title: string().min(1),
-    textContent: string().max(1000),
+    title: string().trim().min(1),
+    textContent: string().trim().min(1).max(1000),
 });
 
 const createCommentSchema = object({
-    content: string().max(500),
+    content: string().trim().min(1).max(500),
 });
+
+const createThreadSchema = object({ name: string().trim().min(1) });
 
 function getUsernameError(error) {
     switch (error.code) {
@@ -61,18 +63,20 @@ function getTextContentError(error) {
         case "too_large":
             return "Character length exceeded";
         case "too_small":
-            return "Comment cannot be empty";
+            return "Content cannot be empty";
         default:
             return "Invalid password";
     }
 }
 
-function getMediaError(error) {
+function getNameError(error) {
     switch (error.code) {
-        case "invalid_url":
-            return "Invalid URL format";
+        case "too_large":
+            return "Character length exceeded";
+        case "too_small":
+            return "Name cannot be empty";
         default:
-            return "Invalid media URL";
+            return "Invalid password";
     }
 }
 
@@ -185,9 +189,34 @@ const validateCommentForm = (formData) => {
     return errors;
 };
 
+const validateThreadForm = (formData) => {
+    let errors = {};
+    try {
+        createThreadSchema.parse(formData);
+    } catch (error) {
+        console.log(error);
+        if (error.errors) {
+            error.errors.forEach((err) => {
+                switch (err.path[0]) {
+                    case "name":
+                        errors.textContent = getNameError(err);
+                        break;
+                    default:
+                        errors._generic =
+                            "An error occurred. Please try again.";
+                }
+            });
+        } else {
+            errors._generic = "An error occurred. Please try again.";
+        }
+    }
+    return errors;
+};
+
 export {
     validateLoginForm,
     validateRegisterForm,
     validatePostForm,
     validateCommentForm,
+    validateThreadForm,
 };

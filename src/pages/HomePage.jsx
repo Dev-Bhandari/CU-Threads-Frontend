@@ -32,7 +32,7 @@ const HomePage = () => {
     };
 
     return (
-        <div className="flex flex-col items-center mr-56 ">
+        <div className="flex flex-col items-center">
             <InfiniteScroll
                 dataLength={posts.length}
                 next={fetchPosts}

@@ -124,7 +124,7 @@ const PostPage = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center mr-56 ">
+        <div className="flex flex-col items-center justify-center">
             {post && (
                 <>
                     <PostCard key={post._id} post={post} title={"thread"} />

@@ -3,9 +3,11 @@ import { Alert } from "flowbite-react";
 
 function AlertToast(message = "No Message") {
     return (
-        <Alert color="failure" icon={HiInformationCircle}>
-            <span className="font-medium">Info alert!</span> {message}
-        </Alert>
+        <div className="z-50">
+            <Alert color="failure" icon={HiInformationCircle}>
+                <span className="font-medium">Info alert!</span> {message}
+            </Alert>
+        </div>
     );
 }
 

@@ -11,6 +11,7 @@ export const ModalProvider = ({ children }) => {
     const [openCreatePostModal, setOpenCreatePostModal] = useState({
         threadName: null,
     });
+    const [openCreateThreadModal, setOpenCreateThreadModal] = useState(false);
 
     const [loginError, setLoginError] = useState({});
     const [registerError, setRegisterError] = useState({});
@@ -43,6 +44,10 @@ export const ModalProvider = ({ children }) => {
         }
     };
 
+    const toggleCreateThreadModal = () => {
+        setOpenCreateThreadModal((prevState) => !prevState);
+    };
+
     const resetOnLogout = async () => {
         setOpenLoginModal(false);
         setOpenRegisterModal(false);
@@ -70,6 +75,8 @@ export const ModalProvider = ({ children }) => {
                 setAlertResponse,
                 openCreatePostModal,
                 toggleCreatePostModal,
+                openCreateThreadModal,
+                toggleCreateThreadModal,
                 resetOnLogout,
             }}
         >

@@ -30,7 +30,7 @@ const AllThreadsPage = () => {
     };
 
     return (
-        <div className="flex flex-col items-center mr-56 ">
+        <div className="flex flex-col items-center">
             <InfiniteScroll
                 dataLength={threads.length}
                 next={fetchThreads}

@@ -18,6 +18,7 @@ import ThreadPage from "./pages/ThreadPage";
 import AllThreadsPage from "./pages/AllThreadsPage";
 import CreatePostModal from "./components/CreatePostModal";
 import PostPage from "./pages/PostPage";
+import CreateThreadModal from "./components/CreateThreadModal";
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
             <RegisterModal />
             <VerifyUserModal />
             <CreatePostModal />
+            <CreateThreadModal />
             <main className="flex flex-row">
                 <SideBar />
                 <div className="flex-grow my-4">

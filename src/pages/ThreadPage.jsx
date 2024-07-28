@@ -51,10 +51,8 @@ const ThreadPage = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center mr-56 ">
-            {thread && (
-                <ThreadCard thread={thread} isAllThreadsPage={false} />
-            )}
+        <div className="flex flex-col items-center justify-center ">
+            {thread && <ThreadCard thread={thread} isAllThreadsPage={false} />}
             <InfiniteScroll
                 dataLength={posts.length}
                 next={fetchPosts}
