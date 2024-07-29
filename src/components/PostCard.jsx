@@ -1,4 +1,4 @@
-import { Avatar, Card } from "flowbite-react";
+import { Avatar } from "flowbite-react";
 import { useEffect, useState } from "react";
 import {
     BiDownvote,
@@ -87,7 +87,7 @@ const PostCard = (props) => {
     };
 
     const handleTitle = () => {
-        navigate(title == "user" ? `/users/${name}` : `/cu/${name}`);
+        navigate(title == "user" ? `/u/${name}` : `/cu/${name}`);
     };
 
     const handlePost = () => {
@@ -122,8 +122,15 @@ const PostCard = (props) => {
                     <div className="flex items-center">
                         <Avatar img={avatar} rounded size="sm" />
                         <h2 className="text-sm px-2 font-bold tracking-tight">
-                            {title == "user" ? `u/${name}` : `cu/${name}`}
+                            {title == "user"
+                                ? `u/${post.creatorInfo[0].username}`
+                                : `cu/${post.threadInfo[0].name}`}
                         </h2>
+                        {title == "both" && (
+                            <h2 className="text-sm px-2 font-bold tracking-tight">
+                                u/{post.creatorInfo[0].username}
+                            </h2>
+                        )}
                     </div>
                 </button>
             </div>

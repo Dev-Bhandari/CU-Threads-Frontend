@@ -5,6 +5,7 @@ import { getOneUser } from "../utils/api/user.api";
 import UserCard from "../components/UserCard";
 
 const UserPage = () => {
+    const [loading, setLoading] = useState(false);
     const { username } = useParams();
     const [user, setUser] = useState(null);
 
@@ -23,7 +24,12 @@ const UserPage = () => {
     };
 
     const fetchPosts = async () => {
+        const spinnerDelay = 3000;
+        let spinnerTimeout;
         try {
+            spinnerTimeout = setTimeout(() => {
+                setLoading(true);
+            }, spinnerDelay);
             console.log("Calling more posts");
             const res = await getAllPostsOfThread(threadName, lastFieldId);
             const newPosts = res.data.posts || [];
@@ -36,6 +42,9 @@ const UserPage = () => {
             }
         } catch (error) {
             console.log("Error fetching posts:", error);
+        } finally {
+            clearTimeout(spinnerTimeout);
+            setLoading(false);
         }
     };
 
@@ -43,7 +52,9 @@ const UserPage = () => {
         fetchUser();
     }, [username]);
 
-    return (
+    return loading ? (
+        <Spinner aria-label="Alternate spinner button example" size="md" />
+    ) : (
         <div className="flex flex-col items-center justify-center">
             {user && <UserCard user={user} />}
         </div>

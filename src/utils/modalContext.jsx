@@ -12,7 +12,7 @@ export const ModalProvider = ({ children }) => {
         threadName: null,
     });
     const [openCreateThreadModal, setOpenCreateThreadModal] = useState(false);
-    const [openSideBar, toggleOpenSideBar] = useState(false);
+    const [openSideBar, setOpenSideBar] = useState(false);
 
     const [loginError, setLoginError] = useState({});
     const [registerError, setRegisterError] = useState({});
@@ -49,6 +49,9 @@ export const ModalProvider = ({ children }) => {
         setOpenCreateThreadModal((prevState) => !prevState);
     };
 
+    const toggleOpenSideBar = () => {
+        setOpenSideBar((prevState) => !prevState);
+    };
     const resetOnLogout = async () => {
         setOpenLoginModal(false);
         setOpenRegisterModal(false);

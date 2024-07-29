@@ -3,12 +3,14 @@ import { getOneThread } from "../utils/api/thread.api";
 import { getAllPostsOfThread } from "../utils/api/post.api";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Card } from "flowbite-react";
+import { Card, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import { useParams } from "react-router-dom";
 import ThreadCard from "../components/ThreadCard";
 
 const ThreadPage = () => {
+    const [loaded, setLoaded] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [thread, setThread] = useState(null);
     const [posts, setPosts] = useState([]);
     const [lastFieldId, setLastFieldId] = useState("");
@@ -22,7 +24,13 @@ const ThreadPage = () => {
     }, [threadName]);
 
     const fetchThread = async () => {
+        const spinnerDelay = 3000;
+        let spinnerTimeout;
         try {
+            spinnerTimeout = setTimeout(() => {
+                setLoading(true);
+            }, spinnerDelay);
+
             console.log("Calling thread data");
             const res = await getOneThread(threadName);
             const newThread = res.data;
@@ -30,6 +38,10 @@ const ThreadPage = () => {
             setThread(newThread);
         } catch (error) {
             console.log("Error fetching posts:", error);
+        } finally {
+            setLoaded(true);
+            clearTimeout(spinnerTimeout);
+            setLoading(false);
         }
     };
 
@@ -52,24 +64,49 @@ const ThreadPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center">
-            {thread && <ThreadCard thread={thread} isAllThreadsPage={false} />}
-            <InfiniteScroll
-            className="w-screen flex flex-col items-center justify-center"
-                dataLength={posts.length}
-                next={fetchPosts}
-                hasMore={hasNext}
-                loader={<h4>Loading...</h4>}
-                endMessage={
-                    <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
-                        <p>Refresh to see new posts</p>
-                    </Card>
-                }
-                scrollThreshold={0.9}
-            >
-                {posts.map((post) => (
-                    <PostCard key={post._id} post={post} title={"user"} />
-                ))}
-            </InfiniteScroll>
+            {loading ? (
+                <Spinner
+                    aria-label="Alternate spinner button example"
+                    size="md"
+                />
+            ) : (
+                <>
+                    {thread && (
+                        <ThreadCard thread={thread} isAllThreadsPage={false} />
+                    )}
+                    <InfiniteScroll
+                        className="w-screen flex flex-col items-center justify-center"
+                        dataLength={posts.length}
+                        next={fetchPosts}
+                        hasMore={hasNext}
+                        loader={<h4>Loading...</h4>}
+                        endMessage={
+                            posts.length != 0 ? (
+                                <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
+                                    <p>Refresh to see new posts</p>
+                                </Card>
+                            ) : (
+                                loaded && (
+                                    <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
+                                        <p>
+                                            No posts yet. Why not break the ice?
+                                        </p>
+                                    </Card>
+                                )
+                            )
+                        }
+                        scrollThreshold={0.9}
+                    >
+                        {posts.map((post) => (
+                            <PostCard
+                                key={post._id}
+                                post={post}
+                                title={"user"}
+                            />
+                        ))}
+                    </InfiniteScroll>
+                </>
+            )}
         </div>
     );
 };

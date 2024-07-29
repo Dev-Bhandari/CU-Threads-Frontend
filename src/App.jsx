@@ -62,7 +62,7 @@ function App() {
                         />
                         <Route
                             exact
-                            path="/users/:username"
+                            path="/u/:username"
                             element={<UserPage />}
                         />
                     </Routes>

@@ -20,11 +20,14 @@ const ThreadCard = (props) => {
             let response;
             if (joined) {
                 response = await deleteMember(thread.name);
+                thread.totalMembers--;
             } else {
                 response = await createMember(thread.name);
+                thread.totalMembers++;
             }
             console.log(response.data);
             setJoined(response.data.joined);
+            
         } catch (error) {
             console.log("Something went wrong");
             console.error(error);

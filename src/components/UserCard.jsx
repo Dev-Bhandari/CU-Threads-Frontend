@@ -15,7 +15,7 @@ const UserCard = (props) => {
             resetOnLogout();
             removeUserData();
             await logoutUser();
-            navigate(0);
+            navigate("/");
         } catch (error) {
             console.log(error.response);
             throw error;
