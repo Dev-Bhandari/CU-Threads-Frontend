@@ -165,24 +165,35 @@ const LoginModal = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="flex justify-between">
-                            <div className=" mb-5 text-red-700 text-sm">
-                                {loginError.email ? (
-                                    <p className="error">{loginError.email}</p>
-                                ) : loginError.password ? (
-                                    <p className="error">
-                                        {loginError.password}
-                                    </p>
-                                ) : loginError._generic ? (
-                                    <p className="error">
-                                        {loginError._generic}
-                                    </p>
-                                ) : loginError ? (
-                                    <p className="error">
-                                        {loginError.message}
-                                    </p>
-                                ) : null}
-                            </div>
+                        <div className=" mb-5 text-red-700 text-sm">
+                            {loginError.email ? (
+                                <p className="error">{loginError.email}</p>
+                            ) : loginError.password ? (
+                                <p className="error">{loginError.password}</p>
+                            ) : loginError._generic ? (
+                                <p className="error">{loginError._generic}</p>
+                            ) : loginError ? (
+                                <p className="error">{loginError.message}</p>
+                            ) : null}
+                        </div>
+
+                        <div className="flex justify-between"> 
+                            {loadingLogin ? (
+                                <span className=" text-white bg-blue-700 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600  ">
+                                    <Spinner
+                                        aria-label="Alternate spinner button example"
+                                        size="sm"
+                                    />
+                                    <span className="pl-3">Logging In...</span>
+                                </span>
+                            ) : (
+                                <button
+                                    // type="submit"
+                                    className=" text-white bg-blue-700 hover:bg-blue-800  focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
+                                >
+                                    Login
+                                </button>
+                            )}{" "}
                             {loadingForgotPassword ? (
                                 <span className="text-sm text-nowrap text-blue-700 dark:text-blue-500">
                                     <Spinner
@@ -202,22 +213,6 @@ const LoginModal = () => {
                                 </button>
                             )}
                         </div>
-                        {loadingLogin ? (
-                            <span className=" text-white bg-blue-700 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600  ">
-                                <Spinner
-                                    aria-label="Alternate spinner button example"
-                                    size="sm"
-                                />
-                                <span className="pl-3">Logging In...</span>
-                            </span>
-                        ) : (
-                            <button
-                                type="submit"
-                                className=" text-white bg-blue-700 hover:bg-blue-800  focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
-                            >
-                                Login
-                            </button>
-                        )}
                     </form>
                     <p className="max-w-max mx-auto p-4">
                         Don't have an account?
