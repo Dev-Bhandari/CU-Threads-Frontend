@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // Call getUserData when AuthProvider mounts
         getUserData();
     }, []);
 
@@ -22,13 +21,11 @@ export const AuthProvider = ({ children }) => {
         }
     };
     const setUserData = (user) => {
-        // Perform login and Register logic
         localStorage.setItem("user", JSON.stringify(user));
         setUser(user);
     };
 
     const removeUserData = () => {
-        // Perform logout logic
         localStorage.removeItem("user");
         setUser(null);
     };

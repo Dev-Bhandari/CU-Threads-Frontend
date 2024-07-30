@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyEmail } from "../utils/api/user.api";
 import { useModalContext } from "../utils/modalContext";
 
-function VerifyEmail() {
+function VerifyEmailPage() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const token = searchParams.get("emailToken");
@@ -12,13 +12,10 @@ function VerifyEmail() {
     useEffect(() => {
         const verifyUser = async () => {
             try {
-                // Send API request to verify user with token
                 const response = await verifyEmail(token);
-                // Verification successful, handle accordingly
                 console.log(response);
                 console.log("User verified successfully!");
             } catch (error) {
-                // Handle verification error
                 console.log("Something went wrong");
                 console.log(error);
                 if (error && !error.response.data.message)
@@ -29,16 +26,12 @@ function VerifyEmail() {
             }
         };
         verifyUser();
-    }, [token]); // In
+    }, [token]);
 
-    // Use the token as needed
     console.log("token:", token);
 
-    // Your verification logic here
 
     return <div>Verification Page</div>;
 }
 
-// Your existing App component
-
-export default VerifyEmail;
+export default VerifyEmailPage;

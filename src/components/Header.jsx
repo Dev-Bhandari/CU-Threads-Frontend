@@ -16,7 +16,7 @@ const Header = () => {
     }, [user]);
     return (
         <>
-            <nav className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-30">
+            <nav className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
                 <div className="px-4">
                     <div className="flex justify-between items-center h-14">
                         <div className="inline-flex">
@@ -58,17 +58,21 @@ const Header = () => {
             </nav>
 
             {alertResponse.message && (
-                <div className="fixed top-16 inset-x-0 z-50 flex justify-center">
+                <div className="fixed top-16 inset-x-0 z-40 flex justify-center">
                     <div className="max-w-md w-full">
                         <div
-                            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                            className="flex bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                             role="alert"
                         >
-                            <strong className="font-bold">Info alert! </strong>
-                            <span className="block sm:inline">
-                                {alertResponse.message}
-                            </span>
-                            <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                            <div>
+                                <strong className="font-bold">
+                                    Info alert!
+                                </strong>
+                                <span className="block sm:inline">
+                                    {alertResponse.message}
+                                </span>
+                            </div>
+                            <span className="top-0 bottom-0 right-0 px-4 py-3">
                                 <button
                                     className="text-red-700 hover:text-red-500"
                                     onClick={() =>

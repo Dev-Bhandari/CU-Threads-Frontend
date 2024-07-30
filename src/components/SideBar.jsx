@@ -16,7 +16,6 @@ const SideBar = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
 
-    // State to track sidebar visibility
     const handleHome = () => {
         navigate("/");
         toggleOpenSideBar();
@@ -42,7 +41,6 @@ const SideBar = () => {
 
     return (
         <>
-            {/* Overlay for Mobile */}
             {openSideBar && (
                 <div
                     className="fixed inset-0 bg-black opacity-50 xl:hidden z-20"
@@ -50,14 +48,12 @@ const SideBar = () => {
                 ></div>
             )}
 
-            {/* Sidebar Component */}
             <div
                 className={`fixed top-14 left-0 z-30 h-screen w-[248px] bg-white dark:bg-gray-900 border-r-2 transform transition-transform duration-300 ease-in-out ${
                     openSideBar ? "translate-x-0" : "-translate-x-full"
                 } xl:translate-x-0`}
             >
-                <div className="flex flex-col h-full">
-                    {/* Close Button */}
+                <div className="px-2 flex flex-col h-full">
                     <button
                         onClick={toggleOpenSideBar}
                         className="absolute top-4 right-4 text-gray-700 dark:text-gray-200 xl:hidden"
@@ -98,7 +94,7 @@ const SideBar = () => {
                             </div>
                         </div>
 
-                        <div className="border-b-2">
+                        <div className="border-b-2 mb-2">
                             <div className="py-2">
                                 <button
                                     onClick={handleCreateNewThreads}

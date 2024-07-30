@@ -38,7 +38,6 @@ const PostCard = (props) => {
     const { toggleLoginModal, setAlertResponse } = useModalContext();
     const navigate = useNavigate();
     useEffect(() => {
-        // Reset upVote and downVote states when component unmounts
         return () => {
             setUpVote(false);
             setDownVote(false);
@@ -90,11 +89,14 @@ const PostCard = (props) => {
         navigate(title == "user" ? `/u/${name}` : `/cu/${name}`);
     };
 
+    const handleSubtitle = () => {
+        navigate(`/u/${post.creatorInfo[0].username}`);
+    };
+
     const handlePost = () => {
         navigate(`/posts/${post._id}`);
     };
 
-    // Carousel state and handlers
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const handleNext = () => {
@@ -115,24 +117,34 @@ const PostCard = (props) => {
             className="m-2 mb-4 md:w-[768px] w-[calc(100%-1rem)] hover:bg-slate-100 text-left bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md"
         >
             <div className="p-4 flex justify-between items-center">
-                <button
-                    className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
-                    onClick={handleTitle}
-                >
-                    <div className="flex items-center">
-                        <Avatar img={avatar} rounded size="sm" />
-                        <h2 className="text-sm px-2 font-bold tracking-tight">
-                            {title == "user"
-                                ? `u/${post.creatorInfo[0].username}`
-                                : `cu/${post.threadInfo[0].name}`}
-                        </h2>
+                <div className="flex items-center">
+                    {title == "thread" ? (
+                        <button onClick={handleTitle}>
+                            <Avatar img={post.threadInfo[0].avatar} rounded size="sm" />
+                        </button>
+                    ) : (
+                        <button onClick={handleSubtitle}>
+                            <Avatar img={post.creatorInfo[0].avatar} rounded size="sm" />
+                        </button>
+                    )}
+                    <div className="flex flex-col items-start">
+                        <button
+                            className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
+                            onClick={handleTitle}
+                        >
+                            <h2 className="text-sm px-2 font-bold tracking-tight text-gray-600">
+                                {title == "user"
+                                    ? `u/${post.creatorInfo[0].username}`
+                                    : `cu/${post.threadInfo[0].name}`}
+                            </h2>
+                        </button>
                         {title == "both" && (
                             <h2 className="text-sm px-2 font-bold tracking-tight">
                                 u/{post.creatorInfo[0].username}
                             </h2>
                         )}
                     </div>
-                </button>
+                </div>
             </div>
 
             <h5 className="text-2xl px-4 font-bold tracking-tight text-gray-700 dark:text-white hover:text-gray-500">

@@ -67,7 +67,7 @@ const AllThreadsPage = () => {
                             )
                         )
                     }
-                    scrollThreshold={0.9}
+                    scrollThreshold={0.7}
                 >
                     {threads.map((thread) => (
                         <ThreadCard

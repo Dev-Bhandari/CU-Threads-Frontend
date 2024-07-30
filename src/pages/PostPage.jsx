@@ -85,14 +85,12 @@ const PostPage = () => {
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
             formData.postId = postId;
-            // Send form data to server for authentication
             console.log("Submitted:", formData);
             try {
                 const response = await createComment(formData);
                 console.log(response);
                 navigate(0);
             } catch (error) {
-                // Handle Api error
                 console.log("Something went wrong");
                 console.log(error);
                 if (error && !error.response.data.message)
@@ -107,7 +105,6 @@ const PostPage = () => {
                 setLoading(false);
             }
         } else {
-            // Handle validation errors
             console.log(validationErrors);
             setLoginError(validationErrors);
         }
@@ -142,7 +139,7 @@ const PostPage = () => {
                             <PostCard
                                 key={post._id}
                                 post={post}
-                                title={"thread"}
+                                title={"both"}
                             />
                             <Card className="md:w-[768px] w-[calc(100%-1rem)] mb-4">
                                 {!showCommentBox && (
@@ -151,7 +148,6 @@ const PostPage = () => {
                                         className="mb-2 px-4 py-2 flex items-center text-slate-500 font-bold text-left rounded-3xl border-2 border-slate-500 hover:border-slate-400 hover:text-slate-400"
                                         onClick={() => {
                                             setShowCommentBox(true);
-                                            // This is to make the ref available
                                             inputEl.current.focus();
                                         }}
                                     >
@@ -186,7 +182,7 @@ const PostPage = () => {
                                                 </span>
                                             </span>
                                         ) : (
-                                            <div>
+                                            <div className="flex">
                                                 <button
                                                     type="button"
                                                     className="mr-2  bg-gray-300  hover:bg-gray-400 rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white"

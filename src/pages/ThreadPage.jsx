@@ -95,7 +95,7 @@ const ThreadPage = () => {
                                 )
                             )
                         }
-                        scrollThreshold={0.9}
+                        scrollThreshold={0.7}
                     >
                         {posts.map((post) => (
                             <PostCard

@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { validateLoginForm } from "../utils/validation";
+import {
+    validateForgotPasswordForm,
+    validateLoginForm,
+} from "../utils/validation";
 import { useAuth } from "../utils/authContext";
-import { loginUser } from "../utils/api/user.api";
+import { forgotPassword, loginUser } from "../utils/api/user.api";
 import { useModalContext } from "../utils/modalContext";
 import { Modal, Spinner } from "flowbite-react";
 
 const LoginModal = () => {
     const navigate = useNavigate();
     const { setUserData } = useAuth();
-    const [loading, setLoading] = useState(false);
+    const [loadingLogin, setLoadingLogin] = useState(false);
+    const [loadingForgotPassword, setLoadingForgotPassword] = useState(false);
+
     const {
         openLoginModal,
         toggleLoginModal,
@@ -39,8 +44,7 @@ const LoginModal = () => {
         const validationErrors = validateLoginForm(formData);
         console.log(validationErrors);
         if (Object.keys(validationErrors).length === 0) {
-            setLoading(true);
-            // Send form data to server for authentication
+            setLoadingLogin(true);
             console.log("Submitted:", formData);
 
             try {
@@ -50,14 +54,12 @@ const LoginModal = () => {
                 setUserData(response.data);
                 if (response.data.isVerified) {
                     toggleLoginModal();
-                    // Reload page on successful login
                     navigate(0);
                 } else {
                     toggleLoginModal();
                     toggleVerifyUserModal();
                 }
             } catch (error) {
-                // Handle Api error
                 console.log("Something went wrong");
                 console.log(error);
                 if (error && !error.response.data.message)
@@ -69,10 +71,45 @@ const LoginModal = () => {
                 }
                 console.log(alertResponse);
             } finally {
-                setLoading(false);
+                setLoadingLogin(false);
             }
         } else {
-            // Handle validation errors
+            console.log(validationErrors);
+            setLoginError(validationErrors);
+        }
+    };
+
+    const handleForgotPassword = async (e) => {
+        e.preventDefault();
+        const data = { email: formData.email };
+        const validationErrors = validateForgotPasswordForm(data);
+        if (Object.keys(validationErrors).length === 0) {
+            setLoadingForgotPassword(true);
+            console.log("Submitted:", data);
+
+            try {
+                const response = await forgotPassword(data);
+                console.log(response);
+                toggleLoginModal();
+                setAlertResponse({
+                    message:
+                        "Password reset request has been sent to your email",
+                });
+            } catch (error) {
+                console.log("Something went wrong");
+                console.log(error);
+                if (error && !error.response.data.message)
+                    setAlertResponse({ message: "Something went wrong" });
+                if (!error.response.data.success) {
+                    const errorMessage = error.response.data;
+                    console.log(errorMessage);
+                    setLoginError(errorMessage);
+                }
+                console.log(alertResponse);
+            } finally {
+                setLoadingForgotPassword(false);
+            }
+        } else {
             console.log(validationErrors);
             setLoginError(validationErrors);
         }
@@ -126,7 +163,6 @@ const LoginModal = () => {
                                 placeholder="********"
                                 value={formData.password}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                         <div className="flex justify-between">
@@ -147,14 +183,26 @@ const LoginModal = () => {
                                     </p>
                                 ) : null}
                             </div>
-                            <a
-                                href="#"
-                                className="text-sm text-blue-700 hover:underline dark:text-blue-500"
-                            >
-                                Forgot Password?
-                            </a>
+                            {loadingForgotPassword ? (
+                                <span className="text-sm text-nowrap text-blue-700 dark:text-blue-500">
+                                    <Spinner
+                                        aria-label="Alternate spinner button example"
+                                        size="sm"
+                                    />
+                                    <span className="pl-3 text-nowrap">
+                                        Sending Request...
+                                    </span>
+                                </span>
+                            ) : (
+                                <button
+                                    onClick={handleForgotPassword}
+                                    className="text-sm text-nowrap text-blue-700 hover:underline dark:text-blue-500"
+                                >
+                                    Forgot Password?
+                                </button>
+                            )}
                         </div>
-                        {loading ? (
+                        {loadingLogin ? (
                             <span className=" text-white bg-blue-700 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600  ">
                                 <Spinner
                                     aria-label="Alternate spinner button example"
@@ -172,7 +220,7 @@ const LoginModal = () => {
                         )}
                     </form>
                     <p className="max-w-max mx-auto p-4">
-                        Don't have an account?{" "}
+                        Don't have an account?
                         <button
                             onClick={() => {
                                 toggleLoginModal();

@@ -26,7 +26,6 @@ const CommentCard = (props) => {
                     className="mb-2 px-3 py-1 text-white bg-blue-500 rounded text-sm"
                     onClick={() => {
                         setShowReplyBox(true);
-                        // This is to make the ref available
                         inputEl.current.focus();
                     }}
                 >

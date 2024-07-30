@@ -20,6 +20,17 @@ const loginUser = async (body) => {
         throw error;
     }
 };
+const forgotPassword = async (body) => {
+    try {
+        const response = await api.post("/users/forgot-password", body);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while user login:", error.response);
+        throw error;
+    }
+};
+
 const logoutUser = async () => {
     try {
         const response = await api.post("/users/logout");
@@ -44,6 +55,19 @@ const verifyEmail = async (emailToken) => {
     }
 };
 
+const verifyForgotPasswordEmail = async (emailToken, body) => {
+    try {
+        const response = await api.post("users/verify-forgot-password", body, {
+            params: { emailToken },
+        });
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while user login:", error.response);
+        console.log(error);
+        throw error;
+    }
+};
 const getCurrentUser = async () => {
     try {
         const response = await api.get("users/get-current-user");
@@ -80,8 +104,10 @@ const getNewLink = async (body) => {
 export {
     registerUser,
     loginUser,
+    forgotPassword,
     logoutUser,
     verifyEmail,
+    verifyForgotPasswordEmail,
     getCurrentUser,
     getOneUser,
     getNewLink,

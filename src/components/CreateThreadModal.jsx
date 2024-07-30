@@ -23,7 +23,6 @@ const CreateThreadModal = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Check if the input is a file input
         setFormData((prevState) => ({
             ...prevState,
             [name]: value,
@@ -33,22 +32,17 @@ const CreateThreadModal = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate the form data
         console.log(formData);
         const validationErrors = validateThreadForm(formData);
 
-        // Check for validation errors
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
 
             try {
-                // Make an API request to create a post
                 const response = await createThread(formData);
 
-                // Reload the page after successful post creation
                 navigate(0);
             } catch (error) {
-                // Handle any errors that occur during the API request
                 console.log("Error:", error);
 
                 if (error && !error.response?.data?.message)
@@ -59,11 +53,9 @@ const CreateThreadModal = () => {
                     setAlertResponse(errorMessage);
                 }
             } finally {
-                // Reset the loading state after the API request is complete
                 setLoading(false);
             }
         } else {
-            // Set login error state if there are validation errors
             setAlertResponse(validationErrors);
         }
     };

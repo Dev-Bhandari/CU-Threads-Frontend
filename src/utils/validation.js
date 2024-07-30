@@ -5,6 +5,14 @@ const loginSchema = object({
     password: string().trim().min(6),
 });
 
+const forgotPasswordSchema = object({
+    email: string().email(),
+});
+
+const verifyForgotPasswordSchema = object({
+    password: string().trim().min(6),
+});
+
 const registerSchema = object({
     username: string().trim().min(1),
     email: string().trim().email(),
@@ -136,6 +144,54 @@ const validateLoginForm = (formData) => {
     return errors;
 };
 
+const validateForgotPasswordForm = (formData) => {
+    let errors = {};
+    try {
+        forgotPasswordSchema.parse(formData);
+    } catch (error) {
+        console.log(error);
+        if (error.errors) {
+            error.errors.forEach((err) => {
+                switch (err.path[0]) {
+                    case "email":
+                        errors.email = getEmailError(err);
+                        break;
+                    default:
+                        errors._generic =
+                            "An error occurred. Please try again.";
+                }
+            });
+        } else {
+            errors._generic = "An error occurred. Please try again.";
+        }
+    }
+    return errors;
+};
+
+const validateVerifyForgotPasswordForm = (formData) => {
+    let errors = {};
+    try {
+        verifyForgotPasswordSchema.parse(formData);
+    } catch (error) {
+        console.log(error);
+        if (error.errors) {
+            error.errors.forEach((err) => {
+                switch (err.path[0]) {
+                    case "password":
+                        errors.password = getPasswordError(err);
+                        break;
+                    default:
+                        errors._generic =
+                            "An error occurred. Please try again.";
+                }
+            });
+        } else {
+            errors._generic = "An error occurred. Please try again.";
+        }
+    }
+    return errors;
+};
+
 const validatePostForm = (formData) => {
     let errors = {};
     try {
@@ -150,9 +206,6 @@ const validatePostForm = (formData) => {
                     case "textContent":
                         errors.textContent = getTextContentError(err);
                         break;
-                    // case "media":
-                    //     errors.media = getMediaError(err);
-                    //     break;
                     default:
                         errors._generic =
                             "An error occurred. Please try again.";
@@ -215,6 +268,8 @@ const validateThreadForm = (formData) => {
 
 export {
     validateLoginForm,
+    validateForgotPasswordForm,
+    validateVerifyForgotPasswordForm,
     validateRegisterForm,
     validatePostForm,
     validateCommentForm,

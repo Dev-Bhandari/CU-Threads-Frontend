@@ -16,14 +16,12 @@ const CreatePostModal = () => {
         setAlertResponse,
     } = useModalContext();
 
-    // Store the form data in state
     const [formData, setFormData] = useState({
         title: "",
         textContent: "",
         media: null,
     });
 
-    // Handle input changes
     const handleChange = (e) => {
         const { name, value, files } = e.target;
 
@@ -74,13 +72,11 @@ const CreatePostModal = () => {
                 return;
             }
 
-            // Update state with valid files
             setFormData((prevState) => ({
                 ...prevState,
                 media: files,
             }));
         } else {
-            // Update the formData with the new input value
             setFormData((prevState) => ({
                 ...prevState,
                 [name]: value,
@@ -88,45 +84,35 @@ const CreatePostModal = () => {
         }
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate the form data
         const validationErrors = validatePostForm(formData);
 
-        // Check for validation errors
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
 
-            // Create a new FormData object
             const data = new FormData();
 
-            // Append the title and textContent to the FormData object
             data.append("title", formData.title);
             data.append("textContent", formData.textContent);
 
-            // Append each media file to the FormData object
             if (formData.media) {
                 Array.from(formData.media).forEach((file) => {
                     data.append("media", file);
                 });
             }
 
-            // Log the FormData object for debugging
             console.log(formData);
 
             try {
-                // Make an API request to create a post
                 const response = await createPost(
                     openCreatePostModal.threadName,
                     data
                 );
 
-                // Reload the page after successful post creation
                 navigate(0);
             } catch (error) {
-                // Handle any errors that occur during the API request
                 console.log("Error:", error);
 
                 if (error && !error.response?.data?.message)
@@ -137,11 +123,9 @@ const CreatePostModal = () => {
                     setLoginError(errorMessage);
                 }
             } finally {
-                // Reset the loading state after the API request is complete
                 setLoading(false);
             }
         } else {
-            // Set login error state if there are validation errors
             setLoginError(validationErrors);
         }
     };

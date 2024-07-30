@@ -10,9 +10,7 @@ import Header from "./components/Header";
 import RegisterModal from "./components/RegisterModal";
 import LoginModal from "./components/LoginModal";
 import VerifyUserModal from "./components/VerifyUserModal";
-import VerifyEmail from "./components/VerifyEmail";
 import HomePage from "./pages/HomePage";
-import { useAuth } from "./utils/authContext";
 import SideBar from "./components/SideBar";
 import ThreadPage from "./pages/ThreadPage";
 import AllThreadsPage from "./pages/AllThreadsPage";
@@ -20,6 +18,8 @@ import CreatePostModal from "./components/CreatePostModal";
 import PostPage from "./pages/PostPage";
 import CreateThreadModal from "./components/CreateThreadModal";
 import UserPage from "./pages/UserPage";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
+import VerifyForgotPasswordPage from "./pages/VerifyForgotPasswordPage";
 
 function App() {
     return (
@@ -48,7 +48,12 @@ function App() {
                         <Route
                             exact
                             path="/verify-email"
-                            element={<VerifyEmail />}
+                            element={<VerifyEmailPage />}
+                        />
+                        <Route
+                            exact
+                            path="/forgot-password"
+                            element={<VerifyForgotPasswordPage />}
                         />
                         <Route
                             exact

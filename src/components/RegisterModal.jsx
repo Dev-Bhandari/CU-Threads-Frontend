@@ -40,17 +40,14 @@ const RegisterModal = () => {
         const validationErrors = validateRegisterForm(formData);
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
-            // Send form data to server for authentication
             console.log("Submitted:", formData);
 
             try {
                 const response = await registerUser(formData);
                 console.log(response);
-                // Redirect to home page on successful register
                 setUserData(response.data);
                 if (response.data.isVerified) {
                     toggleRegisterModal();
-                    // Redirect to home page on successful register
                     navigate("/home");
                 } else {
                     toggleRegisterModal();
@@ -71,7 +68,6 @@ const RegisterModal = () => {
                 setLoading(false);
             }
         } else {
-            // Handle validation errors
             setRegisterError(validationErrors);
         }
     };
@@ -144,7 +140,7 @@ const RegisterModal = () => {
                                 onChange={handleChange}
                                 required
                             />
-                        </div>{" "}
+                        </div>
                         <div className="flex justify-between">
                             <div className=" mb-5 text-red-700 text-sm">
                                 {registerError.username ? (
@@ -168,13 +164,7 @@ const RegisterModal = () => {
                                         {registerError.message}
                                     </p>
                                 ) : null}
-                            </div>{" "}
-                            <a
-                                href="#"
-                                className="text-sm text-blue-700 hover:underline dark:text-blue-500"
-                            >
-                                Forgot Password?
-                            </a>
+                            </div>
                         </div>
                         {loading ? (
                             <span className=" text-white bg-blue-700 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600  ">
@@ -194,7 +184,7 @@ const RegisterModal = () => {
                         )}
                     </form>
                     <p className="max-w-max mx-auto p-4">
-                        Already a member?{" "}
+                        Already a member?
                         <button
                             onClick={() => {
                                 toggleRegisterModal();
