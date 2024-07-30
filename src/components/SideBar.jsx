@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { HiHome, HiUser, HiViewBoards, HiX } from "react-icons/hi";
 import { FaPlus, FaLinkedin } from "react-icons/fa";
 import { FaCode } from "react-icons/fa6";
 import { useModalContext } from "../utils/modalContext";
 import { useAuth } from "../utils/authContext";
 import { useNavigate } from "react-router-dom";
+import { SOURCE_CODE } from "../config/server.config";
 
 const SideBar = () => {
     const {
@@ -111,7 +111,7 @@ const SideBar = () => {
                         <div className="mb-4">
                             <div>
                                 <a
-                                    href="https://github.com/Dev-Bhandari/CU-Threads"
+                                    href={SOURCE_CODE}
                                     className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
                                     target="_blank"
                                     rel="noopener noreferrer"
