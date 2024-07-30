@@ -47,7 +47,7 @@ const AllThreadsPage = () => {
                 />
             ) : (
                 <InfiniteScroll
-                    className="w-screen flex flex-col items-center justify-center"
+                    className=""
                     dataLength={threads.length}
                     next={fetchThreads}
                     hasMore={false}

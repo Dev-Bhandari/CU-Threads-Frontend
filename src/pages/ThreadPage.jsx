@@ -75,7 +75,7 @@ const ThreadPage = () => {
                         <ThreadCard thread={thread} isAllThreadsPage={false} />
                     )}
                     <InfiniteScroll
-                        className="w-screen flex flex-col items-center justify-center"
+                        className="flex flex-col items-center justify-center"
                         dataLength={posts.length}
                         next={fetchPosts}
                         hasMore={hasNext}
