@@ -81,7 +81,7 @@ const ThreadPage = () => {
                         hasMore={hasNext}
                         loader={<h4>Loading...</h4>}
                         endMessage={
-                            posts.length != 0 ? (
+                            thread && posts.length != 0 ? (
                                 <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
                                     <p>Refresh to see new posts</p>
                                 </Card>
