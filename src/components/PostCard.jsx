@@ -21,23 +21,17 @@ import { useNavigate } from "react-router-dom";
 const PostCard = (props) => {
     const title = props.title;
     const post = props.post.length === 1 ? props.post[0] : props.post;
-
     const { user } = useAuth();
+    const [loading, setLoading] = useState(false);
     const [upVote, setUpVote] = useState(post.upVoted);
     const [downVote, setDownVote] = useState(post.downVoted);
     const [totalVotes, setTotalVotes] = useState(post.totalVotes);
     const { toggleLoginModal, setAlertResponse } = useModalContext();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        return () => {
-            setUpVote(false);
-            setDownVote(false);
-        };
-    }, []);
-
     const handleUpVote = async () => {
         try {
+            setLoading(true);
             const body = { postId: post._id.toString() };
             let response;
             if (!upVote) {
@@ -54,11 +48,14 @@ const PostCard = (props) => {
             if (error && !error.response.data.message)
                 setAlertResponse({ message: "Something went wrong" });
             else setAlertResponse({ message: error.response.data.message });
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleDownVote = async () => {
         try {
+            setLoading(true);
             const body = { postId: post._id.toString() };
             let response;
             if (!downVote) {
@@ -75,6 +72,8 @@ const PostCard = (props) => {
             if (error && !error.response.data.message)
                 setAlertResponse({ message: "Something went wrong" });
             else setAlertResponse({ message: error.response.data.message });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -270,7 +269,10 @@ const PostCard = (props) => {
 
             <div className="flex px-2 py-2">
                 <div className="flex items-center bg-slate-500 m-2 px-1 rounded-full text-white">
-                    <button onClick={user ? handleUpVote : toggleLoginModal}>
+                    <button
+                        disabled={loading}
+                        onClick={user ? handleUpVote : toggleLoginModal}
+                    >
                         {upVote ? (
                             <BiSolidUpvote className="mx-1 size-5 hover:fill-slate-700" />
                         ) : (
@@ -278,7 +280,10 @@ const PostCard = (props) => {
                         )}
                     </button>
                     <p>{totalVotes}</p>
-                    <button onClick={user ? handleDownVote : toggleLoginModal}>
+                    <button
+                        disabled={loading}
+                        onClick={user ? handleDownVote : toggleLoginModal}
+                    >
                         {downVote ? (
                             <BiSolidDownvote className="mx-1 size-5 hover:fill-slate-700" />
                         ) : (
