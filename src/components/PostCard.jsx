@@ -147,9 +147,14 @@ const PostCard = (props) => {
                             </h2>
                         </button>
                         {title == "both" && (
-                            <h2 className="text-sm px-2 font-bold tracking-tight">
-                                u/{post.creatorInfo[0].username}
-                            </h2>
+                            <button
+                                className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
+                                onClick={handleSubtitle}
+                            >
+                                <h2 className="text-sm px-2 font-bold tracking-tight">
+                                    u/{post.creatorInfo[0].username}
+                                </h2>
+                            </button>
                         )}
                     </div>
                 </div>
@@ -170,9 +175,9 @@ const PostCard = (props) => {
                             />
                         </div>
                     ) : (
-                        <div className=" w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden">
+                        <div className="w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden">
                             <div
-                                className="flex transition-transform duration-300"
+                                className="flex items-center transition-transform duration-300"
                                 style={{
                                     transform: `translateX(-${
                                         currentSlide * 100
@@ -187,7 +192,7 @@ const PostCard = (props) => {
                                         <img
                                             src={media}
                                             alt={`Image ${index}`}
-                                            className="w-full max-h-144 object-contain"
+                                            className="w-full max-h-144 object-contain "
                                         />
                                     </div>
                                 ))}

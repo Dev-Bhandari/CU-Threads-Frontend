@@ -4,7 +4,7 @@ import { validatePostForm } from "../utils/validation";
 import { createPost } from "../utils/api/post.api";
 import { useModalContext } from "../utils/modalContext";
 import { Modal, Spinner } from "flowbite-react";
-import { FaLessThanEqual } from "react-icons/fa";
+import { FaArrowUp, FaArrowDown, FaTrash } from "react-icons/fa";
 
 const CreatePostModal = () => {
     const navigate = useNavigate();
@@ -20,20 +20,24 @@ const CreatePostModal = () => {
     const [formData, setFormData] = useState({
         title: "",
         textContent: "",
-        media: null,
+        media: [],
     });
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
 
         if (name === "media") {
+            const newFiles = Array.from(files);
+            const currentFiles = [...formData.media];
+            const updatedFiles = currentFiles.concat(newFiles);
+
             const images = [];
             const videos = [];
             let tooManyImages = false;
             let multipleVideos = false;
             let mixedMedia = false;
 
-            Array.from(files).forEach((file) => {
+            updatedFiles.forEach((file) => {
                 if (file.type.startsWith("image/")) {
                     images.push(file);
                 } else if (file.type.startsWith("video/")) {
@@ -41,7 +45,7 @@ const CreatePostModal = () => {
                 }
             });
 
-            if (images.length > 10) {
+            if (images.length > 5) {
                 tooManyImages = true;
             }
 
@@ -54,18 +58,18 @@ const CreatePostModal = () => {
             }
 
             if (tooManyImages || multipleVideos || mixedMedia) {
-                let errorMessage;
+                let errorMessage = "";
 
                 if (tooManyImages) {
-                    errorMessage = "Cannot upload more than 10 images.\n";
+                    errorMessage += "Cannot upload more than 10 images.\n";
                 }
 
                 if (multipleVideos) {
-                    errorMessage = "Cannot upload more than 1 video.\n";
+                    errorMessage += "Cannot upload more than 1 video.\n";
                 }
 
                 if (mixedMedia) {
-                    errorMessage =
+                    errorMessage +=
                         "You cannot upload images and video together.\n";
                 }
 
@@ -75,7 +79,7 @@ const CreatePostModal = () => {
 
             setFormData((prevState) => ({
                 ...prevState,
-                media: files,
+                media: updatedFiles,
             }));
         } else {
             setFormData((prevState) => ({
@@ -83,6 +87,31 @@ const CreatePostModal = () => {
                 [name]: value,
             }));
         }
+    };
+
+    const moveFile = (index, direction) => {
+        const newMedia = [...formData.media];
+        const targetIndex = index + direction;
+
+        if (targetIndex >= 0 && targetIndex < newMedia.length) {
+            [newMedia[index], newMedia[targetIndex]] = [
+                newMedia[targetIndex],
+                newMedia[index],
+            ];
+
+            setFormData((prevState) => ({
+                ...prevState,
+                media: newMedia,
+            }));
+        }
+    };
+
+    const removeFile = (index) => {
+        const newMedia = formData.media.filter((_, i) => i !== index);
+        setFormData((prevState) => ({
+            ...prevState,
+            media: newMedia,
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -98,11 +127,9 @@ const CreatePostModal = () => {
             data.append("title", formData.title);
             data.append("textContent", formData.textContent);
 
-            if (formData.media) {
-                Array.from(formData.media).forEach((file) => {
-                    data.append("media", file);
-                });
-            }
+            formData.media.forEach((file) => {
+                data.append("media", file);
+            });
 
             console.log(formData);
 
@@ -116,8 +143,9 @@ const CreatePostModal = () => {
             } catch (error) {
                 console.log("Error:", error);
 
-                if (error && !error.response?.data?.message)
+                if (error && !error.response?.data?.message) {
                     setAlertResponse({ message: "Something went wrong" });
+                }
 
                 if (!error.response?.data?.success) {
                     const errorMessage = error.response.data;
@@ -143,7 +171,7 @@ const CreatePostModal = () => {
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
                     <h2 className="text-center text-2xl font-semibold dark:text-white mb-4">
-                        Create a post
+                        Create a Post
                     </h2>
                     <div className="mb-5">
                         <label
@@ -174,7 +202,7 @@ const CreatePostModal = () => {
                             id="textContent"
                             name="textContent"
                             maxLength={1000}
-                            className=" h-40 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="h-40 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Add content"
                             value={formData.textContent}
                             onChange={handleChange}
@@ -198,6 +226,81 @@ const CreatePostModal = () => {
                             onChange={handleChange}
                         />
                     </div>
+                    {formData.media.length > 0 && (
+                        <div className="mb-5">
+                            <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                Selected Files:
+                            </h3>
+                            <ul className="space-y-3">
+                                {formData.media.map((file, index) => (
+                                    <li
+                                        key={index}
+                                        className="flex items-center justify-between p-3 bg-white rounded-lg shadow-md dark:bg-gray-800"
+                                    >
+                                        <div className="flex items-center space-x-3">
+                                            <div className="w-12 h-12 flex justify-center items-center bg-gray-100 rounded-lg dark:bg-gray-700">
+                                                {file.type.startsWith(
+                                                    "image/"
+                                                ) ? (
+                                                    <img
+                                                        src={URL.createObjectURL(
+                                                            file
+                                                        )}
+                                                        alt="preview"
+                                                        className="w-10 h-10 object-cover rounded-md"
+                                                    />
+                                                ) : (
+                                                    <span className="text-xs text-gray-500 dark:text-gray-300">
+                                                        Video
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <span
+                                                className="text-sm text-gray-900 dark:text-gray-100 truncate max-w-[150px] hover:text-clip"
+                                                title={file.name}
+                                            >
+                                                {file.name}
+                                            </span>
+                                        </div>
+                                        <div className="flex space-x-3">
+                                            <button
+                                                type="button"
+                                                className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
+                                                onClick={() =>
+                                                    moveFile(index, -1)
+                                                }
+                                                disabled={index === 0}
+                                            >
+                                                <FaArrowUp />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
+                                                onClick={() =>
+                                                    moveFile(index, 1)
+                                                }
+                                                disabled={
+                                                    index ===
+                                                    formData.media.length - 1
+                                                }
+                                            >
+                                                <FaArrowDown />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="text-xs text-red-500 hover:text-red-700 transition-colors"
+                                                onClick={() =>
+                                                    removeFile(index)
+                                                }
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                     <div className="flex items-center justify-between mt-8 mb-4">
                         {loading ? (
                             <span className="text-white bg-blue-700 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600">
@@ -215,13 +318,15 @@ const CreatePostModal = () => {
                                 Create Post
                             </button>
                         )}
-                        <div className=" text-red-700 text-sm">
+                        <div className="pl-2 text-red-700 text-sm">
                             {loginError.title ? (
                                 <p className="error">{loginError.title}</p>
                             ) : loginError.textContent ? (
                                 <p className="error">
                                     {loginError.textContent}
                                 </p>
+                            ) : loginError.media ? (
+                                <p className="error">{loginError.media}</p>
                             ) : loginError._generic ? (
                                 <p className="error">{loginError._generic}</p>
                             ) : loginError ? (
