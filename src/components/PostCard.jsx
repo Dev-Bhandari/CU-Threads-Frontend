@@ -138,7 +138,7 @@ const PostCard = (props) => {
     return (
         <div
             key={post._id}
-            className="m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] hover:bg-slate-100 text-left bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md"
+            className="m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] text-left bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md"
         >
             <div className="p-4 flex justify-between items-center">
                 <div className="flex items-center">
@@ -195,7 +195,7 @@ const PostCard = (props) => {
                             <img
                                 src={post.mediaUrl[0]}
                                 alt={`Image`}
-                                className="object-contain w-full max-h-144 rounded-3xl"
+                                className="object-contain w-full max-h-128 rounded-3xl"
                             />
                         </div>
                     ) : (
@@ -216,7 +216,7 @@ const PostCard = (props) => {
                                         <img
                                             src={media}
                                             alt={`Image ${index}`}
-                                            className="w-full max-h-144 object-contain"
+                                            className="w-full max-h-128 object-contain"
                                         />
                                     </div>
                                 ))}
@@ -254,11 +254,11 @@ const PostCard = (props) => {
             )}
 
             {post.mediaType === "video" && (
-                <div className="h-144 px-4 py-2">
+                <div className="px-4 py-2">
                     <video
                         ref={videoRef}
                         src={post.mediaUrl}
-                        className="w-full h-full rounded-3xl"
+                        className="max-h-128 w-full rounded-3xl"
                         controls
                     ></video>
                 </div>
