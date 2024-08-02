@@ -160,19 +160,19 @@ const PostCard = (props) => {
             </h5>
 
             {post.mediaType === "image" && post.mediaUrl.length > 0 && (
-                <div className="h-3/5 px-4 py-2 relative">
+                <div className="px-4 py-2 relative">
                     {post.mediaUrl.length === 1 ? (
-                        <div className="w-full h-full bg-slate-300 rounded-3xl">
+                        <div className=" w-full bg-slate-300 rounded-3xl">
                             <img
                                 src={post.mediaUrl[0]}
                                 alt={`Image`}
-                                className="object-contain w-full h-full rounded-3xl"
+                                className="object-contain w-full max-h-144 rounded-3xl"
                             />
                         </div>
                     ) : (
-                        <div className="carousel w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden">
+                        <div className=" w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden">
                             <div
-                                className="carousel-inner flex transition-transform duration-300"
+                                className="flex transition-transform duration-300"
                                 style={{
                                     transform: `translateX(-${
                                         currentSlide * 100
@@ -182,18 +182,17 @@ const PostCard = (props) => {
                                 {post.mediaUrl.map((media, index) => (
                                     <div
                                         key={index}
-                                        className="carousel-item w-full flex-shrink-0"
+                                        className="w-full flex-shrink-0"
                                     >
                                         <img
                                             src={media}
                                             alt={`Image ${index}`}
-                                            className="w-full h-full object-contain rounded-3xl"
+                                            className="w-full max-h-144 object-contain"
                                         />
                                     </div>
                                 ))}
                             </div>
 
-                            {/* Carousel Controls */}
                             <button
                                 className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
                                 onClick={handlePrev}
@@ -207,7 +206,6 @@ const PostCard = (props) => {
                                 <IoIosArrowForward className="size-5" />
                             </button>
 
-                            {/* Carousel Indicators */}
                             <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
                                 {post.mediaUrl.map((_, index) => (
                                     <button
@@ -227,7 +225,7 @@ const PostCard = (props) => {
             )}
 
             {post.mediaType === "video" && (
-                <div className="h-128 px-4 py-2">
+                <div className="h-144 px-4 py-2">
                     <video
                         src={post.mediaUrl}
                         className="w-full h-full rounded-3xl"

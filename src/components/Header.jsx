@@ -20,7 +20,6 @@ const Header = () => {
                 <div className="px-4">
                     <div className="flex justify-between items-center h-14">
                         <div className="inline-flex">
-                            {/* Toggle Button for Sidebar */}
                             <button
                                 onClick={toggleOpenSideBar}
                                 className="pr-4 text-gray-700 dark:text-gray-200 xl:hidden"
