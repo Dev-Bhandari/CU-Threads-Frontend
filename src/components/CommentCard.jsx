@@ -1,5 +1,7 @@
 import { Avatar } from "flowbite-react";
 import { useRef, useState } from "react";
+import { useModalContext } from "../utils/modalContext";
+import { useAuth } from "../utils/authContext";
 
 const CommentCard = (props) => {
     const comment = props.comment;
@@ -9,7 +11,8 @@ const CommentCard = (props) => {
     const [replyText, setReplyText] = useState("");
     const [showReplyBox, setShowReplyBox] = useState(false);
     const inputEl = useRef(null);
-
+    const { user } = useAuth();
+    const { toggleLoginModal } = useModalContext();
     return (
         <div
             key={comment._id}
@@ -24,10 +27,14 @@ const CommentCard = (props) => {
                 <button
                     type="button"
                     className="mb-2 px-3 py-1 text-white bg-blue-500 rounded text-sm"
-                    onClick={() => {
-                        setShowReplyBox(true);
-                        inputEl.current.focus();
-                    }}
+                    onClick={
+                        user
+                            ? () => {
+                                  setShowReplyBox(true);
+                                  inputEl.current.focus();
+                              }
+                            : toggleLoginModal
+                    }
                 >
                     Reply
                 </button>

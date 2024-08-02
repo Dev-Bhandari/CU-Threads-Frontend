@@ -8,6 +8,7 @@ import { Card, Spinner } from "flowbite-react";
 import { validateCommentForm } from "../utils/validation";
 import { useModalContext } from "../utils/modalContext";
 import { FaPlus } from "react-icons/fa";
+import { useAuth } from "../utils/authContext";
 
 const PostPage = () => {
     const [loadingPage, setLoadingPage] = useState(false);
@@ -16,7 +17,8 @@ const PostPage = () => {
     const [comments, setComments] = useState([]);
     const [showCommentBox, setShowCommentBox] = useState(false);
     const { postId } = useParams();
-    const { setLoginError } = useModalContext();
+    const { user } = useAuth();
+    const { setLoginError, toggleLoginModal } = useModalContext();
     const inputEl = useRef(null);
     const navigate = useNavigate();
 
@@ -146,10 +148,14 @@ const PostPage = () => {
                                     <button
                                         type="button"
                                         className="mb-2 px-4 py-2 flex items-center text-slate-500 font-bold text-left rounded-3xl border-2 border-slate-500 hover:border-slate-400 hover:text-slate-400"
-                                        onClick={() => {
-                                            setShowCommentBox(true);
-                                            inputEl.current.focus();
-                                        }}
+                                        onClick={
+                                            user
+                                                ? () => {
+                                                      setShowCommentBox(true);
+                                                      inputEl.current.focus();
+                                                  }
+                                                : toggleLoginModal
+                                        }
                                     >
                                         <FaPlus></FaPlus>
                                         <div className="px-2">

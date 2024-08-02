@@ -1,5 +1,5 @@
 import { Avatar } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     BiDownvote,
     BiSolidDownvote,
@@ -21,22 +21,14 @@ import { useNavigate } from "react-router-dom";
 const PostCard = (props) => {
     const title = props.title;
     const post = props.post.length === 1 ? props.post[0] : props.post;
-    let name, avatar;
-    console.log("Props: ", props);
-    console.log(post);
-    if (title == "user") {
-        name = post.creatorInfo[0].username;
-        avatar = post.creatorInfo[0].avatar;
-    } else {
-        name = post.threadInfo[0].name;
-        avatar = post.threadInfo[0].avatar;
-    }
+
     const { user } = useAuth();
     const [upVote, setUpVote] = useState(post.upVoted);
     const [downVote, setDownVote] = useState(post.downVoted);
     const [totalVotes, setTotalVotes] = useState(post.totalVotes);
     const { toggleLoginModal, setAlertResponse } = useModalContext();
     const navigate = useNavigate();
+
     useEffect(() => {
         return () => {
             setUpVote(false);
@@ -64,6 +56,7 @@ const PostCard = (props) => {
             else setAlertResponse({ message: error.response.data.message });
         }
     };
+
     const handleDownVote = async () => {
         try {
             const body = { postId: post._id.toString() };
@@ -86,7 +79,11 @@ const PostCard = (props) => {
     };
 
     const handleTitle = () => {
-        navigate(title == "user" ? `/u/${name}` : `/cu/${name}`);
+        navigate(
+            title == "user"
+                ? `/u/${post.creatorInfo[0].username}`
+                : `/cu/${post.threadInfo[0].name}`
+        );
     };
 
     const handleSubtitle = () => {
@@ -98,6 +95,7 @@ const PostCard = (props) => {
     };
 
     const [currentSlide, setCurrentSlide] = useState(0);
+    const videoRef = useRef(null);
 
     const handleNext = () => {
         setCurrentSlide((prevSlide) =>
@@ -110,6 +108,32 @@ const PostCard = (props) => {
             prevSlide === 0 ? post.mediaUrl.length - 1 : prevSlide - 1
         );
     };
+
+    useEffect(() => {
+        const videoElement = videoRef.current;
+
+        const handleIntersection = (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    videoElement.pause();
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(handleIntersection, {
+            threshold: 0.5,
+        });
+
+        if (videoElement) {
+            observer.observe(videoElement);
+        }
+
+        return () => {
+            if (videoElement) {
+                observer.unobserve(videoElement);
+            }
+        };
+    }, []);
 
     return (
         <div
@@ -167,7 +191,7 @@ const PostCard = (props) => {
             {post.mediaType === "image" && post.mediaUrl.length > 0 && (
                 <div className="px-4 py-2 relative">
                     {post.mediaUrl.length === 1 ? (
-                        <div className=" w-full bg-slate-300 rounded-3xl">
+                        <div className="w-full bg-slate-300 rounded-3xl">
                             <img
                                 src={post.mediaUrl[0]}
                                 alt={`Image`}
@@ -192,7 +216,7 @@ const PostCard = (props) => {
                                         <img
                                             src={media}
                                             alt={`Image ${index}`}
-                                            className="w-full max-h-144 object-contain "
+                                            className="w-full max-h-144 object-contain"
                                         />
                                     </div>
                                 ))}
@@ -232,6 +256,7 @@ const PostCard = (props) => {
             {post.mediaType === "video" && (
                 <div className="h-144 px-4 py-2">
                     <video
+                        ref={videoRef}
                         src={post.mediaUrl}
                         className="w-full h-full rounded-3xl"
                         controls
