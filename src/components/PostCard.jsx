@@ -120,11 +120,19 @@ const PostCard = (props) => {
                 <div className="flex items-center">
                     {title == "thread" ? (
                         <button onClick={handleTitle}>
-                            <Avatar img={post.threadInfo[0].avatar} rounded size="sm" />
+                            <Avatar
+                                img={post.threadInfo[0].avatar}
+                                rounded
+                                size="sm"
+                            />
                         </button>
                     ) : (
                         <button onClick={handleSubtitle}>
-                            <Avatar img={post.creatorInfo[0].avatar} rounded size="sm" />
+                            <Avatar
+                                img={post.creatorInfo[0].avatar}
+                                rounded
+                                size="sm"
+                            />
                         </button>
                     )}
                     <div className="flex flex-col items-start">
@@ -228,7 +236,7 @@ const PostCard = (props) => {
                 </div>
             )}
 
-            <p className="px-4 py-2 font-normal text-gray-700 dark:text-gray-400">
+            <p className="px-4 py-2 font-normal text-gray-700 dark:text-gray-400 whitespace-pre-line">
                 {post.textContent}
             </p>
 
