@@ -1,92 +1,68 @@
-import { object, string } from "zod";
+import zod from "zod";
 
-const loginSchema = object({
-    email: string().email(),
-    password: string().trim().min(6),
+const username = zod
+    .string()
+    .trim()
+    .min(3, "Username should be of minimum 3 characters");
+
+const email = zod.string().trim().email("Invalid email");
+
+const password = zod
+    .string()
+    .trim()
+    .min(6, "Password should be of minimum 6 characters");
+
+const title = zod.string().trim().min(1, "Title cannot be empty");
+
+const textContent = zod.string().trim().min(1).max(1000);
+
+const content = zod
+    .string()
+    .trim()
+    .max(500, "Comment cannot be more than 500 characters");
+
+const name = zod
+    .string()
+    .min(3, "Thread name should be minimum 3 characters")
+    .refine((s) => !s.includes(" "), "Thread name should not contain spaces")
+    .refine((value) => {
+        const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+        return !regex.test(value);
+    }, "Thread name should not contain symbols");
+
+const description = zod
+    .string()
+    .max(200, "Thread description cannot be more than 200 characters");
+
+const loginSchema = zod.object({
+    email,
+    password,
 });
 
-const forgotPasswordSchema = object({
-    email: string().email(),
+const forgotPasswordSchema = zod.object({
+    email,
 });
 
-const verifyForgotPasswordSchema = object({
-    password: string().trim().min(6),
+const verifyForgotPasswordSchema = zod.object({
+    password,
 });
 
-const registerSchema = object({
-    username: string().trim().min(1),
-    email: string().trim().email(),
-    password: string().trim().min(6),
+const registerSchema = zod.object({
+    username,
+    email,
+    password,
 });
 
-const createPostSchema = object({
-    title: string().trim().min(1),
-    textContent: string().trim().min(1).max(1000),
+const createPostSchema = zod.object({ title, textContent });
+
+const createCommentSchema = zod.object({
+    content,
 });
 
-const createCommentSchema = object({
-    content: string().trim().min(1).max(500),
+const createThreadSchema = zod.object({
+    name,
+    description,
 });
-
-const createThreadSchema = object({ name: string().trim().min(1) });
-
-function getUsernameError(error) {
-    switch (error.code) {
-        case "too_small":
-            return "Username must contain at least 1 character";
-        default:
-            return "Invalid username";
-    }
-}
-
-function getEmailError(error) {
-    switch (error.code) {
-        case "invalid_email":
-            return "Invalid email format";
-        default:
-            return "Invalid email";
-    }
-}
-
-function getPasswordError(error) {
-    switch (error.code) {
-        case "too_small":
-            return "Password must contain at least 6 characters";
-        default:
-            return "Invalid password";
-    }
-}
-
-function getTitleError(error) {
-    switch (error.code) {
-        case "too_small":
-            return "Title must contain at least 1 character";
-        default:
-            return "Invalid title";
-    }
-}
-
-function getTextContentError(error) {
-    switch (error.code) {
-        case "too_large":
-            return "Character length exceeded";
-        case "too_small":
-            return "Content cannot be empty";
-        default:
-            return "Invalid password";
-    }
-}
-
-function getNameError(error) {
-    switch (error.code) {
-        case "too_large":
-            return "Character length exceeded";
-        case "too_small":
-            return "Name cannot be empty";
-        default:
-            return "Invalid password";
-    }
-}
 
 const validateRegisterForm = (formData) => {
     let errors = {};
@@ -97,13 +73,13 @@ const validateRegisterForm = (formData) => {
             error.errors.forEach((err) => {
                 switch (err.path[0]) {
                     case "username":
-                        errors.username = getUsernameError(err);
+                        errors.username = err.message.toString();
                         break;
                     case "email":
-                        errors.email = getEmailError(err);
+                        errors.email = err.message.toString();
                         break;
                     case "password":
-                        errors.password = getPasswordError(err);
+                        errors.password = err.message.toString();
                         break;
                     default:
                         errors._generic =
@@ -122,15 +98,15 @@ const validateLoginForm = (formData) => {
     try {
         loginSchema.parse(formData);
     } catch (error) {
-        console.log(error);
+        console.log(error.flatten());
         if (error.errors) {
             error.errors.forEach((err) => {
                 switch (err.path[0]) {
                     case "email":
-                        errors.email = getEmailError(err);
+                        errors.email = err.message.toString();
                         break;
                     case "password":
-                        errors.password = getPasswordError(err);
+                        errors.password = err.message.toString();
                         break;
                     default:
                         errors._generic =
@@ -154,7 +130,7 @@ const validateForgotPasswordForm = (formData) => {
             error.errors.forEach((err) => {
                 switch (err.path[0]) {
                     case "email":
-                        errors.email = getEmailError(err);
+                        errors.email = err.message.toString();
                         break;
                     default:
                         errors._generic =
@@ -178,7 +154,7 @@ const validateVerifyForgotPasswordForm = (formData) => {
             error.errors.forEach((err) => {
                 switch (err.path[0]) {
                     case "password":
-                        errors.password = getPasswordError(err);
+                        errors.password = err.message.toString();
                         break;
                     default:
                         errors._generic =
@@ -201,10 +177,10 @@ const validatePostForm = (formData) => {
             error.errors.forEach((err) => {
                 switch (err.path[0]) {
                     case "title":
-                        errors.title = getTitleError(err);
+                        errors.title = err.message.toString();
                         break;
                     case "textContent":
-                        errors.textContent = getTextContentError(err);
+                        errors.textContent = err.message.toString();
                         break;
                     default:
                         errors._generic =
@@ -228,7 +204,7 @@ const validateCommentForm = (formData) => {
             error.errors.forEach((err) => {
                 switch (err.path[0]) {
                     case "textContent":
-                        errors.textContent = getTextContentError(err);
+                        errors.textContent = err.message.toString();
                         break;
                     default:
                         errors._generic =
@@ -252,7 +228,10 @@ const validateThreadForm = (formData) => {
             error.errors.forEach((err) => {
                 switch (err.path[0]) {
                     case "name":
-                        errors.textContent = getNameError(err);
+                        errors.name = err.message.toString();
+                        break;
+                    case "description":
+                        errors.description = err.message.toString();
                         break;
                     default:
                         errors._generic =

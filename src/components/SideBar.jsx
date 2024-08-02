@@ -62,7 +62,7 @@ const SideBar = () => {
                     </button>
 
                     <div className="flex-grow">
-                        <div className="pb-4 border-b-2">
+                        <div className="mt-3 pb-4 border-b-2">
                             <div>
                                 <a
                                     onClick={handleHome}

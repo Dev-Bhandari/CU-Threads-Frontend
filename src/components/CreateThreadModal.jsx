@@ -11,6 +11,7 @@ const CreateThreadModal = () => {
         openCreateThreadModal,
         toggleCreateThreadModal,
         loginError,
+        setLoginError,
         setAlertResponse,
     } = useModalContext();
     const [loading, setLoading] = useState(false);
@@ -49,14 +50,15 @@ const CreateThreadModal = () => {
                     setAlertResponse({ message: "Something went wrong" });
 
                 if (!error.response?.data?.success) {
-                    const errorMessage = error.response;
-                    setAlertResponse(errorMessage);
+                    const errorMessage = error.response.data;
+                    setLoginError(errorMessage);
                 }
             } finally {
                 setLoading(false);
             }
         } else {
-            setAlertResponse(validationErrors);
+            console.log(validationErrors);
+            setLoginError(validationErrors);
         }
     };
 
@@ -110,39 +112,6 @@ const CreateThreadModal = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    {/* <div className="mb-5">
-                        <label
-                            htmlFor="avatar"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                            Avatar (optional):
-                        </label>
-                        <input
-                            type="file"
-                            id="avatar"
-                            name="avatar"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            accept="image/*"
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className="mb-5">
-                        <label
-                            htmlFor="banner"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                            Banner (optional):
-                        </label>
-                        <input
-                            type="file"
-                            id="banner"
-                            name="banner"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            accept="image/*"
-                            onChange={handleChange}
-                        />
-                    </div> */}
                     <div className="flex items-center justify-between mt-8 mb-4">
                         {loading ? (
                             <span className="text-white bg-blue-700 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600">
@@ -161,14 +130,10 @@ const CreateThreadModal = () => {
                             </button>
                         )}
                         <div className=" text-red-700 text-sm">
-                            {loginError.title ? (
-                                <p className="error">{loginError.title}</p>
-                            ) : loginError.textContent ? (
-                                <p className="error">
-                                    {loginError.textContent}
-                                </p>
-                            ) : loginError.media ? (
-                                <p className="error">{loginError.media}</p>
+                            {loginError.name ? (
+                                <p className="error">{loginError.name}</p>
+                            ) : loginError.description ? (
+                                <p className="error">{loginError.description}</p>
                             ) : loginError._generic ? (
                                 <p className="error">{loginError._generic}</p>
                             ) : loginError ? (

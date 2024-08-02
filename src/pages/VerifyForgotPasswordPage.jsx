@@ -85,8 +85,6 @@ function VerifyForgotPasswordPage() {
                 <div className="flex justify-between">
                     <div className=" mb-5 text-red-700 text-sm">
                         {loginError.email ? (
-                            <p className="error">{loginError.email}</p>
-                        ) : loginError.password ? (
                             <p className="error">{loginError.password}</p>
                         ) : loginError._generic ? (
                             <p className="error">{loginError._generic}</p>

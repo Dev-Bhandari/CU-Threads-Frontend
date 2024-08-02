@@ -4,6 +4,7 @@ import { validatePostForm } from "../utils/validation";
 import { createPost } from "../utils/api/post.api";
 import { useModalContext } from "../utils/modalContext";
 import { Modal, Spinner } from "flowbite-react";
+import { FaLessThanEqual } from "react-icons/fa";
 
 const CreatePostModal = () => {
     const navigate = useNavigate();
@@ -174,7 +175,7 @@ const CreatePostModal = () => {
                             name="textContent"
                             maxLength={1000}
                             className=" h-40 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Text (optional)"
+                            placeholder="Add content"
                             value={formData.textContent}
                             onChange={handleChange}
                             required
@@ -221,8 +222,6 @@ const CreatePostModal = () => {
                                 <p className="error">
                                     {loginError.textContent}
                                 </p>
-                            ) : loginError.media ? (
-                                <p className="error">{loginError.media}</p>
                             ) : loginError._generic ? (
                                 <p className="error">{loginError._generic}</p>
                             ) : loginError ? (

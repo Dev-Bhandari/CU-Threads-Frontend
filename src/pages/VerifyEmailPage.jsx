@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyEmail } from "../utils/api/user.api";
 import { useModalContext } from "../utils/modalContext";
+import { Spinner } from "flowbite-react";
 
 function VerifyEmailPage() {
     const navigate = useNavigate();
@@ -28,10 +29,11 @@ function VerifyEmailPage() {
         verifyUser();
     }, [token]);
 
-    console.log("token:", token);
-
-
-    return <div>Verification Page</div>;
+    return (
+        <div className="flex justify-center items-center">
+            <Spinner aria-label="Alternate spinner button example" size="md" />
+        </div>
+    );
 }
 
 export default VerifyEmailPage;
