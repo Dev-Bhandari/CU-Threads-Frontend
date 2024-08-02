@@ -138,7 +138,7 @@ const PostCard = (props) => {
     return (
         <div
             key={post._id}
-            className="m-2 mb-4 md:w-[768px] w-[calc(100%-1rem)] hover:bg-slate-100 text-left bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md"
+            className="m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] hover:bg-slate-100 text-left bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md"
         >
             <div className="p-4 flex justify-between items-center">
                 <div className="flex items-center">
@@ -268,7 +268,7 @@ const PostCard = (props) => {
                 {post.textContent}
             </p>
 
-            <div className="flex px-4 py-2">
+            <div className="flex px-2 py-2">
                 <div className="flex items-center bg-slate-500 m-2 px-1 rounded-full text-white">
                     <button onClick={user ? handleUpVote : toggleLoginModal}>
                         {upVote ? (
