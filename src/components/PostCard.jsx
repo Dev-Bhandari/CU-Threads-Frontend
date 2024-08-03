@@ -249,14 +249,14 @@ const PostCard = (props) => {
                 </div>
             </div>
 
-            <h5 className="text-2xl px-4 font-bold tracking-tight text-gray-700 dark:text-white hover:text-gray-500">
-                <button onClick={handlePost}>{post.title}</button>
+            <h5 className="text-2xl px-4 font-bold text-gray-700 dark:text-white hover:text-gray-500">
+                <button onClick={handlePost} className="text-left">{post.title}</button>
             </h5>
 
             {post.mediaType === "image" && post.mediaUrl.length > 0 && (
                 <div className="px-4 py-2 relative">
                     {post.mediaUrl.length === 1 ? (
-                        <div className="w-full bg-slate-300 rounded-3xl">
+                        <div className="w-full bg-slate-300 rounded-3xl border-2 border-gray-200">
                             <img
                                 src={post.mediaUrl[0]}
                                 alt={`Image`}
@@ -264,9 +264,9 @@ const PostCard = (props) => {
                             />
                         </div>
                     ) : (
-                        <div className="w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden">
+                        <div className="w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden border-2 border-gray-200">
                             <div
-                                className="flex items-center transition-transform duration-300"
+                                className="flex items-center transition-transform duration-300 "
                                 style={{
                                     transform: `translateX(-${
                                         currentSlide * 100

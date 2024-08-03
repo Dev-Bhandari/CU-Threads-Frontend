@@ -17,11 +17,6 @@ const ThreadPage = () => {
     const { threadName } = useParams();
     console.log(threadName);
 
-    useEffect(() => {
-        fetchThread();
-        fetchPosts();
-    }, [threadName]);
-
     const fetchThread = async () => {
         const spinnerDelay = 3000;
         let spinnerTimeout;
@@ -60,6 +55,11 @@ const ThreadPage = () => {
             console.log("Error fetching posts:", error);
         }
     };
+
+    useEffect(() => {
+        fetchThread();
+        fetchPosts();
+    }, [threadName]);
 
     return (
         <div className="flex flex-col items-center justify-center">

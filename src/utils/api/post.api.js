@@ -79,16 +79,39 @@ const getPost = async (postId) => {
 
 const getAllPostsOfThread = async (threadName, lastId, sortBy) => {
     try {
-        const response = await api.get(`/posts/get-allposts/${threadName}`, {
+        const response = await api.get(
+            `/posts/get-posts-thread/${threadName}`,
+            {
+                params: { lastId: lastId, sortBy: sortBy },
+            }
+        );
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error(
+            "Error while fetching posts of a thread:",
+            error.response
+        );
+        throw error;
+    }
+};
+
+const getAllPostsOfUser = async (username, lastId, sortBy) => {
+    try {
+        const response = await api.get(`/posts/get-posts-user/${username}`, {
             params: { lastId: lastId, sortBy: sortBy },
         });
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while fetching posts of a thread:", error.response);
+        console.error(
+            "Error while fetching posts of a thread:",
+            error.response
+        );
         throw error;
     }
 };
+
 const getAllPosts = async (lastId) => {
     try {
         const response = await api.get("/posts/get-allposts", {
@@ -111,5 +134,6 @@ export {
     deleteDownVote,
     getPost,
     getAllPostsOfThread,
+    getAllPostsOfUser,
     getAllPosts,
 };
