@@ -66,7 +66,7 @@ const SideBar = () => {
                             <div>
                                 <a
                                     onClick={handleHome}
-                                    className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                                    className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 cursor-pointer"
                                 >
                                     <HiHome className="mr-3" size={22} />
                                     <span className="font-medium">Home</span>
@@ -75,7 +75,7 @@ const SideBar = () => {
                             <div>
                                 <a
                                     onClick={handleAllThreads}
-                                    className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                                    className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 cursor-pointer"
                                 >
                                     <HiViewBoards className="mr-3" size={22} />
                                     <span className="font-medium">
