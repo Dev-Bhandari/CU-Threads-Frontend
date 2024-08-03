@@ -193,7 +193,7 @@ const LoginModal = () => {
                                 >
                                     Login
                                 </button>
-                            )}{" "}
+                            )}
                             {loadingForgotPassword ? (
                                 <span className="text-sm text-nowrap text-blue-700 dark:text-blue-500">
                                     <Spinner

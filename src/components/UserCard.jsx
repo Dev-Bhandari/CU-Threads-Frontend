@@ -1,4 +1,4 @@
-import { HiLogout, HiInformationCircle } from "react-icons/hi";
+import { HiLogout } from "react-icons/hi";
 import { useModalContext } from "../utils/modalContext";
 import { useAuth } from "../utils/authContext";
 import { logoutUser } from "../utils/api/user.api";
@@ -14,8 +14,8 @@ const UserCard = (props) => {
         try {
             resetOnLogout();
             removeUserData();
-            await logoutUser();
             navigate("/");
+            await logoutUser();
         } catch (error) {
             console.log(error.response);
             throw error;

@@ -61,27 +61,25 @@ const Header = () => {
                 <div className="fixed top-16 inset-x-0 z-40 flex justify-center">
                     <div className="max-w-md w-full">
                         <div
-                            className="flex bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                            className="flex justify-between bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                             role="alert"
                         >
                             <div>
                                 <strong className="font-bold pr-2">
-                                    Info alert!
+                                    Alert!
                                 </strong>
                                 <span className="block sm:inline">
                                     {alertResponse.message}
                                 </span>
                             </div>
-                            <span className="top-0 bottom-0 right-0 px-2 py-3">
-                                <button
-                                    className="text-red-700 hover:text-red-500"
-                                    onClick={() =>
-                                        setAlertResponse({ message: null })
-                                    }
-                                ><IoClose size={25}/>
-                                   
-                                </button>
-                            </span>
+                            <button
+                                className="text-red-700 hover:text-red-500"
+                                onClick={() =>
+                                    setAlertResponse({ message: null })
+                                }
+                            >
+                                <IoClose size={25} />
+                            </button>
                         </div>
                     </div>
                 </div>

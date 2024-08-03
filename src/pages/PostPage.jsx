@@ -40,12 +40,6 @@ const PostPage = () => {
             const post = res.data;
             console.log(post);
             setPost(post);
-            if (postContainerRef.current && comments.length === 0) {
-                postContainerRef.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                });
-            }
         } catch (error) {
             console.log("Error fetching posts:", error);
         } finally {

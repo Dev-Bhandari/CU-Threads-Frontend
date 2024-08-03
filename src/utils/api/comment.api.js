@@ -7,7 +7,7 @@ const createComment = async ( body) => {
         console.log(comment);
         return comment;
     } catch (error) {
-        console.error("Error while user login:", error.response);
+        console.error("Error while creating comment:", error.response);
         throw error;
     }
 };
@@ -19,7 +19,7 @@ const getAllComments = async (postId) => {
         console.log(comments);
         return comments;
     } catch (error) {
-        console.error("Error while user login:", error.response);
+        console.error("Error while fetching comments:", error.response);
         throw error;
     }
 };

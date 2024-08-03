@@ -6,7 +6,7 @@ const createThread = async (body) => {
         console.log(resposne);
         return resposne.data;
     } catch (error) {
-        console.error("Error while user login:", error.response);
+        console.error("Error while creating thread:", error.response);
         throw error;
     }
 };
@@ -52,7 +52,7 @@ const getOneThread = async (threadName) => {
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while fetching on thread:", error.response);
+        console.error("Error while fetching thread:", error.response);
         throw error;
     }
 };
@@ -63,7 +63,7 @@ const getAllThreads = async () => {
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while fetching all threads:", error.response);
+        console.error("Error while fetching threads:", error.response);
         throw error;
     }
 };

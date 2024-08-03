@@ -6,8 +6,10 @@ import {
     BiUpvote,
     BiSolidUpvote,
 } from "react-icons/bi";
-import { FaRegCommentAlt } from "react-icons/fa";
+import { FaRegCommentAlt, FaTrash } from "react-icons/fa";
+import { FaFlag } from "react-icons/fa6";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { BsThreeDots } from "react-icons/bs";
 import {
     createUpVote,
     deleteUpVote,
@@ -26,9 +28,26 @@ const PostCard = (props) => {
     const [upVote, setUpVote] = useState(post.upVoted);
     const [downVote, setDownVote] = useState(post.downVoted);
     const [totalVotes, setTotalVotes] = useState(post.totalVotes);
-    const { toggleLoginModal, setAlertResponse } = useModalContext();
+    const { toggleLoginModal, setAlertResponse, toggleDeletePostModal } =
+        useModalContext();
     const navigate = useNavigate();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const videoRef = useRef(null);
 
+    const toggleMenu = () => {
+        setIsMenuOpen((prev) => !prev);
+    };
+    const handleDeletePost = () => {
+        setIsMenuOpen(false);
+        toggleDeletePostModal(post._id);
+    };
+    const handleReportPost = () => {
+        setIsMenuOpen(false);
+        setAlertResponse({
+            message: "Post reported.",
+        });
+    };
     const handleUpVote = async () => {
         try {
             setLoading(true);
@@ -79,7 +98,7 @@ const PostCard = (props) => {
 
     const handleTitle = () => {
         navigate(
-            title == "user"
+            title === "user"
                 ? `/u/${post.creatorInfo[0].username}`
                 : `/cu/${post.threadInfo[0].name}`
         );
@@ -92,9 +111,6 @@ const PostCard = (props) => {
     const handlePost = () => {
         navigate(`/posts/${post._id}`);
     };
-
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const videoRef = useRef(null);
 
     const handleNext = () => {
         setCurrentSlide((prevSlide) =>
@@ -113,7 +129,9 @@ const PostCard = (props) => {
 
         const handleIntersection = (entries) => {
             entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
+                if (entry.isIntersecting) {
+                    videoElement.play();
+                } else {
                     videoElement.pause();
                 }
             });
@@ -141,7 +159,7 @@ const PostCard = (props) => {
         >
             <div className="p-4 flex justify-between items-center">
                 <div className="flex items-center">
-                    {title == "thread" ? (
+                    {title === "thread" ? (
                         <button onClick={handleTitle}>
                             <Avatar
                                 img={post.threadInfo[0].avatar}
@@ -164,12 +182,12 @@ const PostCard = (props) => {
                             onClick={handleTitle}
                         >
                             <h2 className="text-sm px-2 font-bold tracking-tight text-gray-600">
-                                {title == "user"
+                                {title === "user"
                                     ? `u/${post.creatorInfo[0].username}`
                                     : `cu/${post.threadInfo[0].name}`}
                             </h2>
                         </button>
-                        {title == "both" && (
+                        {title === "both" && (
                             <button
                                 className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
                                 onClick={handleSubtitle}
@@ -180,6 +198,54 @@ const PostCard = (props) => {
                             </button>
                         )}
                     </div>
+                </div>
+                {isMenuOpen && (
+                    <div
+                        className="fixed inset-0 z-50"
+                        onClick={toggleMenu}
+                    ></div>
+                )}
+                <div className="relative">
+                    <button
+                        onClick={toggleMenu}
+                        className="p-2 text-gray-700 hover:text-gray-700 dark:text-white hover:bg-slate-300 rounded-full"
+                    >
+                        <BsThreeDots size={20} />
+                    </button>
+                    {isMenuOpen && (
+                        <div className="flex flex-col items-start absolute right-0 top-10 bg-white text-slate-700 border border-gray-200 dark:bg-gray-700 shadow-lg rounded-md z-50">
+                            {user && post.creatorInfo[0]._id == user._id && (
+                                <button
+                                    onClick={
+                                        user
+                                            ? handleDeletePost
+                                            : toggleLoginModal
+                                    }
+                                    className="w-full"
+                                    disabled={loading}
+                                >
+                                    <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
+                                        <FaTrash />
+                                        <span className="pl-2">
+                                            Delete Post
+                                        </span>
+                                    </div>
+                                </button>
+                            )}
+                            <button
+                                onClick={
+                                    user ? handleReportPost : toggleLoginModal
+                                }
+                                className="w-full"
+                                disabled={loading}
+                            >
+                                <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
+                                    <FaFlag />
+                                    <span className="pl-2">Report</span>
+                                </div>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -257,8 +323,9 @@ const PostCard = (props) => {
                     <video
                         ref={videoRef}
                         src={post.mediaUrl}
-                        className="max-h-128 w-full rounded-3xl"
+                        className="max-h-128 w-full rounded-3xl border-2 border-gray-200"
                         controls
+                        muted
                     ></video>
                 </div>
             )}

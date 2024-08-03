@@ -1,4 +1,3 @@
-import { useAuth } from "../utils/authContext";
 import { getOneThread } from "../utils/api/thread.api";
 import { getAllPostsOfThread } from "../utils/api/post.api";
 import { useEffect, useState } from "react";

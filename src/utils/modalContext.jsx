@@ -12,6 +12,9 @@ export const ModalProvider = ({ children }) => {
         threadName: null,
     });
     const [openCreateThreadModal, setOpenCreateThreadModal] = useState(false);
+    const [openDeletePostModal, setOpenDeletePostModal] = useState({
+        postId: null,
+    });
     const [openSideBar, setOpenSideBar] = useState(false);
 
     const [loginError, setLoginError] = useState({});
@@ -49,14 +52,23 @@ export const ModalProvider = ({ children }) => {
         setOpenCreateThreadModal((prevState) => !prevState);
     };
 
+    const toggleDeletePostModal = (postId) => {
+        if (!openDeletePostModal.postId) {
+            setOpenDeletePostModal({ postId: postId });
+        } else {
+            setOpenDeletePostModal({ postId: null });
+        }
+    };
+
     const toggleOpenSideBar = () => {
         setOpenSideBar((prevState) => !prevState);
     };
-    const resetOnLogout = async () => {
+    const resetOnLogout = () => {
         setOpenLoginModal(false);
         setOpenRegisterModal(false);
         setOpenVerifyUserModal(false);
         setOpenCreatePostModal({ threadName: null });
+        setOpenCreateThreadModal(false);
         setLoginError({});
         setRegisterError({});
     };
@@ -81,6 +93,8 @@ export const ModalProvider = ({ children }) => {
                 toggleCreatePostModal,
                 openCreateThreadModal,
                 toggleCreateThreadModal,
+                openDeletePostModal,
+                toggleDeletePostModal,
                 openSideBar,
                 toggleOpenSideBar,
                 resetOnLogout,

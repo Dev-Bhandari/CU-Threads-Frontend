@@ -16,7 +16,7 @@ const CommentCard = (props) => {
     return (
         <div
             key={comment._id}
-            className={"pl-8 mb-4 border-l-2 border-gray-300"}
+            className={"pl-8 mb-4 border-l-2 border-gray-300 text-gray-700"}
         >
             <div className="flex items-center mb-2">
                 <Avatar img={avatar} rounded size="sm" />

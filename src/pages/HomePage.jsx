@@ -1,4 +1,3 @@
-import { useAuth } from "../utils/authContext";
 import { getAllPosts } from "../utils/api/post.api";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
