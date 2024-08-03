@@ -48,17 +48,17 @@ const DeletePostModal = () => {
                         Cancel
                     </button>
                     {loading ? (
-                        <div className="m-2 text-white bg-blue-700 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600">
+                        <button className="m-2 text-white bg-blue-700 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700">
                             <Spinner
                                 aria-label="Alternate spinner button example"
                                 size="sm"
                             />
                             <span className="pl-3">Deleting Post...</span>
-                        </div>
+                        </button>
                     ) : (
                         <button
                             type="submit"
-                            className="m-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700"
+                            className="`m-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700"
                             onClick={handleDeletePost}
                         >
                             Delete
