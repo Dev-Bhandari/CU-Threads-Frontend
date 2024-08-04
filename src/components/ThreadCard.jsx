@@ -44,7 +44,7 @@ const ThreadCard = (props) => {
     };
 
     const handleCreatePost = () => {
-        if (!joined)
+        if (!joined && !thread.owner)
             setAlertResponse({ message: "Join the thread to create posts" });
         else toggleCreatePostModal(thread.name);
     };
