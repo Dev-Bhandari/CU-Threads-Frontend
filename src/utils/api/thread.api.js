@@ -46,6 +46,48 @@ const deleteMember = async (threadName) => {
     }
 };
 
+const changeDescription = async (threadName, body) => {
+    try {
+        const response = await api.post(
+            `/threads/change-description/${threadName}`,
+            body
+        );
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while changing description:", error.response);
+        throw error;
+    }
+};
+
+const changeAvatar = async (threadName, body) => {
+    try {
+        const response = await api.patch(
+            `/threads/change-avatar/${threadName}`,
+            body
+        );
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while changing avatar:", error.response);
+        throw error;
+    }
+};
+
+const changeBanner = async (threadName, body) => {
+    try {
+        const response = await api.patch(
+            `/threads/change-banner/${threadName}`,
+            body
+        );
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while changing banner:", error.response);
+        throw error;
+    }
+};
+
 const getOneThread = async (threadName) => {
     try {
         const response = await api.get(`/threads/get-onethread/${threadName}`);
@@ -73,6 +115,9 @@ export {
     verifyMember,
     createMember,
     deleteMember,
+    changeDescription,
+    changeAvatar,
+    changeBanner,
     getOneThread,
     getAllThreads,
 };

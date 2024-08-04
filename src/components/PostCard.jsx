@@ -161,19 +161,19 @@ const PostCard = (props) => {
                 <div className="flex items-center">
                     {title === "thread" ? (
                         <button onClick={handleTitle}>
-                            <Avatar
-                                img={post.threadInfo[0].avatar}
-                                rounded
-                                size="sm"
+                            <img
+                                src={post.threadInfo[0].avatar}
+                                alt="User Avatar"
+                                className="w-8 h-8 rounded-full object-cover"
                             />
                         </button>
                     ) : (
                         <button onClick={handleSubtitle}>
-                            <Avatar
-                                img={post.creatorInfo[0].avatar}
-                                rounded
-                                size="sm"
-                            />
+                            <img
+                                src={post.creatorInfo[0].avatar}
+                                alt="User Avatar"
+                                className="w-8 h-8 rounded-full object-cover"
+                               />
                         </button>
                     )}
                     <div className="flex flex-col items-start">

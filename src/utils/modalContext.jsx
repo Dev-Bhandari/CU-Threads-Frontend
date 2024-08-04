@@ -15,7 +15,10 @@ export const ModalProvider = ({ children }) => {
     const [openDeletePostModal, setOpenDeletePostModal] = useState({
         postId: null,
     });
-    const [openEditPostModal, setOpenEditPostModal] = useState({ user: null });
+    const [openEditUserModal, setOpenEditUserModal] = useState({ user: null });
+    const [openEditThreadModal, setOpenEditThreadModal] = useState({
+        thread: null,
+    });
     const [openSideBar, setOpenSideBar] = useState(false);
 
     const [loginError, setLoginError] = useState({});
@@ -65,11 +68,20 @@ export const ModalProvider = ({ children }) => {
         setModalError({});
     };
 
-    const toggleEditPostModal = (user) => {
-        if (!openEditPostModal.user) {
-            setOpenEditPostModal({ user: user });
+    const toggleEditUserModal = (user) => {
+        if (!openEditUserModal.user) {
+            setOpenEditUserModal({ user: user });
         } else {
-            setOpenEditPostModal({ user: null });
+            setOpenEditUserModal({ user: null });
+        }
+        setModalError({});
+    };
+
+    const toggleEditThreadModal = (thread) => {        
+        if (!openEditThreadModal.thread) {
+            setOpenEditThreadModal({ thread: thread });
+        } else {
+            setOpenEditThreadModal({ thread: null });
         }
         setModalError({});
     };
@@ -78,7 +90,7 @@ export const ModalProvider = ({ children }) => {
         setOpenSideBar((prevState) => !prevState);
         setModalError({});
     };
-    
+
     const resetOnLogout = () => {
         setOpenLoginModal(false);
         setOpenRegisterModal(false);
@@ -114,8 +126,10 @@ export const ModalProvider = ({ children }) => {
                 toggleCreateThreadModal,
                 openDeletePostModal,
                 toggleDeletePostModal,
-                openEditPostModal,
-                toggleEditPostModal,
+                openEditUserModal,
+                toggleEditUserModal,
+                openEditThreadModal,
+                toggleEditThreadModal,
                 openSideBar,
                 toggleOpenSideBar,
                 resetOnLogout,

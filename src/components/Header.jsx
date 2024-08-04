@@ -40,7 +40,7 @@ const Header = () => {
                                         <img
                                             src={user?.avatar}
                                             alt="Avatar"
-                                            className="w-10 h-10 rounded-full space-x-2"
+                                            className="w-10 h-10 rounded-full space-x-2 object-cover"
                                         />
                                     </div>
                                 ) : (

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const UserCard = (props) => {
     const searchedUser = props.user;
     const { user, removeUserData } = useAuth();
-    const { toggleEditPostModal, resetOnLogout } = useModalContext();
+    const { toggleEditUserModal, resetOnLogout } = useModalContext();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -22,8 +22,8 @@ const UserCard = (props) => {
         }
     };
 
-    const handleEditPost = () => {
-        toggleEditPostModal(user);
+    const handleEditUser = () => {
+        toggleEditUserModal(user);
     };
 
     return (
@@ -33,7 +33,7 @@ const UserCard = (props) => {
                     <img
                         src={searchedUser.avatar}
                         alt="Thread Avatar"
-                        className="w-20 h-20 rounded-full m-4"
+                        className="w-20 h-20 rounded-full m-4 object-cover"
                     />
                     <div>
                         <h1 className="text-3xl font-bold text-gray-700">
@@ -48,7 +48,7 @@ const UserCard = (props) => {
                     {user && user.username === searchedUser.username && (
                         <div>
                             <button
-                                onClick={handleEditPost}
+                                onClick={handleEditUser}
                                 className="m-2 rounded-full px-4 h-14 text-lg text-nowrap bg-slate-400 hover:bg-slate-500"
                             >
                                 <HiPencil className="inline mr-2" />

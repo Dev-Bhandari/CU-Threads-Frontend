@@ -16,11 +16,6 @@ const SideBar = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
 
-    const handleHome = () => {
-        navigate("/");
-        toggleOpenSideBar();
-    };
-
     const handleAllThreads = () => {
         navigate("/cu/all");
         toggleOpenSideBar();
@@ -65,7 +60,7 @@ const SideBar = () => {
                         <div className="mt-3 pb-4 border-b-2">
                             <div>
                                 <a
-                                    onClick={handleHome}
+                                    href="/"
                                     className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 cursor-pointer"
                                 >
                                     <HiHome className="mr-3" size={22} />

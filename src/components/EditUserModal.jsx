@@ -5,7 +5,7 @@ import { changeAvatar, changePassword } from "../utils/api/user.api";
 import { useAuth } from "../utils/authContext";
 import { useNavigate } from "react-router-dom";
 
-const EditPostModal = () => {
+const EditUserModal = () => {
     const [activeTab, setActiveTab] = useState("avatar");
     const [loading, setLoading] = useState(false);
     const [avatarFile, setAvatarFile] = useState(null);
@@ -16,8 +16,8 @@ const EditPostModal = () => {
     });
     const { setUserData, removeUserData } = useAuth();
     const {
-        openEditPostModal,
-        toggleEditPostModal,
+        openEditUserModal,
+        toggleEditUserModal,
         modalError,
         setModalError,
         resetOnLogout,
@@ -40,7 +40,7 @@ const EditPostModal = () => {
             const response = await changeAvatar(formData);
             setUserData(response.data);
             setAvatarFile(null);
-            toggleEditPostModal();
+            toggleEditUserModal();
             navigate(0);
         } catch (error) {
             console.log("Error:", error);
@@ -102,7 +102,7 @@ const EditPostModal = () => {
 
         try {
             await changePassword(passwordData);
-            toggleEditPostModal();
+            toggleEditUserModal();
             handleLogout();
         } catch (error) {
             console.log("Error:", error);
@@ -126,7 +126,7 @@ const EditPostModal = () => {
     };
 
     const handleCloseModal = () => {
-        toggleEditPostModal();
+        toggleEditUserModal();
         setPasswordData({
             oldPassword: "",
             newPassword: "",
@@ -138,13 +138,13 @@ const EditPostModal = () => {
     return (
         <Modal
             dismissible
-            show={openEditPostModal.user}
+            show={openEditUserModal.user}
             size="lg"
             popup
             onClose={handleCloseModal}
         >
             <Modal.Header>
-                <div className="flex justify-between w-full mb-10 text-nowrap">
+                <div className="flex justify-between w-full mb-10">
                     <button
                         onClick={() => handleTabSwitch("avatar")}
                         className={`px-4 py-2 text-lg ${
@@ -172,11 +172,11 @@ const EditPostModal = () => {
                     {activeTab === "avatar" && (
                         <div className="flex flex-col items-center">
                             <div className="mb-4">
-                                {openEditPostModal.user && (
+                                {openEditUserModal.user && (
                                     <img
-                                        src={openEditPostModal.user.avatar}
+                                        src={openEditUserModal.user.avatar}
                                         alt="Current Avatar"
-                                        className="w-32 h-32 rounded-full mb-2"
+                                        className="w-32 h-32 rounded-full mb-2 object-cover"
                                     />
                                 )}
                             </div>
@@ -286,4 +286,4 @@ const EditPostModal = () => {
     );
 };
 
-export default EditPostModal;
+export default EditUserModal;

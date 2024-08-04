@@ -21,7 +21,8 @@ import UserPage from "./pages/UserPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import VerifyForgotPasswordPage from "./pages/VerifyForgotPasswordPage";
 import DeletePostModal from "./components/DeletePostModal";
-import EditPostModal from "./components/EditPostModal";
+import EditUserModal from "./components/EditUserModal";
+import EditThreadModal from "./components/EditThreadModal";
 
 function App() {
     return (
@@ -33,7 +34,8 @@ function App() {
             <CreatePostModal />
             <CreateThreadModal />
             <DeletePostModal />
-            <EditPostModal />
+            <EditUserModal />
+            <EditThreadModal />
             <main className="flex flex-row">
                 <SideBar />
                 <div className="flex-grow my-4">

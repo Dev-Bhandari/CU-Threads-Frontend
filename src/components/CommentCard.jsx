@@ -19,7 +19,11 @@ const CommentCard = (props) => {
             className={"pl-8 mb-4 border-l-2 border-gray-300 text-gray-700"}
         >
             <div className="flex items-center mb-2">
-                <Avatar img={avatar} rounded size="sm" />
+                <img
+                    src={avatar}
+                    alt="User Avatar"
+                    className="w-8 h-8 rounded-full object-cover"
+                />
                 <h2 className="text-sm px-2 font-bold">u/{name}</h2>
             </div>
             <div className="mb-2">{comment.content}</div>
