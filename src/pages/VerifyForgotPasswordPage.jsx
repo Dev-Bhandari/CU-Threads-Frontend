@@ -10,7 +10,7 @@ function VerifyForgotPasswordPage() {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("emailToken");
     const [loading, setLoading] = useState(false);
-    const { loginError, setLoginError, alertResponse, setAlertResponse } =
+    const { modalError, setModalError, alertResponse, setAlertResponse } =
         useModalContext();
 
     const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ function VerifyForgotPasswordPage() {
                 if (!error.response.data.success) {
                     const errorMessage = error.response.data;
                     console.log(errorMessage);
-                    setLoginError(errorMessage);
+                    setModalError(errorMessage);
                 }
                 console.log(alertResponse);
             } finally {
@@ -55,7 +55,7 @@ function VerifyForgotPasswordPage() {
             }
         } else {
             console.log(validationErrors);
-            setLoginError(validationErrors);
+            setModalError(validationErrors);
         }
     };
 
@@ -84,12 +84,12 @@ function VerifyForgotPasswordPage() {
                 </div>
                 <div className="flex justify-between">
                     <div className=" mb-5 text-red-700 text-sm">
-                        {loginError.email ? (
-                            <p className="error">{loginError.password}</p>
-                        ) : loginError._generic ? (
-                            <p className="error">{loginError._generic}</p>
-                        ) : loginError ? (
-                            <p className="error">{loginError.message}</p>
+                        {modalError.email ? (
+                            <p className="error">{modalError.password}</p>
+                        ) : modalError._generic ? (
+                            <p className="error">{modalError._generic}</p>
+                        ) : modalError ? (
+                            <p className="error">{modalError.message}</p>
                         ) : null}
                     </div>
                 </div>

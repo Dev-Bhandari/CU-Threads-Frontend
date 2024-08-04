@@ -27,7 +27,6 @@ const ThreadCard = (props) => {
             }
             console.log(response.data);
             setJoined(response.data.joined);
-            
         } catch (error) {
             console.log("Something went wrong");
             console.error(error);
@@ -38,9 +37,13 @@ const ThreadCard = (props) => {
             setLoading(false);
         }
     };
+
     const handleCreatePost = () => {
-        toggleCreatePostModal(thread.name); // Call the toggleCreatePostModal function to open the modal
+        if (!joined)
+            setAlertResponse({ message: "Join the thread to create posts" });
+        else toggleCreatePostModal(thread.name);
     };
+
     return (
         <div className="m-2 mb-8 bg-slate-300  md:w-[768px] w-[calc(100%-1rem)] rounded-lg overflow-hidden">
             <img

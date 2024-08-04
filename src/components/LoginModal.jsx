@@ -177,7 +177,7 @@ const LoginModal = () => {
                             ) : null}
                         </div>
 
-                        <div className="flex justify-between "> 
+                        <div className="flex justify-between ">
                             {loadingLogin ? (
                                 <span className=" text-white bg-blue-700 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600  ">
                                     <Spinner

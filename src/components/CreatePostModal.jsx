@@ -12,8 +12,8 @@ const CreatePostModal = () => {
     const {
         openCreatePostModal,
         toggleCreatePostModal,
-        loginError,
-        setLoginError,
+        modalError,
+        setModalError,
         setAlertResponse,
     } = useModalContext();
 
@@ -22,6 +22,15 @@ const CreatePostModal = () => {
         textContent: "",
         media: [],
     });
+
+    const handleCloseModal = () => {
+        toggleCreatePostModal();
+        setFormData({
+            title: "",
+            textContent: "",
+            media: [],
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -73,7 +82,7 @@ const CreatePostModal = () => {
                         "You cannot upload images and video together.\n";
                 }
 
-                setLoginError({ media: errorMessage });
+                setModalError({ media: errorMessage });
                 return;
             }
 
@@ -149,13 +158,13 @@ const CreatePostModal = () => {
 
                 if (!error.response?.data?.success) {
                     const errorMessage = error.response.data;
-                    setLoginError(errorMessage);
+                    setModalError(errorMessage);
                 }
             } finally {
                 setLoading(false);
             }
         } else {
-            setLoginError(validationErrors);
+            setModalError(validationErrors);
         }
     };
 
@@ -165,7 +174,7 @@ const CreatePostModal = () => {
             show={openCreatePostModal.threadName}
             size="2xl"
             popup
-            onClose={toggleCreatePostModal}
+            onClose={handleCloseModal}
         >
             <Modal.Header />
             <Modal.Body>
@@ -319,18 +328,18 @@ const CreatePostModal = () => {
                             </button>
                         )}
                         <div className="pl-2 text-red-700 text-sm">
-                            {loginError.title ? (
-                                <p className="error">{loginError.title}</p>
-                            ) : loginError.textContent ? (
+                            {modalError.title ? (
+                                <p className="error">{modalError.title}</p>
+                            ) : modalError.textContent ? (
                                 <p className="error">
-                                    {loginError.textContent}
+                                    {modalError.textContent}
                                 </p>
-                            ) : loginError.media ? (
-                                <p className="error">{loginError.media}</p>
-                            ) : loginError._generic ? (
-                                <p className="error">{loginError._generic}</p>
-                            ) : loginError ? (
-                                <p className="error">{loginError.message}</p>
+                            ) : modalError.media ? (
+                                <p className="error">{modalError.media}</p>
+                            ) : modalError._generic ? (
+                                <p className="error">{modalError._generic}</p>
+                            ) : modalError ? (
+                                <p className="error">{modalError.message}</p>
                             ) : null}
                         </div>
                     </div>

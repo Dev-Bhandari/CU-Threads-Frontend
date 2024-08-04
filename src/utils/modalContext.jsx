@@ -15,10 +15,12 @@ export const ModalProvider = ({ children }) => {
     const [openDeletePostModal, setOpenDeletePostModal] = useState({
         postId: null,
     });
+    const [openEditPostModal, setOpenEditPostModal] = useState({ user: null });
     const [openSideBar, setOpenSideBar] = useState(false);
 
     const [loginError, setLoginError] = useState({});
     const [registerError, setRegisterError] = useState({});
+    const [modalError, setModalError] = useState({});
     const [resendResponse, setResendResponse] = useState({});
     const [alertResponse, setAlertResponse] = useState({
         message: null,
@@ -46,10 +48,12 @@ export const ModalProvider = ({ children }) => {
         } else {
             setOpenCreatePostModal({ threadName: null });
         }
+        setModalError({});
     };
 
     const toggleCreateThreadModal = () => {
         setOpenCreateThreadModal((prevState) => !prevState);
+        setModalError({});
     };
 
     const toggleDeletePostModal = (postId) => {
@@ -58,11 +62,23 @@ export const ModalProvider = ({ children }) => {
         } else {
             setOpenDeletePostModal({ postId: null });
         }
+        setModalError({});
+    };
+
+    const toggleEditPostModal = (user) => {
+        if (!openEditPostModal.user) {
+            setOpenEditPostModal({ user: user });
+        } else {
+            setOpenEditPostModal({ user: null });
+        }
+        setModalError({});
     };
 
     const toggleOpenSideBar = () => {
         setOpenSideBar((prevState) => !prevState);
+        setModalError({});
     };
+    
     const resetOnLogout = () => {
         setOpenLoginModal(false);
         setOpenRegisterModal(false);
@@ -71,6 +87,7 @@ export const ModalProvider = ({ children }) => {
         setOpenCreateThreadModal(false);
         setLoginError({});
         setRegisterError({});
+        setModalError({});
     };
     return (
         <ModalContext.Provider
@@ -85,6 +102,8 @@ export const ModalProvider = ({ children }) => {
                 setLoginError,
                 registerError,
                 setRegisterError,
+                modalError,
+                setModalError,
                 resendResponse,
                 setResendResponse,
                 alertResponse,
@@ -95,6 +114,8 @@ export const ModalProvider = ({ children }) => {
                 toggleCreateThreadModal,
                 openDeletePostModal,
                 toggleDeletePostModal,
+                openEditPostModal,
+                toggleEditPostModal,
                 openSideBar,
                 toggleOpenSideBar,
                 resetOnLogout,

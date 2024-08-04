@@ -10,6 +10,7 @@ const registerUser = async (body) => {
         throw error;
     }
 };
+
 const loginUser = async (body) => {
     try {
         const response = await api.post("/users/login", body);
@@ -20,6 +21,7 @@ const loginUser = async (body) => {
         throw error;
     }
 };
+
 const forgotPassword = async (body) => {
     try {
         const response = await api.post("/users/forgot-password", body);
@@ -49,7 +51,10 @@ const verifyEmail = async (emailToken) => {
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while verifying user email token:", error.response);
+        console.error(
+            "Error while verifying user email token:",
+            error.response
+        );
         console.log(error);
         throw error;
     }
@@ -63,8 +68,33 @@ const verifyForgotPasswordEmail = async (emailToken, body) => {
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error("Error while verifying user email token:", error.response);
+        console.error(
+            "Error while verifying user email token:",
+            error.response
+        );
         console.log(error);
+        throw error;
+    }
+};
+
+const changeAvatar = async (body) => {
+    try {
+        const response = await api.patch("/users/change-avatar", body);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while user changing avatar:", error.response);
+        throw error;
+    }
+};
+
+const changePassword = async (body) => {
+    try {
+        const response = await api.post("/users/change-password", body);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while user changing password:", error.response);
         throw error;
     }
 };
@@ -108,6 +138,8 @@ export {
     logoutUser,
     verifyEmail,
     verifyForgotPasswordEmail,
+    changeAvatar,
+    changePassword,
     getCurrentUser,
     getOneUser,
     getNewLink,

@@ -105,7 +105,7 @@ const getAllPostsOfUser = async (username, lastId, sortBy) => {
         return response.data;
     } catch (error) {
         console.error(
-            "Error while fetching posts of a thread:",
+            "Error while fetching posts of a user:",
             error.response
         );
         throw error;

@@ -10,8 +10,8 @@ const CreateThreadModal = () => {
     const {
         openCreateThreadModal,
         toggleCreateThreadModal,
-        loginError,
-        setLoginError,
+        modalError,
+        setModalError,
         setAlertResponse,
     } = useModalContext();
     const [loading, setLoading] = useState(false);
@@ -20,6 +20,14 @@ const CreateThreadModal = () => {
         name: "",
         description: "",
     });
+
+    const handleCloseModal = () => {
+        toggleCreateThreadModal();
+        setFormData({
+            name: "",
+            description: "",
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -51,14 +59,14 @@ const CreateThreadModal = () => {
 
                 if (!error.response?.data?.success) {
                     const errorMessage = error.response.data;
-                    setLoginError(errorMessage);
+                    setModalError(errorMessage);
                 }
             } finally {
                 setLoading(false);
             }
         } else {
             console.log(validationErrors);
-            setLoginError(validationErrors);
+            setModalError(validationErrors);
         }
     };
 
@@ -68,7 +76,7 @@ const CreateThreadModal = () => {
             show={openCreateThreadModal}
             size="2xl"
             popup
-            onClose={toggleCreateThreadModal}
+            onClose={handleCloseModal}
         >
             <Modal.Header />
             <Modal.Body>
@@ -130,14 +138,16 @@ const CreateThreadModal = () => {
                             </button>
                         )}
                         <div className=" text-red-700 text-sm">
-                            {loginError.name ? (
-                                <p className="error">{loginError.name}</p>
-                            ) : loginError.description ? (
-                                <p className="error">{loginError.description}</p>
-                            ) : loginError._generic ? (
-                                <p className="error">{loginError._generic}</p>
-                            ) : loginError ? (
-                                <p className="error">{loginError.message}</p>
+                            {modalError.name ? (
+                                <p className="error">{modalError.name}</p>
+                            ) : modalError.description ? (
+                                <p className="error">
+                                    {modalError.description}
+                                </p>
+                            ) : modalError._generic ? (
+                                <p className="error">{modalError._generic}</p>
+                            ) : modalError ? (
+                                <p className="error">{modalError.message}</p>
                             ) : null}
                         </div>
                     </div>

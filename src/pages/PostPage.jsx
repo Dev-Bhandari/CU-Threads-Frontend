@@ -18,7 +18,7 @@ const PostPage = () => {
     const [showCommentBox, setShowCommentBox] = useState(false);
     const { postId } = useParams();
     const { user } = useAuth();
-    const { setLoginError, toggleLoginModal } = useModalContext();
+    const { setModalError, toggleLoginModal } = useModalContext();
     const inputEl = useRef(null);
     const navigate = useNavigate();
 
@@ -94,7 +94,7 @@ const PostPage = () => {
                 if (!error.response.data.success) {
                     const errorMessage = error.response.data;
                     console.log(errorMessage);
-                    setLoginError(errorMessage);
+                    setModalError(errorMessage);
                 }
                 console.log(alertResponse);
             } finally {
@@ -102,7 +102,7 @@ const PostPage = () => {
             }
         } else {
             console.log(validationErrors);
-            setLoginError(validationErrors);
+            setModalError(validationErrors);
         }
     };
 

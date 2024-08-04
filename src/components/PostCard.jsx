@@ -250,7 +250,9 @@ const PostCard = (props) => {
             </div>
 
             <h5 className="text-2xl px-4 font-bold text-gray-700 dark:text-white hover:text-gray-500">
-                <button onClick={handlePost} className="text-left">{post.title}</button>
+                <button onClick={handlePost} className="text-left">
+                    {post.title}
+                </button>
             </h5>
 
             {post.mediaType === "image" && post.mediaUrl.length > 0 && (
