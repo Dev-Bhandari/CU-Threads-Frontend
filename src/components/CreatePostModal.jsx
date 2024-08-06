@@ -170,7 +170,6 @@ const CreatePostModal = () => {
 
     return (
         <Modal
-            dismissible
             show={openCreatePostModal.threadName}
             size="2xl"
             popup
