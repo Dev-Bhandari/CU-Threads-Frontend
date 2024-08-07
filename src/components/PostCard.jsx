@@ -1,4 +1,3 @@
-import { Avatar } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import {
     BiDownvote,
@@ -33,22 +32,31 @@ const PostCard = (props) => {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [isFullScreen, setIsFullScreen] = useState(false);
+    const [fullScreenImage, setFullScreenImage] = useState("");
     const videoRef = useRef(null);
 
-    const toggleMenu = () => {
+    const toggleMenu = (e) => {
+        e.stopPropagation();
         setIsMenuOpen((prev) => !prev);
     };
-    const handleDeletePost = () => {
+
+    const handleDeletePost = (e) => {
+        e.stopPropagation();
         setIsMenuOpen(false);
         toggleDeletePostModal(post._id);
     };
-    const handleReportPost = () => {
+
+    const handleReportPost = (e) => {
+        e.stopPropagation();
         setIsMenuOpen(false);
         setAlertResponse({
             message: "Post reported.",
         });
     };
-    const handleUpVote = async () => {
+
+    const handleUpVote = async (e) => {
+        e.stopPropagation();
         try {
             setLoading(true);
             const body = { postId: post._id.toString() };
@@ -72,7 +80,8 @@ const PostCard = (props) => {
         }
     };
 
-    const handleDownVote = async () => {
+    const handleDownVote = async (e) => {
+        e.stopPropagation();
         try {
             setLoading(true);
             const body = { postId: post._id.toString() };
@@ -96,7 +105,8 @@ const PostCard = (props) => {
         }
     };
 
-    const handleTitle = () => {
+    const handleTitle = (e) => {
+        e.stopPropagation();
         navigate(
             title === "user"
                 ? `/u/${post.creatorInfo[0].username}`
@@ -104,7 +114,8 @@ const PostCard = (props) => {
         );
     };
 
-    const handleSubtitle = () => {
+    const handleSubtitle = (e) => {
+        e.stopPropagation();
         navigate(`/u/${post.creatorInfo[0].username}`);
     };
 
@@ -112,16 +123,29 @@ const PostCard = (props) => {
         navigate(`/posts/${post._id}`);
     };
 
-    const handleNext = () => {
+    const handleNext = (e) => {
+        e.stopPropagation();
         setCurrentSlide((prevSlide) =>
             prevSlide === post.mediaUrl.length - 1 ? 0 : prevSlide + 1
         );
     };
 
-    const handlePrev = () => {
+    const handlePrev = (e) => {
+        e.stopPropagation();
         setCurrentSlide((prevSlide) =>
             prevSlide === 0 ? post.mediaUrl.length - 1 : prevSlide - 1
         );
+    };
+
+    const handleFullScreen = (e, url) => {
+        e.stopPropagation();
+        setFullScreenImage(url);
+        setIsFullScreen(true);
+    };
+
+    const handleCloseFullScreen = (e) => {
+        e.stopPropagation()
+        setIsFullScreen(false);
     };
 
     useEffect(() => {
@@ -152,10 +176,17 @@ const PostCard = (props) => {
         };
     }, []);
 
+    const preventVideoClickPropagation = (e) => {
+        e.stopPropagation();
+    };
+
     return (
         <div
             key={post._id}
-            className="m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] text-left bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md"
+            className={`m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] text-left bg-white  dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md cursor-pointer ${
+                title != "both" && "hover:bg-slate-100"
+            }`}
+            onClick={handlePost}
         >
             <div className="p-4 flex justify-between items-center">
                 <div className="flex items-center">
@@ -173,7 +204,7 @@ const PostCard = (props) => {
                                 src={post.creatorInfo[0].avatar}
                                 alt="User Avatar"
                                 className="w-8 h-8 rounded-full object-cover"
-                               />
+                            />
                         </button>
                     )}
                     <div className="flex flex-col items-start">
@@ -213,25 +244,19 @@ const PostCard = (props) => {
                         <BsThreeDots size={20} />
                     </button>
                     {isMenuOpen && (
-                        <div className="flex flex-col items-start absolute right-0 top-10 bg-white text-slate-700 border border-gray-200 dark:bg-gray-700 shadow-lg rounded-md z-50">
-                            {user && post.creatorInfo[0]._id == user._id && (
-                                <button
-                                    onClick={
-                                        user
-                                            ? handleDeletePost
-                                            : toggleLoginModal
-                                    }
-                                    className="w-full"
-                                    disabled={loading}
-                                >
-                                    <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
-                                        <FaTrash />
-                                        <span className="pl-2">
-                                            Delete Post
-                                        </span>
-                                    </div>
-                                </button>
-                            )}
+                        <div className="flex flex-col items-start absolute right-0 top-10 bg-white text-slate-700 border border-gray-200 dark:bg-gray-700 dark:text-white dark:border-gray-600 rounded-md shadow-md z-40">
+                            <button
+                                onClick={
+                                    user ? handleDeletePost : toggleLoginModal
+                                }
+                                className="w-full"
+                                disabled={loading}
+                            >
+                                <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
+                                    <FaTrash />
+                                    <span className="pl-2">Delete</span>
+                                </div>
+                            </button>
                             <button
                                 onClick={
                                     user ? handleReportPost : toggleLoginModal
@@ -249,10 +274,8 @@ const PostCard = (props) => {
                 </div>
             </div>
 
-            <h5 className="text-2xl px-4 font-bold text-gray-700 dark:text-white hover:text-gray-500">
-                <button onClick={handlePost} className="text-left">
-                    {post.title}
-                </button>
+            <h5 className="text-2xl px-4 font-bold text-gray-700">
+                {post.title}
             </h5>
 
             {post.mediaType === "image" && post.mediaUrl.length > 0 && (
@@ -262,7 +285,10 @@ const PostCard = (props) => {
                             <img
                                 src={post.mediaUrl[0]}
                                 alt={`Image`}
-                                className="object-contain w-full max-h-128 rounded-3xl"
+                                className="object-contain w-full max-h-128 rounded-3xl cursor-pointer"
+                                onClick={(e) =>
+                                    handleFullScreen(e, post.mediaUrl[0])
+                                }
                             />
                         </div>
                     ) : (
@@ -283,7 +309,10 @@ const PostCard = (props) => {
                                         <img
                                             src={media}
                                             alt={`Image ${index}`}
-                                            className="w-full max-h-128 object-contain"
+                                            className="w-full max-h-128 object-contain cursor-pointer"
+                                            onClick={(e) =>
+                                                handleFullScreen(e, media)
+                                            }
                                         />
                                     </div>
                                 ))}
@@ -311,7 +340,10 @@ const PostCard = (props) => {
                                                 ? "bg-white"
                                                 : "bg-gray-400"
                                         }`}
-                                        onClick={() => setCurrentSlide(index)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setCurrentSlide(index);
+                                        }}
                                     ></button>
                                 ))}
                             </div>
@@ -321,13 +353,14 @@ const PostCard = (props) => {
             )}
 
             {post.mediaType === "video" && (
-                <div className="px-4 py-2">
+                <div className="mx-4 my-2 border-2 rounded-3xl border-gray-200">
                     <video
                         ref={videoRef}
                         src={post.mediaUrl}
-                        className="max-h-128 w-full rounded-3xl border-2 border-gray-200"
+                        className="max-h-128 w-full rounded-3xl "
                         controls
                         muted
+                        onClick={preventVideoClickPropagation}
                     ></video>
                 </div>
             )}
@@ -340,7 +373,10 @@ const PostCard = (props) => {
                 <div className="flex items-center bg-slate-500 m-2 px-1 rounded-full text-white">
                     <button
                         disabled={loading}
-                        onClick={user ? handleUpVote : toggleLoginModal}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            user ? handleUpVote(e) : toggleLoginModal(e);
+                        }}
                     >
                         {upVote ? (
                             <BiSolidUpvote className="mx-1 size-5 hover:fill-slate-700" />
@@ -351,7 +387,10 @@ const PostCard = (props) => {
                     <p>{totalVotes}</p>
                     <button
                         disabled={loading}
-                        onClick={user ? handleDownVote : toggleLoginModal}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            user ? handleDownVote(e) : toggleLoginModal(e);
+                        }}
                     >
                         {downVote ? (
                             <BiSolidDownvote className="mx-1 size-5 hover:fill-slate-700" />
@@ -360,13 +399,31 @@ const PostCard = (props) => {
                         )}
                     </button>
                 </div>
-                <button onClick={handlePost}>
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handlePost(e);
+                    }}
+                >
                     <div className="flex items-center bg-slate-500 m-2 px-4 py-1 rounded-full text-white hover:bg-slate-600">
                         <FaRegCommentAlt className="me-1.5" />
                         <p>{post.totalComments}</p>
                     </div>
                 </button>
             </div>
+
+            {isFullScreen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center"
+                    onClick={handleCloseFullScreen}
+                >
+                    <img
+                        src={fullScreenImage}
+                        alt="Full-Screen Image"
+                        className="object-contain max-w-full max-h-full rounded-lg"
+                    />
+                </div>
+            )}
         </div>
     );
 };
