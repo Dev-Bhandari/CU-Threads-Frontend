@@ -54,7 +54,7 @@ const CreatePostModal = () => {
                 }
             });
 
-            if (images.length > 5) {
+            if (images.length > 10) {
                 tooManyImages = true;
             }
 
