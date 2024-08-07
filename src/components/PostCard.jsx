@@ -144,7 +144,7 @@ const PostCard = (props) => {
     };
 
     const handleCloseFullScreen = (e) => {
-        e.stopPropagation()
+        e.stopPropagation();
         setIsFullScreen(false);
     };
 
@@ -232,11 +232,11 @@ const PostCard = (props) => {
                 </div>
                 {isMenuOpen && (
                     <div
-                        className="fixed inset-0 z-50"
+                        className="fixed inset-0 z-40"
                         onClick={toggleMenu}
                     ></div>
                 )}
-                <div className="relative">
+                <div className="relative z-40">
                     <button
                         onClick={toggleMenu}
                         className="p-2 text-gray-700 hover:text-gray-700 dark:text-white hover:bg-slate-300 rounded-full"
@@ -245,18 +245,22 @@ const PostCard = (props) => {
                     </button>
                     {isMenuOpen && (
                         <div className="flex flex-col items-start absolute right-0 top-10 bg-white text-slate-700 border border-gray-200 dark:bg-gray-700 dark:text-white dark:border-gray-600 rounded-md shadow-md z-40">
-                            <button
-                                onClick={
-                                    user ? handleDeletePost : toggleLoginModal
-                                }
-                                className="w-full"
-                                disabled={loading}
-                            >
-                                <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
-                                    <FaTrash />
-                                    <span className="pl-2">Delete</span>
-                                </div>
-                            </button>
+                            {user && post.creatorInfo[0]._id == user._id && (
+                                <button
+                                    onClick={
+                                        user
+                                            ? handleDeletePost
+                                            : toggleLoginModal
+                                    }
+                                    className="w-full"
+                                    disabled={loading}
+                                >
+                                    <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
+                                        <FaTrash />
+                                        <span className="pl-2">Delete</span>
+                                    </div>
+                                </button>
+                            )}
                             <button
                                 onClick={
                                     user ? handleReportPost : toggleLoginModal

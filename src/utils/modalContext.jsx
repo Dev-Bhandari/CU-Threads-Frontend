@@ -59,7 +59,7 @@ export const ModalProvider = ({ children }) => {
         setModalError({});
     };
 
-    const toggleDeletePostModal = (postId) => {
+    const toggleDeletePostModal = (postId) => {        
         if (!openDeletePostModal.postId) {
             setOpenDeletePostModal({ postId: postId });
         } else {

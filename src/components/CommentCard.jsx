@@ -1,7 +1,10 @@
-import { Avatar } from "flowbite-react";
 import { useRef, useState } from "react";
 import { useModalContext } from "../utils/modalContext";
 import { useAuth } from "../utils/authContext";
+import { BsThreeDots } from "react-icons/bs";
+import { FaFlag, FaTrash } from "react-icons/fa";
+import { deleteComment } from "../utils/api/comment.api";
+import { useNavigate } from "react-router-dom";
 
 const CommentCard = (props) => {
     const comment = props.comment;
@@ -12,7 +15,39 @@ const CommentCard = (props) => {
     const [showReplyBox, setShowReplyBox] = useState(false);
     const inputEl = useRef(null);
     const { user } = useAuth();
-    const { toggleLoginModal } = useModalContext();
+    const { toggleLoginModal, setAlertResponse } = useModalContext();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = (e) => {
+        e.stopPropagation();
+        setIsMenuOpen((prev) => !prev);
+    };
+
+    const handleDeleteComment = async (e) => {
+        e.stopPropagation();
+        setIsMenuOpen(false);
+        try {
+            setLoading(true);
+            console.log("Delete comment", comment._id);
+            await deleteComment(comment._id);
+            navigate(0);
+        } catch (error) {
+            console.error("Error deleting post:", error);
+            setAlertResponse({ message: "Failed to delete comment." });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleReportPost = (e) => {
+        e.stopPropagation();
+        setIsMenuOpen(false);
+        setAlertResponse({
+            message: "Comment reported.",
+        });
+    };
     return (
         <div
             key={comment._id}
@@ -25,6 +60,49 @@ const CommentCard = (props) => {
                     className="w-8 h-8 rounded-full object-cover"
                 />
                 <h2 className="text-sm px-2 font-bold">u/{name}</h2>
+                {isMenuOpen && (
+                    <div
+                        className="fixed inset-0 z-40"
+                        onClick={toggleMenu}
+                    ></div>
+                )}
+                <div className="relative z-40">
+                    <button
+                        onClick={toggleMenu}
+                        className="p-2 text-gray-700 hover:text-gray-700 dark:text-white hover:bg-slate-300 rounded-full"
+                    >
+                        <BsThreeDots size={20} />
+                    </button>
+                    {isMenuOpen && (
+                        <div className="flex flex-col items-start absolute right-0 top-10 bg-white text-slate-700 border border-gray-200 dark:bg-gray-700 dark:text-white dark:border-gray-600 rounded-md shadow-md z-40">
+                            <button
+                                onClick={
+                                    user
+                                        ? handleDeleteComment
+                                        : toggleLoginModal
+                                }
+                                className="w-full"
+                                disabled={loading}
+                            >
+                                <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
+                                    <FaTrash />
+                                    <span className="pl-2">Delete</span>
+                                </div>
+                            </button>
+                            <button
+                                onClick={
+                                    user ? handleReportPost : toggleLoginModal
+                                }
+                                className="w-full"
+                            >
+                                <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
+                                    <FaFlag />
+                                    <span className="pl-2">Report</span>
+                                </div>
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
             <div className="mb-2">{comment.content}</div>
             {!showReplyBox && (

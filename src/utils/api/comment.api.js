@@ -1,6 +1,6 @@
 import api from "./index.api";
 
-const createComment = async ( body) => {
+const createComment = async (body) => {
     try {
         const response = await api.post("/comments/create-comment", body);
         const comment = response.data;
@@ -8,6 +8,19 @@ const createComment = async ( body) => {
         return comment;
     } catch (error) {
         console.error("Error while creating comment:", error.response);
+        throw error;
+    }
+};
+
+const deleteComment = async (commentId) => {
+    try {
+        const response = await api.delete(
+            `/comments/delete-comment/${commentId}`
+        );
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error("Error while deleting comment:", error.response);
         throw error;
     }
 };
@@ -24,4 +37,4 @@ const getAllComments = async (postId) => {
     }
 };
 
-export { createComment, getAllComments };
+export { createComment, deleteComment, getAllComments };
