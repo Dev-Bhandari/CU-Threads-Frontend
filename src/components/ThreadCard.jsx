@@ -58,9 +58,9 @@ const ThreadCard = (props) => {
             <img
                 src={thread.banner}
                 alt="Thread Banner"
-                className=" w-full h-36 object-cover"
+                className=" w-full h-36 object-cover border-slate-300 border-x-4 border-4 rounded-t-lg"
             />
-            <div className="relative flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start md:px-8 md:py-6 p-2">
+            <div className="relative flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start md:px-6 md:py-4 p-2">
                 <div className="flex justify-center items-center">
                     <img
                         src={thread.avatar}
