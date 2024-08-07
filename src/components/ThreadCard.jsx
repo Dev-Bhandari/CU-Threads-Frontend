@@ -58,7 +58,7 @@ const ThreadCard = (props) => {
             <img
                 src={thread.banner}
                 alt="Thread Banner"
-                className=" w-full h-[125px] object-cover"
+                className=" w-full h-36 object-cover"
             />
             <div className="relative flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start md:px-8 md:py-6 p-2">
                 <div className="flex justify-center items-center">
@@ -82,10 +82,10 @@ const ThreadCard = (props) => {
                                 `cu/${thread.name}`
                             )}
                         </h1>
-                        <p className="text-lg text-gray-700">
+                        <p className="text-base text-gray-700">
                             {thread.description}
                         </p>
-                        <p className=" text-md text-gray-700">
+                        <p className=" text-sm text-gray-700">
                             Members: {thread.totalMembers}
                         </p>
                     </div>
