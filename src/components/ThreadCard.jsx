@@ -65,7 +65,7 @@ const ThreadCard = (props) => {
                     <img
                         src={thread.avatar}
                         alt="Thread Avatar"
-                        className="w-16 h-16 rounded-full mr-4 object-cover"
+                        className="w-16 h-16 bg-white rounded-full mr-4 object-cover"
                     />
                     <div>
                         <h1 className=" text-3xl font-bold text-gray-700">
