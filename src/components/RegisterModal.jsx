@@ -14,7 +14,7 @@ const RegisterModal = () => {
         toggleLoginModal,
         toggleVerifyUserModal,
         modalError,
-        setmodalError,
+        setModalError,
         setAlertResponse,
     } = useModalContext();
 
@@ -61,13 +61,15 @@ const RegisterModal = () => {
                 if (!error.response.data.success) {
                     const errorMessage = error.response.data;
                     console.log(errorMessage);
-                    setmodalError(errorMessage);
+                    setModalError(errorMessage);
                 }
             } finally {
                 setLoading(false);
             }
         } else {
-            setmodalError(validationErrors);
+            setModalError(validationErrors);
+            console.log(modalError);
+            
         }
     };
 
@@ -133,6 +135,7 @@ const RegisterModal = () => {
                                 type="password"
                                 id="password"
                                 name="password"
+                                // minLength={6}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="********"
                                 value={formData.password}
@@ -147,9 +150,7 @@ const RegisterModal = () => {
                                         {modalError.username}
                                     </p>
                                 ) : modalError.email ? (
-                                    <p className="error">
-                                        {modalError.email}
-                                    </p>
+                                    <p className="error">{modalError.email}</p>
                                 ) : modalError.password ? (
                                     <p className="error">
                                         {modalError.password}

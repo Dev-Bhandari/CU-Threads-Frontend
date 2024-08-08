@@ -2,8 +2,12 @@ import zod from "zod";
 
 const username = zod
     .string()
-    .trim()
-    .min(3, "Username should be of minimum 3 characters");
+    .min(3, "Username should be minimum 3 characters")
+    .refine((s) => !s.includes(" "), "Username should not contain spaces")
+    .refine((value) => {
+        const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+        return !regex.test(value);
+    }, "Username should not contain symbols");
 
 const email = zod.string().trim().email("Invalid email");
 
