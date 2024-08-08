@@ -34,7 +34,7 @@ const DeletePostModal = () => {
         >
             <Modal.Header />
             <Modal.Body>
-                <h2 className="text-center text-xl font-semibold dark:text-white mb-1">
+                <h2 className="text-center text-2xl font-semibold dark:text-white mb-1">
                     Delete Post?
                 </h2>
                 <p className="p-4">

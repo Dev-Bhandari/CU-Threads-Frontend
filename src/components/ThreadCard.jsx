@@ -105,14 +105,14 @@ const ThreadCard = (props) => {
                             disabled={loading}
                             className="m-2 rounded-full px-4 h-14 text-lg text-nowrap bg-slate-400 hover:bg-slate-500"
                         >
-                            {joined ? "Joined" : "+ Join"}
+                            {user && joined ? "Joined" : "+ Join"}
                         </button>
                     )}
                 </div>
-                {!isAllThreadsPage && thread.owner && (
+                {user && !isAllThreadsPage && thread.owner && (
                     <button
                         onClick={handleEditThread}
-                        className=" absolute right-0 top-0 m-2 rounded-full p-2 text-lg text-nowrap bg-slate-400 hover:bg-slate-500"
+                        className=" absolute right-0 top-0 m-1 rounded-full p-2 text-lg text-nowrap bg-slate-400 hover:bg-slate-500"
                     >
                         <HiPencil />
                     </button>

@@ -43,16 +43,20 @@ const PostCard = (props) => {
 
     const handleDeletePost = (e) => {
         e.stopPropagation();
+        if (user) {
+            toggleDeletePostModal(post._id);
+        } else toggleLoginModal();
         setIsMenuOpen(false);
-        toggleDeletePostModal(post._id);
     };
 
     const handleReportPost = (e) => {
         e.stopPropagation();
+        if (user) {
+            setAlertResponse({
+                message: "Post reported.",
+            });
+        } else toggleLoginModal();
         setIsMenuOpen(false);
-        setAlertResponse({
-            message: "Post reported.",
-        });
     };
 
     const handleUpVote = async (e) => {
@@ -249,11 +253,7 @@ const PostCard = (props) => {
                         <div className="flex flex-col items-start absolute right-0 top-10 bg-white text-slate-700 border border-gray-200 dark:bg-gray-700 dark:text-white dark:border-gray-600 rounded-md shadow-md z-40">
                             {user && post.creatorInfo[0]._id == user._id && (
                                 <button
-                                    onClick={
-                                        user
-                                            ? handleDeletePost
-                                            : toggleLoginModal
-                                    }
+                                    onClick={handleDeletePost}
                                     className="w-full"
                                     disabled={loading}
                                 >
@@ -264,9 +264,7 @@ const PostCard = (props) => {
                                 </button>
                             )}
                             <button
-                                onClick={
-                                    user ? handleReportPost : toggleLoginModal
-                                }
+                                onClick={handleReportPost}
                                 className="w-full"
                                 disabled={loading}
                             >
