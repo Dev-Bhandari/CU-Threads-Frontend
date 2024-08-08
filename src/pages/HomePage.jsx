@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Card, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
+import { useModalContext } from "../utils/modalContext";
+import { useAuth } from "../utils/authContext";
 
 const HomePage = () => {
     const [loaded, setLoaded] = useState(false);
@@ -10,6 +12,13 @@ const HomePage = () => {
     const [posts, setPosts] = useState([]);
     const [lastFieldId, setLastFieldId] = useState("");
     const [hasNext, setHasNext] = useState(false);
+    const {
+        jwtExpired,
+        setJwtExpired,
+        setAlertResponse,
+        openExtendSessionModal,
+        toggleExtendSessionModal,
+    } = useModalContext();
 
     useEffect(() => {
         fetchPosts();
@@ -33,13 +42,31 @@ const HomePage = () => {
             }
         } catch (error) {
             console.log("Error fetching posts:", error);
+            if (error.response.data.message == "jwt expired") {
+                setJwtExpired(true);
+                toggleExtendSessionModal();
+            }
         } finally {
             setLoaded(true);
             clearTimeout(spinnerTimeout);
             setLoading(false);
         }
     };
-
+    const sessionExpired = () => {
+        return (
+            <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
+                <div className="flex justify-center items-center">
+                    <p className="p-2 ">Your session is expired!</p>
+                    <button
+                        className=" text-white bg-blue-700 hover:bg-blue-800  focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
+                        onClick={toggleExtendSessionModal}
+                    >
+                        Extend Session
+                    </button>
+                </div>
+            </Card>
+        );
+    };
     return (
         <div className="flex justify-center ">
             {loading ? (
@@ -52,21 +79,32 @@ const HomePage = () => {
                     dataLength={posts.length}
                     next={fetchPosts}
                     hasMore={hasNext}
-                    loader={<h4>Loading...</h4>}
+                    loader={
+                        jwtExpired ? (
+                            sessionExpired()
+                        ) : (
+                            <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
+                                <p>Loading more posts...</p>
+                            </Card>
+                        )
+                    }
                     endMessage={
                         posts.length != 0 ? (
                             <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
                                 <p>Refresh to see new posts</p>
                             </Card>
                         ) : (
-                            loaded && (
+                            loaded &&
+                            (jwtExpired ? (
+                                sessionExpired()
+                            ) : (
                                 <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
                                     <p>No posts yet. Why not break the ice?</p>
                                 </Card>
-                            )
+                            ))
                         )
                     }
-                    scrollThreshold={0.7}
+                    scrollThreshold={0.8}
                 >
                     {posts.map((post) => (
                         <PostCard key={post._id} post={post} title={"thread"} />

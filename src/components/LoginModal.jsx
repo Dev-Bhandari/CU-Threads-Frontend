@@ -20,8 +20,8 @@ const LoginModal = () => {
         toggleLoginModal,
         toggleRegisterModal,
         toggleVerifyUserModal,
-        loginError,
-        setLoginError,
+        modalError,
+        setModalError,
         alertResponse,
         setAlertResponse,
     } = useModalContext();
@@ -67,7 +67,7 @@ const LoginModal = () => {
                 if (!error.response.data.success) {
                     const errorMessage = error.response.data;
                     console.log(errorMessage);
-                    setLoginError(errorMessage);
+                    setModalError(errorMessage);
                 }
                 console.log(alertResponse);
             } finally {
@@ -75,7 +75,7 @@ const LoginModal = () => {
             }
         } else {
             console.log(validationErrors);
-            setLoginError(validationErrors);
+            setModalError(validationErrors);
         }
     };
 
@@ -103,7 +103,7 @@ const LoginModal = () => {
                 if (!error.response.data.success) {
                     const errorMessage = error.response.data;
                     console.log(errorMessage);
-                    setLoginError(errorMessage);
+                    setModalError(errorMessage);
                 }
                 console.log(alertResponse);
             } finally {
@@ -111,7 +111,7 @@ const LoginModal = () => {
             }
         } else {
             console.log(validationErrors);
-            setLoginError(validationErrors);
+            setModalError(validationErrors);
         }
     };
 
@@ -166,14 +166,14 @@ const LoginModal = () => {
                             />
                         </div>
                         <div className=" mb-5 text-red-700 text-sm">
-                            {loginError.email ? (
-                                <p className="error">{loginError.email}</p>
-                            ) : loginError.password ? (
-                                <p className="error">{loginError.password}</p>
-                            ) : loginError._generic ? (
-                                <p className="error">{loginError._generic}</p>
-                            ) : loginError ? (
-                                <p className="error">{loginError.message}</p>
+                            {modalError.email ? (
+                                <p className="error">{modalError.email}</p>
+                            ) : modalError.password ? (
+                                <p className="error">{modalError.password}</p>
+                            ) : modalError._generic ? (
+                                <p className="error">{modalError._generic}</p>
+                            ) : modalError ? (
+                                <p className="error">{modalError.message}</p>
                             ) : null}
                         </div>
 

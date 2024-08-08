@@ -19,10 +19,9 @@ export const ModalProvider = ({ children }) => {
     const [openEditThreadModal, setOpenEditThreadModal] = useState({
         thread: null,
     });
+    const [jwtExpired, setJwtExpired] = useState(false);
+    const [openExtendSessionModal, setOpenExtendSessionModal] = useState(false);
     const [openSideBar, setOpenSideBar] = useState(false);
-
-    const [loginError, setLoginError] = useState({});
-    const [registerError, setRegisterError] = useState({});
     const [modalError, setModalError] = useState({});
     const [resendResponse, setResendResponse] = useState({});
     const [alertResponse, setAlertResponse] = useState({
@@ -32,12 +31,12 @@ export const ModalProvider = ({ children }) => {
     const toggleLoginModal = () => {
         if (!openLoginModal) setAlertResponse({ message: null });
         setOpenLoginModal((prevState) => !prevState);
-        setLoginError({});
+        setModalError({});
     };
 
     const toggleRegisterModal = () => {
         setOpenRegisterModal((prevState) => !prevState);
-        setRegisterError({});
+        setModalError({});
     };
 
     const toggleVerifyUserModal = () => {
@@ -59,7 +58,7 @@ export const ModalProvider = ({ children }) => {
         setModalError({});
     };
 
-    const toggleDeletePostModal = (postId) => {        
+    const toggleDeletePostModal = (postId) => {
         if (!openDeletePostModal.postId) {
             setOpenDeletePostModal({ postId: postId });
         } else {
@@ -77,13 +76,17 @@ export const ModalProvider = ({ children }) => {
         setModalError({});
     };
 
-    const toggleEditThreadModal = (thread) => {        
+    const toggleEditThreadModal = (thread) => {
         if (!openEditThreadModal.thread) {
             setOpenEditThreadModal({ thread: thread });
         } else {
             setOpenEditThreadModal({ thread: null });
         }
         setModalError({});
+    };
+
+    const toggleExtendSessionModal = () => {
+        setOpenExtendSessionModal((prevState) => !prevState);
     };
 
     const toggleOpenSideBar = () => {
@@ -97,9 +100,19 @@ export const ModalProvider = ({ children }) => {
         setOpenVerifyUserModal(false);
         setOpenCreatePostModal({ threadName: null });
         setOpenCreateThreadModal(false);
-        setLoginError({});
-        setRegisterError({});
+        setOpenEditUserModal({ user: null });
+        setOpenEditThreadModal({
+            thread: null,
+        });
+        setOpenExtendSessionModal(false);
+        setOpenSideBar(false);
         setModalError({});
+        setModalError({});
+        setModalError({});
+        setResendResponse({});
+        setAlertResponse({
+            message: null,
+        });
     };
     return (
         <ModalContext.Provider
@@ -110,10 +123,6 @@ export const ModalProvider = ({ children }) => {
                 toggleRegisterModal,
                 openVerifyUserModal,
                 toggleVerifyUserModal,
-                loginError,
-                setLoginError,
-                registerError,
-                setRegisterError,
                 modalError,
                 setModalError,
                 resendResponse,
@@ -130,6 +139,10 @@ export const ModalProvider = ({ children }) => {
                 toggleEditUserModal,
                 openEditThreadModal,
                 toggleEditThreadModal,
+                jwtExpired,
+                setJwtExpired,
+                openExtendSessionModal,
+                toggleExtendSessionModal,
                 openSideBar,
                 toggleOpenSideBar,
                 resetOnLogout,

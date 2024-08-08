@@ -181,261 +181,255 @@ const PostCard = (props) => {
     };
 
     return (
-        <div className="flex ">
-            <button
-                key={post._id}
-                className={`m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] text-left bg-white  dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md cursor-pointer ${
-                    title != "both" && "hover:bg-slate-100"
-                }`}
-                onClick={handlePost}
-                disabled={title === "both"}
-            >
-                <div className="p-4 flex justify-between items-center">
-                    <div className="flex items-center">
-                        {title === "thread" ? (
-                            <button onClick={handleTitle}>
-                                <img
-                                    src={post.threadInfo[0].avatar}
-                                    alt="User Avatar"
-                                    className="w-8 h-8 rounded-full object-cover"
-                                />
-                            </button>
-                        ) : (
-                            <button onClick={handleSubtitle}>
-                                <img
-                                    src={post.creatorInfo[0].avatar}
-                                    alt="User Avatar"
-                                    className="w-8 h-8 rounded-full object-cover"
-                                />
-                            </button>
-                        )}
-                        <div className="flex flex-col items-start">
+        <div
+            key={post._id}
+            className={`flex flex-col m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] text-left bg-white  dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md cursor-pointer ${
+                title != "both" && "hover:bg-slate-100"
+            }`}
+            onClick={() => {
+                title != "both" && handlePost();
+            }}
+        >
+            <div className="p-4 flex justify-between items-center">
+                <div className="flex items-center">
+                    {title === "thread" ? (
+                        <button onClick={handleTitle}>
+                            <img
+                                src={post.threadInfo[0].avatar}
+                                alt="User Avatar"
+                                className="w-8 h-8 rounded-full object-cover"
+                            />
+                        </button>
+                    ) : (
+                        <button onClick={handleSubtitle}>
+                            <img
+                                src={post.creatorInfo[0].avatar}
+                                alt="User Avatar"
+                                className="w-8 h-8 rounded-full object-cover"
+                            />
+                        </button>
+                    )}
+                    <div className="flex flex-col items-start">
+                        <button
+                            className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
+                            onClick={handleTitle}
+                        >
+                            <h2 className="text-sm px-2 font-bold tracking-tight text-gray-600">
+                                {title === "user"
+                                    ? `u/${post.creatorInfo[0].username}`
+                                    : `cu/${post.threadInfo[0].name}`}
+                            </h2>
+                        </button>
+                        {title === "both" && (
                             <button
                                 className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
-                                onClick={handleTitle}
+                                onClick={handleSubtitle}
                             >
-                                <h2 className="text-sm px-2 font-bold tracking-tight text-gray-600">
-                                    {title === "user"
-                                        ? `u/${post.creatorInfo[0].username}`
-                                        : `cu/${post.threadInfo[0].name}`}
+                                <h2 className="text-sm px-2 font-bold tracking-tight">
+                                    u/{post.creatorInfo[0].username}
                                 </h2>
                             </button>
-                            {title === "both" && (
-                                <button
-                                    className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
-                                    onClick={handleSubtitle}
-                                >
-                                    <h2 className="text-sm px-2 font-bold tracking-tight">
-                                        u/{post.creatorInfo[0].username}
-                                    </h2>
-                                </button>
-                            )}
-                        </div>
+                        )}
                     </div>
+                </div>
+                {isMenuOpen && (
+                    <div
+                        className="fixed inset-0 z-40"
+                        onClick={toggleMenu}
+                    ></div>
+                )}
+                <div className="relative z-40">
+                    <button
+                        onClick={toggleMenu}
+                        className="p-2 text-gray-700 hover:text-gray-700 dark:text-white hover:bg-slate-300 rounded-full"
+                    >
+                        <BsThreeDots size={20} />
+                    </button>
                     {isMenuOpen && (
-                        <div
-                            className="fixed inset-0 z-40"
-                            onClick={toggleMenu}
-                        ></div>
-                    )}
-                    <div className="relative z-40">
-                        <button
-                            onClick={toggleMenu}
-                            className="p-2 text-gray-700 hover:text-gray-700 dark:text-white hover:bg-slate-300 rounded-full"
-                        >
-                            <BsThreeDots size={20} />
-                        </button>
-                        {isMenuOpen && (
-                            <div className="flex flex-col items-start absolute right-0 top-10 bg-white text-slate-700 border border-gray-200 dark:bg-gray-700 dark:text-white dark:border-gray-600 rounded-md shadow-md z-40">
-                                {user &&
-                                    post.creatorInfo[0]._id == user._id && (
-                                        <button
-                                            onClick={
-                                                user
-                                                    ? handleDeletePost
-                                                    : toggleLoginModal
-                                            }
-                                            className="w-full"
-                                            disabled={loading}
-                                        >
-                                            <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
-                                                <FaTrash />
-                                                <span className="pl-2">
-                                                    Delete
-                                                </span>
-                                            </div>
-                                        </button>
-                                    )}
+                        <div className="flex flex-col items-start absolute right-0 top-10 bg-white text-slate-700 border border-gray-200 dark:bg-gray-700 dark:text-white dark:border-gray-600 rounded-md shadow-md z-40">
+                            {user && post.creatorInfo[0]._id == user._id && (
                                 <button
                                     onClick={
                                         user
-                                            ? handleReportPost
+                                            ? handleDeletePost
                                             : toggleLoginModal
                                     }
                                     className="w-full"
                                     disabled={loading}
                                 >
                                     <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
-                                        <FaFlag />
-                                        <span className="pl-2">Report</span>
+                                        <FaTrash />
+                                        <span className="pl-2">Delete</span>
                                     </div>
                                 </button>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                            <button
+                                onClick={
+                                    user ? handleReportPost : toggleLoginModal
+                                }
+                                className="w-full"
+                                disabled={loading}
+                            >
+                                <div className="flex items-center p-3 hover:bg-slate-200 text-nowrap">
+                                    <FaFlag />
+                                    <span className="pl-2">Report</span>
+                                </div>
+                            </button>
+                        </div>
+                    )}
                 </div>
+            </div>
 
-                <h5 className="text-2xl px-4 font-bold text-gray-700">
-                    {post.title}
-                </h5>
+            <h5 className="text-2xl px-4 font-bold text-gray-700">
+                {post.title}
+            </h5>
 
-                {post.mediaType === "image" && post.mediaUrl.length > 0 && (
-                    <div className="px-4 py-2 relative">
-                        {post.mediaUrl.length === 1 ? (
-                            <div className="w-full bg-slate-300 rounded-3xl border-2 border-gray-200">
-                                <img
-                                    src={post.mediaUrl[0]}
-                                    alt={`Image`}
-                                    className="object-contain w-full max-h-128 rounded-3xl cursor-pointer"
-                                    onClick={(e) =>
-                                        handleFullScreen(e, post.mediaUrl[0])
-                                    }
-                                />
+            {post.mediaType === "image" && post.mediaUrl.length > 0 && (
+                <div className="px-4 py-2 relative">
+                    {post.mediaUrl.length === 1 ? (
+                        <div className="w-full bg-slate-300 rounded-3xl border-2 border-gray-200">
+                            <img
+                                src={post.mediaUrl[0]}
+                                alt={`Image`}
+                                className="object-contain w-full max-h-128 rounded-3xl cursor-pointer"
+                                onClick={(e) =>
+                                    handleFullScreen(e, post.mediaUrl[0])
+                                }
+                            />
+                        </div>
+                    ) : (
+                        <div className="w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden border-2 border-gray-200">
+                            <div
+                                className="flex items-center transition-transform duration-500"
+                                style={{
+                                    transform: `translateX(-${
+                                        currentSlide * 100
+                                    }%)`,
+                                }}
+                            >
+                                {post.mediaUrl.map((media, index) => (
+                                    <div
+                                        key={index}
+                                        className="w-full flex-shrink-0"
+                                    >
+                                        <img
+                                            src={media}
+                                            alt={`Image ${index}`}
+                                            className="w-full max-h-128 object-contain cursor-pointer"
+                                            onClick={(e) =>
+                                                handleFullScreen(e, media)
+                                            }
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                        ) : (
-                            <div className="w-full h-full bg-slate-300 rounded-3xl relative overflow-hidden border-2 border-gray-200">
-                                <div
-                                    className="flex items-center transition-transform duration-300 "
-                                    style={{
-                                        transform: `translateX(-${
-                                            currentSlide * 100
-                                        }%)`,
-                                    }}
-                                >
-                                    {post.mediaUrl.map((media, index) => (
-                                        <div
-                                            key={index}
-                                            className="w-full flex-shrink-0"
-                                        >
-                                            <img
-                                                src={media}
-                                                alt={`Image ${index}`}
-                                                className="w-full max-h-128 object-contain cursor-pointer"
-                                                onClick={(e) =>
-                                                    handleFullScreen(e, media)
-                                                }
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
 
-                                <button
-                                    className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
-                                    onClick={handlePrev}
-                                >
-                                    <IoIosArrowBack className="size-5" />
-                                </button>
-                                <button
-                                    className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
-                                    onClick={handleNext}
-                                >
-                                    <IoIosArrowForward className="size-5" />
-                                </button>
+                            <button
+                                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
+                                onClick={handlePrev}
+                            >
+                                <IoIosArrowBack className="size-5" />
+                            </button>
+                            <button
+                                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full p-2 hover:bg-gray-700 transition-colors"
+                                onClick={handleNext}
+                            >
+                                <IoIosArrowForward className="size-5" />
+                            </button>
 
-                                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                                    {post.mediaUrl.map((_, index) => (
-                                        <button
-                                            key={index}
-                                            className={`w-3 h-3 rounded-full ${
-                                                index === currentSlide
-                                                    ? "bg-white"
-                                                    : "bg-gray-400"
-                                            }`}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setCurrentSlide(index);
-                                            }}
-                                        ></button>
-                                    ))}
-                                </div>
+                            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                                {post.mediaUrl.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        className={`w-3 h-3 rounded-full ${
+                                            index === currentSlide
+                                                ? "bg-white"
+                                                : "bg-gray-400"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setCurrentSlide(index);
+                                        }}
+                                    ></button>
+                                ))}
                             </div>
-                        )}
-                    </div>
-                )}
+                        </div>
+                    )}
+                </div>
+            )}
 
-                {post.mediaType === "video" && (
-                    <div className="mx-4 my-2 border-2 rounded-3xl border-gray-200">
-                        <video
-                            ref={videoRef}
-                            src={post.mediaUrl}
-                            className="max-h-128 w-full rounded-3xl "
-                            controls
-                            muted
-                            onClick={preventVideoClickPropagation}
-                        ></video>
-                    </div>
-                )}
+            {post.mediaType === "video" && (
+                <div className="mx-4 my-2 border-2 rounded-3xl border-gray-200">
+                    <video
+                        ref={videoRef}
+                        src={post.mediaUrl}
+                        className="max-h-128 w-full rounded-3xl "
+                        controls
+                        muted
+                        onClick={preventVideoClickPropagation}
+                    ></video>
+                </div>
+            )}
 
-                <p className="px-4 py-2 font-normal text-gray-700 dark:text-gray-400 whitespace-pre-line">
-                    {post.textContent}
-                </p>
+            <p className="px-4 py-2 font-normal text-gray-700 dark:text-gray-400 whitespace-pre-line">
+                {post.textContent}
+            </p>
 
-                <div className="flex px-2 py-2">
-                    <div className="flex items-center bg-slate-500 m-2 px-1 rounded-full text-white">
-                        <button
-                            disabled={loading}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                user ? handleUpVote(e) : toggleLoginModal(e);
-                            }}
-                        >
-                            {upVote ? (
-                                <BiSolidUpvote className="mx-1 size-5 hover:fill-slate-700" />
-                            ) : (
-                                <BiUpvote className="mx-1 size-5 hover:fill-slate-700" />
-                            )}
-                        </button>
-                        <p>{totalVotes}</p>
-                        <button
-                            disabled={loading}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                user ? handleDownVote(e) : toggleLoginModal(e);
-                            }}
-                        >
-                            {downVote ? (
-                                <BiSolidDownvote className="mx-1 size-5 hover:fill-slate-700" />
-                            ) : (
-                                <BiDownvote className="mx-1 size-5 hover:fill-slate-700" />
-                            )}
-                        </button>
-                    </div>
+            <div className="flex px-2 py-2">
+                <div className="flex items-center bg-slate-500 m-2 px-1 rounded-full text-white">
                     <button
+                        disabled={loading}
                         onClick={(e) => {
                             e.stopPropagation();
-                            handlePost(e);
+                            user ? handleUpVote(e) : toggleLoginModal(e);
                         }}
                     >
-                        <div className="flex items-center bg-slate-500 m-2 px-4 py-1 rounded-full text-white hover:bg-slate-600">
-                            <FaRegCommentAlt className="me-1.5" />
-                            <p>{post.totalComments}</p>
-                        </div>
+                        {user && upVote ? (
+                            <BiSolidUpvote className="mx-1 size-5 hover:fill-slate-700" />
+                        ) : (
+                            <BiUpvote className="mx-1 size-5 hover:fill-slate-700" />
+                        )}
+                    </button>
+                    <p>{totalVotes}</p>
+                    <button
+                        disabled={loading}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            user ? handleDownVote(e) : toggleLoginModal(e);
+                        }}
+                    >
+                        {user && downVote ? (
+                            <BiSolidDownvote className="mx-1 size-5 hover:fill-slate-700" />
+                        ) : (
+                            <BiDownvote className="mx-1 size-5 hover:fill-slate-700" />
+                        )}
                     </button>
                 </div>
-
-                {isFullScreen && (
-                    <div
-                        className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center"
-                        onClick={handleCloseFullScreen}
-                    >
-                        <img
-                            src={fullScreenImage}
-                            alt="Full-Screen Image"
-                            className="object-contain max-w-full max-h-full rounded-lg"
-                        />
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handlePost(e);
+                    }}
+                >
+                    <div className="flex items-center bg-slate-500 m-2 px-4 py-1 rounded-full text-white hover:bg-slate-600">
+                        <FaRegCommentAlt className="me-1.5" />
+                        <p>{post.totalComments}</p>
                     </div>
-                )}
-            </button>
+                </button>
+            </div>
+
+            {isFullScreen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center"
+                    onClick={handleCloseFullScreen}
+                >
+                    <img
+                        src={fullScreenImage}
+                        alt="Full-Screen Image"
+                        className="object-contain max-w-full max-h-full rounded-lg"
+                    />
+                </div>
+            )}
         </div>
     );
 };

@@ -23,6 +23,7 @@ import VerifyForgotPasswordPage from "./pages/VerifyForgotPasswordPage";
 import DeletePostModal from "./components/DeletePostModal";
 import EditUserModal from "./components/EditUserModal";
 import EditThreadModal from "./components/EditThreadModal";
+import ExtendSessionModal from "./components/ExtendSessionModal";
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
             <DeletePostModal />
             <EditUserModal />
             <EditThreadModal />
+            <ExtendSessionModal />
             <main className="flex flex-row">
                 <SideBar />
                 <div className="flex-grow my-4">

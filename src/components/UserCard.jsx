@@ -7,15 +7,17 @@ import { useNavigate } from "react-router-dom";
 const UserCard = (props) => {
     const searchedUser = props.user;
     const { user, removeUserData } = useAuth();
-    const { toggleEditUserModal, resetOnLogout } = useModalContext();
+    const { toggleEditUserModal, resetOnLogout } =
+        useModalContext();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
-            resetOnLogout();
-            removeUserData();
-            navigate("/");
-            await logoutUser();
+            logoutUser().then(() => {
+                resetOnLogout();
+                removeUserData();
+                navigate("/");
+            });
         } catch (error) {
             console.log(error.response);
             throw error;
@@ -72,4 +74,4 @@ const UserCard = (props) => {
     );
 };
 
-export default UserCard;
+export default UserCard ;

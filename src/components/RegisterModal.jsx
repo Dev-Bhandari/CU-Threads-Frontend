@@ -13,8 +13,8 @@ const RegisterModal = () => {
         toggleRegisterModal,
         toggleLoginModal,
         toggleVerifyUserModal,
-        registerError,
-        setRegisterError,
+        modalError,
+        setmodalError,
         setAlertResponse,
     } = useModalContext();
 
@@ -61,13 +61,13 @@ const RegisterModal = () => {
                 if (!error.response.data.success) {
                     const errorMessage = error.response.data;
                     console.log(errorMessage);
-                    setRegisterError(errorMessage);
+                    setmodalError(errorMessage);
                 }
             } finally {
                 setLoading(false);
             }
         } else {
-            setRegisterError(validationErrors);
+            setmodalError(validationErrors);
         }
     };
 
@@ -142,25 +142,25 @@ const RegisterModal = () => {
                         </div>
                         <div className="flex justify-between">
                             <div className=" mb-5 text-red-700 text-sm">
-                                {registerError.username ? (
+                                {modalError.username ? (
                                     <p className="error">
-                                        {registerError.username}
+                                        {modalError.username}
                                     </p>
-                                ) : registerError.email ? (
+                                ) : modalError.email ? (
                                     <p className="error">
-                                        {registerError.email}
+                                        {modalError.email}
                                     </p>
-                                ) : registerError.password ? (
+                                ) : modalError.password ? (
                                     <p className="error">
-                                        {registerError.password}
+                                        {modalError.password}
                                     </p>
-                                ) : registerError._generic ? (
+                                ) : modalError._generic ? (
                                     <p className="error">
-                                        {registerError._generic}
+                                        {modalError._generic}
                                     </p>
-                                ) : registerError ? (
+                                ) : modalError ? (
                                     <p className="error">
-                                        {registerError.message}
+                                        {modalError.message}
                                     </p>
                                 ) : null}
                             </div>

@@ -6,6 +6,8 @@ import { Card, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import { useParams } from "react-router-dom";
 import ThreadCard from "../components/ThreadCard";
+import { useAuth } from "../utils/authContext";
+import { useModalContext } from "../utils/modalContext";
 
 const ThreadPage = () => {
     const [loaded, setLoaded] = useState(false);
@@ -15,6 +17,13 @@ const ThreadPage = () => {
     const [lastFieldId, setLastFieldId] = useState("");
     const [hasNext, setHasNext] = useState(false);
     const { threadName } = useParams();
+    const {
+        jwtExpired,
+        setJwtExpired,
+        setAlertResponse,
+        openExtendSessionModal,
+        toggleExtendSessionModal,
+    } = useModalContext();
     console.log(threadName);
 
     const fetchThread = async () => {
@@ -25,13 +34,17 @@ const ThreadPage = () => {
                 setLoading(true);
             }, spinnerDelay);
 
-            console.log("Calling thread data");
+            console.log("Calling thread data "+threadName);
             const res = await getOneThread(threadName);
             const newThread = res.data;
             console.log(newThread);
             setThread(newThread);
         } catch (error) {
             console.log("Error fetching posts:", error);
+            if (error.response.data.message == "jwt expired") {
+                setJwtExpired(true);
+                toggleExtendSessionModal();
+            }
         } finally {
             setLoaded(true);
             clearTimeout(spinnerTimeout);
@@ -61,6 +74,22 @@ const ThreadPage = () => {
         fetchPosts();
     }, [threadName]);
 
+    const sessionExpired = () => {
+        return (
+            <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
+                <div className="flex justify-center items-center">
+                    <p className="p-2 ">Your session is expired!</p>
+                    <button
+                        className=" text-white bg-blue-700 hover:bg-blue-800  focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
+                        onClick={toggleExtendSessionModal}
+                    >
+                        Extend Session
+                    </button>
+                </div>
+            </Card>
+        );
+    };
+
     return (
         <div className="flex flex-col items-center justify-center">
             {loading ? (
@@ -74,27 +103,35 @@ const ThreadPage = () => {
                         <ThreadCard thread={thread} isAllThreadsPage={false} />
                     )}
                     <InfiniteScroll
-                        className="flex flex-col items-center justify-center"
                         dataLength={posts.length}
                         next={fetchPosts}
                         hasMore={hasNext}
-                        loader={<h4>Loading...</h4>}
+                        loader={
+                            jwtExpired ? (
+                                sessionExpired()
+                            ) : (
+                                <p>Loading more posts...</p>
+                            )
+                        }
                         endMessage={
-                            thread && posts.length != 0 ? (
+                            posts.length != 0 ? (
                                 <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
                                     <p>Refresh to see new posts</p>
                                 </Card>
                             ) : (
-                                loaded && (
+                                loaded &&
+                                (jwtExpired ? (
+                                    sessionExpired()
+                                ) : (
                                     <Card className="text-center md:w-[768px] w-[calc(100%-1rem)] m-1">
                                         <p>
                                             No posts yet. Why not break the ice?
                                         </p>
                                     </Card>
-                                )
+                                ))
                             )
                         }
-                        scrollThreshold={0.7}
+                        scrollThreshold={0.8}
                     >
                         {posts.map((post) => (
                             <PostCard

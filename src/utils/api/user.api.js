@@ -43,6 +43,16 @@ const logoutUser = async () => {
     }
 };
 
+const refreshToken = async () => {
+    try {
+        const response = await api.post("/users/refresh-token");
+        console.log(response);
+    } catch (error) {
+        console.error("Error while extending session:", error.response);
+        throw error;
+    }
+};
+
 const verifyEmail = async (emailToken) => {
     try {
         const response = await api.post("users/verify-email", null, {
@@ -136,6 +146,7 @@ export {
     loginUser,
     forgotPassword,
     logoutUser,
+    refreshToken,
     verifyEmail,
     verifyForgotPasswordEmail,
     changeAvatar,
