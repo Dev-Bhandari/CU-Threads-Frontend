@@ -21,7 +21,6 @@ const ExtendSessionModal = () => {
     const handleLogout = async () => {
         try {
             logoutUser();
-            navigate(0);
             setJwtExpired(false);
             resetOnLogout();
             removeUserData();
@@ -39,7 +38,10 @@ const ExtendSessionModal = () => {
             navigate(0);
         } catch (error) {
             console.error("Failed to extend session:", error);
-            if (error.response.data.message == "jwt expired") {
+            if (
+                error.response.data.message == "jwt expired" ||
+                error.response.data.message == "invalid token"
+            ) {
                 handleLogout();
                 setAlertResponse({
                     message: "Your session is expired, Please login again.",
