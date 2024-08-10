@@ -65,23 +65,39 @@ const ThreadCard = (props) => {
                     <img
                         src={thread.avatar}
                         alt="Thread Avatar"
-                        className="w-16 h-16 bg-white rounded-full mr-4 object-cover"
+                        className="w-20 h-20 bg-white rounded-full mr-4 object-cover"
                     />
                     <div>
-                        <h1 className=" text-3xl font-bold text-gray-700">
-                            {isAllThreadsPage ? (
+                        <div className="flex sm:flex-row flex-col sm:items-end items-start">
+                            <h1 className=" text-3xl font-bold text-gray-700 mr-2">
+                                {isAllThreadsPage ? (
+                                    <button
+                                        onClick={() => {
+                                            navigate(`/cu/${thread.name}`);
+                                        }}
+                                        className="hover:text-gray-500"
+                                    >
+                                        cu/{thread.name}
+                                    </button>
+                                ) : (
+                                    `cu/${thread.name}`
+                                )}
+                            </h1>
+                            {!isAllThreadsPage && (
                                 <button
+                                    className="mb-1 text-gray-500 dark:text-white hover:text-gray-400 z-10"
                                     onClick={() => {
-                                        navigate(`/cu/${thread.name}`);
+                                        navigate(
+                                            `/u/${thread.creatorInfo[0].username}`
+                                        );
                                     }}
-                                    className="hover:text-gray-500"
                                 >
-                                    cu/{thread.name}
+                                    <h2 className="text-sm font-bold tracking-tight">
+                                        u/{thread.creatorInfo[0].username}
+                                    </h2>
                                 </button>
-                            ) : (
-                                `cu/${thread.name}`
                             )}
-                        </h1>
+                        </div>
                         <p className="text-base text-gray-700">
                             {thread.description}
                         </p>
