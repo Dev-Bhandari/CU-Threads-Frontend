@@ -187,8 +187,8 @@ const PostCard = (props) => {
     return (
         <div
             key={post._id}
-            className={`flex flex-col m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] text-left bg-white  dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md cursor-pointer ${
-                title != "both" && "hover:bg-slate-100"
+            className={`flex flex-col m-2 mb-4 p-2 md:w-[768px] w-[calc(100%-1rem)] text-left bg-white  dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md ${
+                title != "both" && "hover:bg-slate-100 cursor-pointer"
             }`}
             onClick={() => {
                 title != "both" && handlePost();
