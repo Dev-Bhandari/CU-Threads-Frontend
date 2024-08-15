@@ -215,10 +215,10 @@ const PostCard = (props) => {
                     )}
                     <div className="flex flex-col items-start">
                         <button
-                            className="text-gray-500 dark:text-white hover:text-gray-400 z-10"
+                            className="text-gray-600 dark:text-white hover:text-gray-500 z-10"
                             onClick={handleTitle}
                         >
-                            <h2 className="text-sm px-2 font-bold tracking-tight text-gray-600">
+                            <h2 className="text-sm px-2 font-bold tracking-tight">
                                 {title === "user"
                                     ? `u/${post.creatorInfo[0].username}`
                                     : `cu/${post.threadInfo[0].name}`}

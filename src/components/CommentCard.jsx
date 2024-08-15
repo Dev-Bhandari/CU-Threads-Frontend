@@ -41,6 +41,11 @@ const CommentCard = (props) => {
         }
     };
 
+    const handleTitle = (e) => {
+        e.stopPropagation();
+        navigate(`/u/${name}`);
+    };
+
     const handleReportPost = (e) => {
         e.stopPropagation();
         setIsMenuOpen(false);
@@ -54,12 +59,17 @@ const CommentCard = (props) => {
             className={"pl-8 mb-4 border-l-2 border-gray-300 text-gray-700"}
         >
             <div className="flex items-center mb-2">
-                <img
-                    src={avatar}
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full object-cover"
-                />
-                <h2 className="text-sm px-2 font-bold">u/{name}</h2>
+                <button
+                    className="flex items-center text-gray-600 dark:text-white hover:text-gray-500 z-10"
+                    onClick={handleTitle}
+                >
+                    <img
+                        src={avatar}
+                        alt="User Avatar"
+                        className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <h2 className="text-sm px-2 font-bold">u/{name}</h2>
+                </button>
                 {isMenuOpen && (
                     <div
                         className="fixed inset-0 z-40"
