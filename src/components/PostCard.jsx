@@ -145,11 +145,13 @@ const PostCard = (props) => {
         e.stopPropagation();
         setFullScreenImage(url);
         setIsFullScreen(true);
+        document.body.style.overflow = "hidden";
     };
 
     const handleCloseFullScreen = (e) => {
         e.stopPropagation();
         setIsFullScreen(false);
+        document.body.style.overflow = "auto";
     };
 
     useEffect(() => {
@@ -289,6 +291,7 @@ const PostCard = (props) => {
                             <img
                                 src={post.mediaUrl[0]}
                                 alt={`Image`}
+                                loading="lazy"
                                 className="object-contain w-full max-h-128 rounded-3xl cursor-pointer"
                                 onClick={(e) =>
                                     handleFullScreen(e, post.mediaUrl[0])
@@ -313,6 +316,7 @@ const PostCard = (props) => {
                                         <img
                                             src={media}
                                             alt={`Image ${index}`}
+                                            loading="lazy"
                                             className="w-full max-h-128 object-contain cursor-pointer"
                                             onClick={(e) =>
                                                 handleFullScreen(e, media)
@@ -361,6 +365,7 @@ const PostCard = (props) => {
                     <video
                         ref={videoRef}
                         src={post.mediaUrl}
+                        loading="lazy"
                         className="max-h-128 w-full rounded-3xl "
                         controls
                         muted
