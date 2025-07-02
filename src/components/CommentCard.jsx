@@ -56,7 +56,9 @@ const CommentCard = (props) => {
     return (
         <div
             key={comment._id}
-            className={"pl-8 mb-4 border-l-2 border-gray-300 text-gray-700"}
+            className={`mb-4 text-gray-700 ${
+                comment.parentComment? "pl-8 border-l-2 border-gray-300" : "mx-4"
+            }`}
         >
             <div className="flex items-center mb-2">
                 <button
