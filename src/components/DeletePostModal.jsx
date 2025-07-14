@@ -16,7 +16,7 @@ const DeletePostModal = () => {
             console.log("Delete post", openDeletePostModal.postId);
             await deletePost(openDeletePostModal.postId);
             toggleDeletePostModal();
-            navigate(0);
+            navigate("/");
         } catch (error) {
             console.error("Error deleting post:", error);
             setAlertResponse({ message: "Failed to delete post." });
