@@ -24,10 +24,12 @@ import DeletePostModal from "./components/DeletePostModal";
 import EditUserModal from "./components/EditUserModal";
 import EditThreadModal from "./components/EditThreadModal";
 import ExtendSessionModal from "./components/ExtendSessionModal";
+import { Analytics } from "@vercel/analytics/next"
 
 function App() {
     return (
         <Router>
+            <Analytics/>
             <Header />
             <LoginModal />
             <RegisterModal />
