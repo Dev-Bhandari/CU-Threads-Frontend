@@ -24,7 +24,7 @@ import DeletePostModal from "./components/DeletePostModal";
 import EditUserModal from "./components/EditUserModal";
 import EditThreadModal from "./components/EditThreadModal";
 import ExtendSessionModal from "./components/ExtendSessionModal";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
     return (
